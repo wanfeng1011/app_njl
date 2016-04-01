@@ -40,11 +40,11 @@
                 android:layout_alignParentBottom="true"
                 android:background="#bb555555"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:padding="8dp"
+                android:maxLines="1"
+                android:padding="3dp"
                 android:text="店家A"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>

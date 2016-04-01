@@ -60,6 +60,7 @@ public class HotelPtrFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_demo_ptr, container, false);
         ButterKnife.bind(this, view);
+//        AndroidUpdateSDK.getInstance().init(getContext(), true, "http://172.16.36.101:8080/HttpServer/update.txt");
         return view;
     }
 

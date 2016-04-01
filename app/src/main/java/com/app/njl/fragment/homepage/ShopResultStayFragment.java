@@ -1,7 +1,9 @@
-package com.app.njl.fragment;
+package com.app.njl.fragment.homepage;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,6 @@ import com.app.njl.model.Fruit;
 import com.app.njl.model.SearchParam;
 import com.app.njl.nohttp.CallServer;
 import com.app.njl.nohttp.HttpListener;
-import com.app.njl.ui.UIHelper;
 import com.app.njl.ui.loadmore.LoadMoreListView;
 import com.app.njl.ui.quickadapter.BaseAdapterHelper;
 import com.app.njl.ui.quickadapter.QuickAdapter;
@@ -43,7 +44,7 @@ import in.srain.cube.views.ptr.header.StoreHouseHeader;
 /**
  * Created by tiansj on 15/9/4.
  */
-public class DemoPtrFragment extends Fragment {
+public class ShopResultStayFragment extends Fragment {
     private MainActivity context;
 
     private SearchParam param;
@@ -77,7 +78,10 @@ public class DemoPtrFragment extends Fragment {
             @Override
             protected void convert(BaseAdapterHelper helper, Fruit shop) {
                 helper.setText(R.id.name, shop.getName())
-                        .setText(R.id.address, shop.getContent())
+                        .setText(R.id.favorable, shop.getContent())
+                        .setText(R.id.star, shop.getStar())
+                        .setText(R.id.state, shop.getName())
+                        .setText(R.id.price, shop.getPrice())
                         .setImageUrl(R.id.logo, shop.getUrl()); // 自动异步加载图片
             }
         };
@@ -120,7 +124,27 @@ public class DemoPtrFragment extends Fragment {
         listView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                UIHelper.showHouseDetailActivity(context);
+//                UIHelper.showHouseDetailActivity(context);
+//                UIHelper.showShopDetailActivity(context);
+                /*Intent intent = new Intent(context, ShopDetailActivity.class);
+                getContext().startActivity(intent);*/
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment fragment = new ShopDetailPagerFragment();
+                for (int j = 0; j < MainActivity.fragmentTags.size(); j++) {
+                    Fragment f = fragmentManager.findFragmentByTag(MainActivity.fragmentTags.get(j));
+                    if(f != null && f.isAdded()) {
+                        fragmentTransaction.hide(ShopResultStayFragment.this);
+                    }
+                }
+                if (fragment.isAdded()) {
+                    fragmentTransaction.show(fragment);
+                } else {
+                    fragmentTransaction.add(R.id.fragment_container, fragment, MainActivity.fragmentTags.get(MainActivity.currIndex));
+                }
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commitAllowingStateLoss();
+                fragmentManager.executePendingTransactions();
             }
         });
 

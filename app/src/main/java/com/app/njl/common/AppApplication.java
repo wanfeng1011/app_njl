@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
+import com.app.njl.utils.BuildConfig;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -17,7 +18,6 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.socks.library.KLog;
 import com.squareup.leakcanary.LeakCanary;
 import com.yolanda.nohttp.NoHttp;
-import com.app.njl.utils.BuildConfig;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package com.app.njl.fragment;
+package com.app.njl.fragment.mine;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -1,14 +1,55 @@
-package com.app.njl.fragment;
+package com.app.njl.fragment.homepage;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.app.njl.R;
+import com.app.njl.activity.MainActivity;
+import com.app.njl.adapter.BrowsingHistoryListAdapter;
+import com.app.njl.model.Fruit;
+import com.app.njl.nohttp.CallServer;
+import com.app.njl.nohttp.HttpListener;
+import com.app.njl.utils.Constants;
+import com.app.njl.utils.Options;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yolanda.nohttp.NoHttp;
+import com.yolanda.nohttp.Request;
+import com.yolanda.nohttp.Response;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import space.sye.z.library.RefreshRecyclerView;
+import space.sye.z.library.adapter.RefreshRecyclerViewAdapter;
+import space.sye.z.library.listener.OnBothRefreshListener;
+import space.sye.z.library.manager.RecyclerMode;
+import space.sye.z.library.manager.RecyclerViewManager;
 
 /**
  * Created by jiaxx on 2016/3/28 0028.
  */
-public class HotelTestFragment extends Fragment {//implements OnBothRefreshListener{
-    /*private RefreshRecyclerView recyclerView;
+public class HotelMainFragment extends Fragment implements OnBothRefreshListener {
+    private RefreshRecyclerView recyclerView;
     private RecyclerView mRecyclerView;
     private BrowsingHistoryListAdapter mAdapter;
+    private Button search_btn;
 
     private static final int PULL_DOWN = 1;
     private static final int LOAD_MORE = 2;
@@ -24,8 +65,35 @@ public class HotelTestFragment extends Fragment {//implements OnBothRefreshListe
 //        getContext().setSupportActionBar(toolbar);
 
         mAdapter = new BrowsingHistoryListAdapter();
-        header = View.inflate(getContext(), R.layout.fragment_header, null);
+        header = View.inflate(getContext(), R.layout.library_recycler_header, null);
 //        header2 = View.inflate(getContext(), R.layout.library_recycler_header2, null);
+        search_btn = (Button) header.findViewById(R.id.search_btn);
+
+        search_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment fragment = new ShopResultPagerFragment();
+                for (int j = 0; j < MainActivity.fragmentTags.size(); j++) {
+                    Fragment f = fragmentManager.findFragmentByTag(MainActivity.fragmentTags.get(j));
+                    if(f != null && f.isAdded()) {
+                        fragmentTransaction.hide(HotelMainFragment.this);
+                    }
+                }
+                if (fragment.isAdded()) {
+                    fragmentTransaction.show(fragment);
+                } else {
+                    if(!MainActivity.fragmentTags.contains("HotelSearchResultFragment")) {
+                        MainActivity.fragmentTags.add("HotelSearchResultFragment");
+                    }
+                    fragmentTransaction.add(R.id.fragment_container, fragment, "HotelSearchResultFragment");
+                }
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commitAllowingStateLoss();
+                fragmentManager.executePendingTransactions();
+            }
+        });
 
         mRecyclerView = (RecyclerView)header.findViewById(R.id.id_recyclerview_record);
         //图片显示控件
@@ -245,10 +313,10 @@ public class HotelTestFragment extends Fragment {//implements OnBothRefreshListe
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        /*int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        *//*switch (id){
+        switch (id){
             case R.id.action_linear:
                 RecyclerViewManager.setLayoutManager(new LinearLayoutManager(this));
                 break;
@@ -259,8 +327,8 @@ public class HotelTestFragment extends Fragment {//implements OnBothRefreshListe
                 RecyclerViewManager.setLayoutManager(new StaggeredGridLayoutManager(
                         2, StaggeredGridLayoutManager.VERTICAL));
                 break;
-        }*//*
+        }*/
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 }
