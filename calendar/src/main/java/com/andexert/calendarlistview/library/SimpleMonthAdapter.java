@@ -26,6 +26,7 @@ package com.andexert.calendarlistview.library;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -149,7 +150,8 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	}
 
 	public void onDayClick(SimpleMonthView simpleMonthView, CalendarDay calendarDay) {
-		if (calendarDay != null) {
+        Log.i("onDayClick", "onDayClik-------------");
+        if (calendarDay != null) {
 			onDayTapped(calendarDay);
         }
 	}
@@ -162,10 +164,12 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	public void setSelectedDay(CalendarDay calendarDay) {
         if (selectedDays.getFirst() != null && selectedDays.getLast() == null)
         {
+            Log.i("onDayClick", "onDayClik2-------------");
             selectedDays.setLast(calendarDay);
 
             if (selectedDays.getFirst().month < calendarDay.month)
             {
+                Log.i("onDayClick", "onDayClik3-------------");
                 for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
                     mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
             }
@@ -174,6 +178,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         }
         else if (selectedDays.getLast() != null)
         {
+            Log.i("onDayClick", "onDayClik4-------------");
             selectedDays.setFirst(calendarDay);
             selectedDays.setLast(null);
         }
@@ -248,12 +253,24 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
             stringBuilder.append("{ year: ");
             stringBuilder.append(year);
             stringBuilder.append(", month: ");
-            stringBuilder.append(month);
+            stringBuilder.append(month + 1);
             stringBuilder.append(", day: ");
             stringBuilder.append(day);
             stringBuilder.append(" }");
 
             return stringBuilder.toString();
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        public int getMonth() {
+            return month + 1;
+        }
+
+        public int getDay() {
+            return day;
         }
     }
 

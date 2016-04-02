@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.app.njl.R;
 import com.app.njl.activity.MainActivity;
@@ -23,11 +24,13 @@ public class ShopResultPagerFragment extends Fragment {
 
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
+    private ImageView ivBack; //返回键
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MainActivity.isShowResultPager = true;
         View view = inflater.inflate(R.layout.fragment_home_pager, container, false);
+        ivBack = (ImageView) view.findViewById(R.id.iv_back);
         pager = (ViewPager) view.findViewById(R.id.pager);
         tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
         return view;
@@ -45,6 +48,14 @@ public class ShopResultPagerFragment extends Fragment {
         pager.setPageMargin(pageMargin);
 
         tabs.setViewPager(pager);
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+//                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 
     class NewsAdapter extends FragmentPagerAdapter {

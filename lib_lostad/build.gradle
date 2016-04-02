@@ -29,4 +29,5 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.0@aar'
     compile 'com.ogaclejapan.smarttablayout:utils-v4:1.6.0@aar'
+    compile files('libs/AMap_Location_v2.3.0_20160112.jar')
 }

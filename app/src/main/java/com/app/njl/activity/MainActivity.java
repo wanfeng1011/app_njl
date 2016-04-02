@@ -1,6 +1,7 @@
 
 package com.app.njl.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -130,5 +131,18 @@ public class MainActivity extends BaseFragmentActivity {
             return true;
         }*/
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode == 1) {
+            Fragment fragment = fragmentManager.findFragmentByTag("HomeFragment");
+            ((HotelMainFragment)fragment).setLiveData();
+        }else if(requestCode == 2 && resultCode == 2) {
+            Fragment fragment = fragmentManager.findFragmentByTag("HomeFragment");
+            String city = data.getStringExtra("city");
+            ((HotelMainFragment)fragment).setDestinationData(city);
+        }
     }
 }

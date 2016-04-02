@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/app/njl/calendar/CalendarUtils.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/app/njl/calendar/DatePickerController.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/app/njl/calendar/DayPickerView.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/app/njl/calendar/SimpleMonthAdapter.java" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

@@ -35,8 +35,7 @@
                 android:layout_weight="3.8"
                 android:textSize="16sp"
                 android:gravity="right"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/tv_destination" />
+                android:layout_marginLeft="10dp" />
 
 
             <LinearLayout
@@ -45,8 +44,8 @@
                 android:orientation="vertical"
                 android:layout_weight="2.8"
                 >
-                <EditText
-                    android:id="@+id/search_et"
+                <TextView
+                    android:id="@+id/tv_destination"
                     android:layout_gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -110,6 +109,7 @@
                 android:layout_toRightOf="@+id/tv_time"
                 >
                 <RelativeLayout
+                    android:id="@+id/live_relativelayout"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_gravity="center_vertical"
@@ -117,6 +117,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp">
                     <TextView
+                        android:id="@+id/live_in_tv"
                         android:layout_alignParentLeft="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -128,6 +129,7 @@
                         android:layout_marginRight="10dp" />
 
                     <TextView
+                        android:id="@+id/live_out_tv"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

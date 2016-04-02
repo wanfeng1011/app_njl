@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
@@ -8,14 +9,19 @@
 
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="45dp"
+		android:layout_height="?attr/actionBarSize"
 		android:layout_gravity="center_vertical"
-		android:background="@color/gray_light"
+		android:background="@color/common_bg"
 		android:gravity="center_vertical">
 		<ImageView
-			android:layout_width="30dp"
-			android:layout_height="30dp"
-			android:src="@mipmap/bg_login"/>
+			android:id="@+id/iv_back"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			style="@style/Widget.AppCompat.ActionButton"
+			android:paddingLeft="16dp"
+			android:paddingRight="16dp"
+			android:src="@mipmap/ic_back"
+			android:scaleType="center"/>
 		<EditText
 			android:id="@+id/et_phone"
 			android:drawablePadding="6dp"
@@ -23,13 +29,13 @@
 			android:layout_height="32dip"
 			android:background="@drawable/login_rect_white"
 			android:hint="输入店名"
+			android:paddingLeft="5dp"
 			android:singleLine="true"
-			android:textColor="@color/white"
-			android:textColorHint="@color/gray_light"
+			android:textColor="@color/gray_deep"
+			android:textColorHint="@color/gray"
 			android:layout_marginRight="10dp"
-			android:textCursorDrawable="@null"
 			android:textSize="@dimen/sp_content"
-			/>
+			tools:ignore="RtlHardcoded" />
 	</LinearLayout>
 
 	<com.app.njl.ui.tabstrip.PagerSlidingTabStrip

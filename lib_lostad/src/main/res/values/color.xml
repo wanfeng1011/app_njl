@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?> 
-<resources>  
+<resources>
+
+    <color name="colorPrimary">#F3F3F3</color>
+    <color name="colorPrimaryDark">#F3F3F3</color>
+    <color name="colorAccent">#F3F3F3</color>
+
+    <color name="divider">#E5E5E5</color>
+    <color name="shadow">#AAEBEBEB</color>
+    <color name="common_bg">#FAFAFA</color>
+    <color name="content_bg">#F3F3F3</color>
+    <color name="gray">#8c8c8c</color>
+    <color name="gray_deep">#5c5c5c</color>
+    <color name="alpha_gray">#CC646464</color>
+    <color name="theme_gray">#646464</color>
     
     <color name="background">#f7f7f7</color><!--全局灰白色背景色 -->
     <color name="bg_yellow">#EDE4D6</color><!--全局背景色 -->
@@ -37,7 +50,7 @@
     <color name="transparent">#00000000</color>
     <color name="dark">#000000</color>
     <color name="black">#333333</color>
-	<color name="gray">#666666</color>
+	<color name="gray2">#666666</color>
     <color name="gray_light_bg">#E7E7E7</color>
 	<color name="white">#FFFFFF</color><!--白色 -->
 	<color name="white1">#FFFFFF</color><!--白色 -->

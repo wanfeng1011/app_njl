@@ -17,6 +17,7 @@ import com.app.njl.ui.UIHelper;
 import com.app.njl.ui.viewpagerindicator.CirclePageIndicator;
 import com.app.njl.utils.SharedPreferences;
 
+
 /**
  * Created by tiansj on 15/7/29.
  */
