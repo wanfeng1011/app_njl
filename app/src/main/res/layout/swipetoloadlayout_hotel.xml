@@ -3,12 +3,12 @@
     android:id="@+id/swipeToLoadLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/white"
     app:swipe_style="classic">
 
     <include
         android:id="@id/swipe_refresh_header"
-        layout="@layout/layout_refresh_header" />
+        layout="@layout/layout_refresh_header_notitle_text" />
 
     <ListView
         android:id="@id/swipe_target"

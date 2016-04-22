@@ -2,11 +2,10 @@
 package com.app.njl.ui.swipebacklayout;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.app.njl.activity.BaseFragmentActivity;
-
-public class SwipeBackActivity extends BaseFragmentActivity implements SwipeBackActivityBase {
+public class SwipeBackActivity extends FragmentActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper mHelper;
 
     @Override

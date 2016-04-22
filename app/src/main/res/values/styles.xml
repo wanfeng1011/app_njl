@@ -113,4 +113,27 @@
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+	<!-- 按钮的点击样式 -->
+	<style name="list_item_top">
+		<item name="android:clickable">true</item>
+		<item name="android:focusable">true</item>
+		<item name="android:paddingTop">2dip</item>
+		<item name="android:paddingBottom">2dip</item>
+		<item name="android:paddingLeft">10dip</item>
+		<item name="android:paddingRight">10dip</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:background">@drawable/background_view_rounded</item>
+	</style>
+
+	<style name="button_textview_style">
+		<item name="android:clickable">true</item>
+		<item name="android:focusable">true</item>
+		<item name="android:paddingTop">2dip</item>
+		<item name="android:paddingBottom">2dip</item>
+		<item name="android:paddingLeft">2dip</item>
+		<item name="android:paddingRight">2dip</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:background">@drawable/background_view_rounded_radius5</item>
+	</style>
 </resources>

@@ -2,7 +2,6 @@ package com.app.njl.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.app.njl.R;
+import com.app.njl.base.BaseActivity;
 import com.app.njl.ui.UIHelper;
 import com.app.njl.ui.viewpagerindicator.CirclePageIndicator;
 import com.app.njl.utils.SharedPreferences;
@@ -21,7 +21,7 @@ import com.app.njl.utils.SharedPreferences;
 /**
  * Created by tiansj on 15/7/29.
  */
-public class SplashActivity extends FragmentActivity {
+public class SplashActivity extends BaseActivity {
 
     private Button btnHome;
     private CirclePageIndicator indicator;
@@ -35,16 +35,24 @@ public class SplashActivity extends FragmentActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initContentView() {
         setContentView(R.layout.activity_splash);
+        getApplication().getResources();
+    }
 
+    @Override
+    protected void initView(Bundle savedInstanceState) {
         boolean firstTimeUse = SharedPreferences.getInstance().getBoolean("first-time-use", true);
         if(firstTimeUse) {
             initGuideGallery();
         } else {
             initLaunchLogo();
         }
+    }
+
+    @Override
+    protected void initControl() {
+
     }
 
     private void initLaunchLogo() {
@@ -126,4 +134,8 @@ public class SplashActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

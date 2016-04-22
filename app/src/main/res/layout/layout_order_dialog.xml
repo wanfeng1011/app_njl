@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:text="请选择时间和餐次："
+                android:textColor="@color/green_light"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/order_select_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="10dp">
+            <TextView
+                android:id="@+id/order_select_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:drawableRight="@mipmap/select_up"
+                android:text="11月12日   晚餐"
+                android:textColor="@color/green_light"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!-- 详情列表-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <in.srain.cube.views.ptr.PtrClassicFrameLayout
+                xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/order_rotate_header_list_view_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                cube_ptr:ptr_duration_to_close="300"
+                cube_ptr:ptr_duration_to_close_header="2000"
+                cube_ptr:ptr_keep_header_when_refresh="true"
+                cube_ptr:ptr_pull_to_fresh="false"
+                cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+                cube_ptr:ptr_resistance="1.7">
+
+
+                <com.app.njl.ui.loadmore.LoadMoreListView
+                    android:id="@+id/order_listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/CommonListViewStyle" />
+
+            </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+        </LinearLayout>
+
+    <!-- 时间、餐次选择-->
+    <LinearLayout
+        android:id="@+id/pickerView_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/gray_deep"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="20dp">
+
+            <com.app.njl.widget.wheel.view.PickerView
+                android:id="@+id/month_pv"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/month_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="月"
+                android:textColor="#ffaa33"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.app.njl.widget.wheel.view.PickerView
+                android:id="@+id/day_pv"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/day_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="日"
+                android:textColor="#ffaa33"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <com.app.njl.widget.wheel.view.PickerView
+                android:id="@+id/order_pv"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/order_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="餐"
+                android:textColor="#ffaa33"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:padding="5dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/order_pickersure_btn"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:text="确定"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/rect_green_bg"/>
+            <Button
+                android:id="@+id/order_pickercancel_btn"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:text="取消"
+                android:background="@drawable/rect_green_bg"/>
+        </LinearLayout>
+    </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

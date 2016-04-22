@@ -24,8 +24,20 @@
         <activity android:name=".activity.HouseDetailActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ImageGalleryActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.CalendarActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".fragment.LoginActivity" android:screenOrientation="portrait"/>
         <activity android:name="com.citypicker.CityPickerActivity" android:windowSoftInputMode="stateHidden|adjustPan" android:screenOrientation="portrait"/>
+        <!-- <activity android:name=".activity.ShoppingCarActivity" android:screenOrientation="portrait" /> -->
+        <activity android:name=".subject.order.ui.ListViewActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.mine.ui.MineWalletActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.mine.ui.MineProfileActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.mine.ui.MineCommentDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.hotel.ui.ShopStayShowDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.hotel.ui.ShopPlayShowSceneryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.hotel.ui.ShopPlayShowTourGuideActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.hotel.ui.ShopPlayShowSelfServiceActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.hotel.ui.ShopSpecialtyShowActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.LoginActivity2" android:screenOrientation="portrait"/>
+        <activity android:name=".activity.RegisterActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".subject.hotel.ui.ShopOrderShopDetailActivity" android:screenOrientation="portrait"/>
 
     </application>
 

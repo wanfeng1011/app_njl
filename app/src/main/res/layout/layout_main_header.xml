@@ -3,6 +3,7 @@
     android:id="@+id/layout_header"
     android:layout_width="match_parent"
     android:layout_height="48dip"
+    android:visibility="gone"
     android:background="@color/main_header_bg">
 
     <!-- 返回按钮 -->
@@ -10,8 +11,7 @@
     <Button
         android:id="@+id/btnBack"
         style="@style/title_base_button"
-        android:background="@drawable/btn_back"
-        android:visibility="gone" />
+        android:background="@drawable/btn_back" />
 
     <TextView
         android:id="@+id/textHeadTitle"

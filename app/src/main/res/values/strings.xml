@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="app_name">njl_new</string>
+	<string name="order_pager_title">订单服务</string>
 
 	<string name="clear_cache_menu">Clear Caches</string>
 	<string name="clear_cache_complete_toast">Caches have been cleared</string>
@@ -12,6 +13,10 @@
 	<string name="notify_refreshing">努力加载中...</string>
 	<string name="notify_refresh_success">刷新成功</string>
 	<string name="notify_refresh_fail">刷新失败</string>
+
+	<!-- login -->
+	<string name="custom_login">普通登陆</string>
+	<string name="phone_login">手机验证码登陆</string>
 
 	<!-- 页面名称 -->
 	<string name="main_navigation_home">首页</string>

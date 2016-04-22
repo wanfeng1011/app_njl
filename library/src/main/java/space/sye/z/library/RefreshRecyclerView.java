@@ -1,7 +1,6 @@
 package space.sye.z.library;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -10,7 +9,6 @@ import android.view.View;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.StoreHouseHeader;
 import space.sye.z.library.listener.LoadMoreRecyclerListener;
 import space.sye.z.library.listener.OnBothRefreshListener;
 import space.sye.z.library.listener.OnLoadMoreListener;
@@ -68,18 +66,21 @@ public class RefreshRecyclerView extends PtrFrameLayout {
         mHeaderView = new RefreshHeader(mContext);
 
         // header
-        final StoreHouseHeader header = new StoreHouseHeader(getContext());
+        /*final StoreHouseHeader header = new StoreHouseHeader(getContext());
         header.setPadding(0, 15, 0, 0);
-        header.setTextColor(Color.GRAY);
+        header.setTextColor(Color.GRAY);*/
 
 /**
  * using a string, support: A-Z 0-9 - .
  * you can add more letters by {@link in.srain.cube.views.ptr.header.StoreHousePath#addChar}
  */
-        header.initWithString("loading");
+        /*header.initWithString("loading");
 
         setHeaderView(header);
-        addPtrUIHandler(header);
+        addPtrUIHandler(header);*/
+
+        View view = new View(mContext);
+        setHeaderView(view);
     }
 
     public void setAdapter(RecyclerView.Adapter adapter){

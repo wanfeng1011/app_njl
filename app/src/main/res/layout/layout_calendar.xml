@@ -6,68 +6,35 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="53.0dip"
-        android:background="#ff394147"
-        android:gravity="center_vertical" >
-
-        <LinearLayout
-            android:id="@+id/btn_prev_month"
-            android:layout_width="0.0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.2"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/left_img"
+        android:background="@color/text_color_red">
+            <ImageView
+                android:id="@+id/calendar_iv_back"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:duplicateParentState="true"
-                android:text=""
-                android:textSize="16.0dip" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0.0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.6"
-            android:gravity="center"
-            android:orientation="vertical" >
+                android:layout_height="match_parent"
+                style="@style/Widget.AppCompat.ActionButton"
+                android:layout_alignParentLeft="true"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:scaleType="center"
+                android:src="@mipmap/ic_back"/>
 
             <TextView
                 android:id="@+id/tv_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="xxxx年14月"
+                android:layout_centerInParent="true"
+                android:text="选择入住离店日期"
                 android:textColor="#ffffffff"
                 android:textSize="21.0dip" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btn_next_month"
-            android:layout_width="0.0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.2"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/right_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:duplicateParentState="true"
-                android:text=""
-                android:textSize="16.0dip" />
-        </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="22.0dip"
-        android:background="#ff8091a8" >
+        android:background="@color/text_color_red" >
 
         <TextView
             style="@style/weekName"

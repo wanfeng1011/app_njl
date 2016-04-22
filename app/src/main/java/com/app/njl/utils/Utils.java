@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import com.app.njl.common.AppApplication;
 
+import java.util.Calendar;
+
 
 /**
  * Created by tiansj on 15/7/29.
@@ -107,5 +109,20 @@ public class Utils {
 
     static String getString(Context context, int resId){
         return context.getResources().getString(resId);
+    }
+
+    public static int getYear() {
+        Calendar c = Calendar.getInstance();
+        return c.get(Calendar.YEAR);
+    }
+
+    public static int getMonth() {
+        Calendar c = Calendar.getInstance();
+        return c.get(Calendar.MONTH) + 1;
+    }
+
+    public static int getDay() {
+        Calendar c = Calendar.getInstance();
+        return c.get(Calendar.DATE);
     }
 }

@@ -3,6 +3,8 @@ package com.app.njl.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.andexert.calendarlistview.library.DatePickerController;
 import com.andexert.calendarlistview.library.DayPickerView;
@@ -17,14 +19,17 @@ import java.util.Calendar;
 /**
  * Created by jiaxx on 2016/4/1 0001.
  */
-public class CalendarActivity extends Activity implements DatePickerController{
+public class CalendarActivity extends Activity implements DatePickerController, View.OnClickListener {
     private DayPickerView dayPickerView;
+    private ImageView iv_back;
     Intent intent;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_calendar);
+        iv_back = (ImageView) findViewById(R.id.calendar_iv_back);
         dayPickerView = (DayPickerView) findViewById(R.id.pickerView);
+        iv_back.setOnClickListener(this);
         dayPickerView.setController(this);
         intent = getIntent();
     }
@@ -75,4 +80,11 @@ public class CalendarActivity extends Activity implements DatePickerController{
         return (int)between_days + 1;
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if(id == R.id.calendar_iv_back) {
+            finish();
+        }
+    }
 }

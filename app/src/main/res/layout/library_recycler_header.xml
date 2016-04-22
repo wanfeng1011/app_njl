@@ -167,8 +167,9 @@
             android:text="开始搜索"
             android:textSize="16sp"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/short_red"/>
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="@style/button_textview_style"/>
     </LinearLayout>
 
     <View

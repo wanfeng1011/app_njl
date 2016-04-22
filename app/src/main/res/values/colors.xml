@@ -63,5 +63,16 @@
 	<color name="gray_white">#F5F5F5</color>
 	<color name="gray_slate">#708090</color>
 	<color name="blue_light">#0083FF</color>
+	<color name="green_light">#92D050</color>
+
+	<!-- ITEM BACKGROUND COLOR - STATE - DEFAULT -->
+	<color name="base_start_color_default">#FFFFFF</color>
+	<color name="base_end_color_default">#FFFFFF</color>
+
+	<!-- ITEM BACKGROUND COLOR - STATE - PRESSED -->
+	<color name="base_start_color_pressed">#fffcfcfc</color>
+	<color name="base_end_color_pressed">#ffd7d7d7</color>
+
+	<color name="holo_purple2">#FF6347</color>
 
 </resources>

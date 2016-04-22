@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textBalance"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawableLeft="@mipmap/round"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="14dp"
+        android:text="江湖排名"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_size_16" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!-- 注册排名 -->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.app.njl.widget.wave.WaterWaveProgress
+                android:id="@+id/roundProgressBar1"
+                android:layout_width="45dip"
+                android:layout_height="45dip"
+                android:layout_centerHorizontal="true"
+                app:progressW="65"
+                app:maxProgress="100"
+                app:fontSize="14sp"
+                app:textColorW="#9A32CD"
+                app:showProgress="false"/>
+
+            <TextView
+                android:id="@+id/tv_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/roundProgressBar1"
+                android:layout_marginTop="5dp"
+                style="@style/list_item_top"
+                android:text="注册排名"
+                android:textSize="14sp"/>
+
+
+
+        </RelativeLayout>
+
+        <!-- 旅游次数 -->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.app.njl.widget.wave.WaterWaveProgress
+                android:id="@+id/roundProgressBar2"
+                app:style="FILL"
+                android:layout_width="45dip"
+                android:layout_height="45dip"
+                android:layout_centerHorizontal="true"
+                app:progressW="35"
+                app:maxProgress="100"
+                app:fontSize="14sp"
+                app:textColorW="#9A32CD"
+                app:showProgress="false"/>
+
+            <TextView
+                android:id="@+id/tv_register2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/roundProgressBar2"
+                android:layout_marginTop="5dp"
+                style="@style/list_item_top"
+                android:text="旅游次数"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+        <!-- 点评数量 -->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.app.njl.widget.wave.WaterWaveProgress
+                android:id="@+id/wave_view"
+                android:layout_width="45dip"
+                android:layout_height="45dip"
+                app:progressW="15"
+                app:maxProgress="100"
+                app:fontSize="14sp"
+                app:textColorW="#9A32CD"
+                app:showProgress="false"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/tv_register3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/wave_view"
+                android:layout_marginTop="5dp"
+                style="@style/list_item_top"
+                android:text="点评数量"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.app.njl.widget.wave.WaterWaveProgress
+                android:id="@+id/roundProgressBar4"
+                app:style="FILL"
+                android:layout_width="45dip"
+                android:layout_height="45dip"
+                android:layout_centerHorizontal="true"
+                app:progressW="80"
+                app:maxProgress="100"
+                app:fontSize="14sp"
+                app:textColorW="#9A32CD"
+                app:showProgress="false"/>
+
+            <TextView
+                android:id="@+id/tv_register4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/roundProgressBar4"
+                android:layout_marginTop="5dp"
+                style="@style/list_item_top"
+                android:text="推荐数量"
+                android:textSize="14sp"/>
+
+
+
+        </RelativeLayout>
+
+        <!-- 旅游次数 -->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.app.njl.widget.wave.WaterWaveProgress
+                android:id="@+id/roundProgressBar5"
+                app:style="FILL"
+                android:layout_width="45dip"
+                android:layout_height="45dip"
+                android:layout_centerHorizontal="true"
+                app:progressW="45"
+                app:maxProgress="100"
+                app:fontSize="14sp"
+                app:textColorW="#9A32CD"
+                app:showProgress="false"/>
+
+            <TextView
+                android:id="@+id/tv_register5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/roundProgressBar5"
+                android:layout_marginTop="5dp"
+                style="@style/list_item_top"
+                android:text="联盟数量"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+        <!-- 点评数量 -->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.app.njl.widget.wave.WaterWaveProgress
+                android:id="@+id/roundProgressBar6"
+                app:style="FILL"
+                android:layout_width="45dip"
+                android:layout_height="45dip"
+                android:layout_centerHorizontal="true"
+                app:progressW="30"
+                app:maxProgress="100"
+                app:fontSize="14sp"
+                app:textColorW="#9A32CD"
+                app:showProgress="false"/>
+
+            <TextView
+                android:id="@+id/tv_register6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/roundProgressBar6"
+                android:layout_marginTop="5dp"
+                style="@style/list_item_top"
+                android:text="旅游次数"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <TextView
+        android:id="@+id/mine_main_my_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/round"
+        android:drawableRight="@mipmap/arrow_right"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="14dp"
+        android:text="我的钱包"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_size_16" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:paddingBottom="10dp"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="1000" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="账户积分"
+                android:textColor="@color/textcolor_green" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="1200" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="账户余额"
+                android:textColor="@color/textcolor_green" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="2张" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="代金券"
+                android:textColor="@color/textcolor_green" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="2个" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView4"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="红包"
+                android:textColor="@color/textcolor_green" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="1张" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView5"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="银行卡"
+                android:textColor="@color/textcolor_green" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <TextView
+        android:id="@+id/mine_main_my_profile"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/round"
+        android:drawableRight="@mipmap/arrow_right"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="14dp"
+        android:text="我的资料"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_size_16" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <TextView
+        android:id="@+id/mine_main_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/round"
+        android:drawableRight="@mipmap/arrow_right"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="14dp"
+        android:text="意见反馈"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_size_16" />
+
+</LinearLayout>

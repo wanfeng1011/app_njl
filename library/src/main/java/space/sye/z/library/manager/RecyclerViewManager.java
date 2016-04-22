@@ -18,16 +18,10 @@ import space.sye.z.library.adapter.RefreshRecyclerViewAdapter;
  */
 public class RecyclerViewManager {
 
-    private static final RecyclerViewManager mInstance = new RecyclerViewManager();
-
     private static RefreshRecyclerAdapterManager refreshRecyclerAdapterManager;
 
-    private RecyclerViewManager(){
+    public RecyclerViewManager(){
 
-    }
-
-    public static RecyclerViewManager getInstance(){
-        return mInstance;
     }
 
     public static RefreshRecyclerAdapterManager with(

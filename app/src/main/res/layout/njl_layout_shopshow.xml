@@ -19,59 +19,103 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="6"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="住宿："
+                    android:textSize="16sp"
+                    android:textColor="@color/green_light"
+                    android:layout_gravity="left" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="120好评/300评论"
+                    android:textSize="16sp"
+                    android:textColor="@color/green_light"
+                    android:layout_gravity="left"
+                    android:paddingLeft="10dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="120好评"
-                android:textSize="16sp"
-                android:layout_gravity="left"
-                android:paddingLeft="50dp" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="120评论"
-                android:textSize="16sp"
-                android:layout_gravity="left"
-                android:paddingLeft="50dp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="点评："
+                    android:textSize="16sp"
+                    android:textColor="@color/green_light"
+                    android:layout_gravity="left" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="120推荐"
+                    android:textSize="16sp"
+                    android:textColor="@color/green_light"
+                    android:layout_gravity="left"
+                    android:paddingLeft="10dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="120推荐"
-                android:textSize="16sp"
-                android:layout_gravity="left"
-                android:paddingLeft="50dp" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#ccc1cc"/>
+
+            <LinearLayout
+                android:id="@+id/stay_live_time_ll"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="住店：XXX"
-                android:textSize="16sp"
-                android:layout_gravity="left"
-                android:gravity="left"
-                android:paddingLeft="5dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="离店：XXX"
-                android:textSize="16sp"
-                android:layout_gravity="left"
-                android:gravity="left"
-                android:paddingLeft="5dp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/stay_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="住店:"
+                    android:textSize="14sp"
+                    android:textColor="@color/green_light"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="left" />
+
+                <TextView
+                    android:id="@+id/live_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="离店:"
+                    android:textSize="14sp"
+                    android:textColor="@color/green_light"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="left" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/select_up"
+                    android:scaleType="center"/>
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="4"
@@ -125,22 +169,29 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="2dp"
         android:orientation="horizontal">
-        <Button
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
-            android:text="加入购物车"/>
-        <Button
+            android:text="加入购物车"
+            android:gravity="center"
+            style="@style/button_textview_style"/>
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
-            android:text="购物车"/>
-        <Button
+            android:text="购物车"
+            android:gravity="center"
+            style="@style/button_textview_style"/>
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
-            android:text="联系店家"/>
+            android:text="联系店家"
+            android:gravity="center"
+            style="@style/button_textview_style"/>
     </LinearLayout>
 </LinearLayout>

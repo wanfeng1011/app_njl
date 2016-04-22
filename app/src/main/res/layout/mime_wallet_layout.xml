@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title_rl"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:src="@mipmap/ic_back"
+            android:scaleType="center"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我的钱包"
+            android:textSize="@dimen/text_size_14" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/textBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_selector"
+            android:drawableLeft="@mipmap/ic_setting_balance"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:drawablePadding="10dp"
+            android:text="账户积分"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="1000"
+            android:drawableRight="@mipmap/arrow_right"
+            android:drawablePadding="10dp"
+            android:paddingRight="14dp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/textRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_selector"
+            android:drawableLeft="@mipmap/ic_setting_record"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:drawablePadding="10dp"
+            android:text="账户余额"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="1000"
+            android:drawableRight="@mipmap/arrow_right"
+            android:drawablePadding="10dp"
+            android:paddingRight="14dp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/voucher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_selector"
+            android:drawableLeft="@mipmap/ic_setting_attention"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:drawablePadding="10dp"
+            android:text="代金券"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="1000"
+            android:drawableRight="@mipmap/arrow_right"
+            android:drawablePadding="10dp"
+            android:paddingRight="14dp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/red_packet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_selector"
+            android:drawableLeft="@mipmap/ic_setting_helper"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:drawablePadding="10dp"
+            android:text="红包"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="2个"
+            android:drawableRight="@mipmap/arrow_right"
+            android:drawablePadding="10dp"
+            android:paddingRight="14dp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/bank_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_selector"
+            android:drawableLeft="@mipmap/ic_calculator"
+            android:layout_centerVertical="true"
+            android:paddingLeft="20dp"
+            android:drawablePadding="10dp"
+            android:text="银行卡"
+            android:textColor="@color/text_color_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="2张"
+            android:drawableRight="@mipmap/arrow_right"
+            android:drawablePadding="10dp"
+            android:paddingRight="14dp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="15dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <TextView
+        android:id="@+id/textSetting"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/list_item_selector"
+        android:drawableLeft="@mipmap/ic_setting_setting"
+        android:drawablePadding="10dp"
+        android:drawableRight="@mipmap/arrow_right"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="14dp"
+        android:text="实名认证"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_size_16" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:background="@mipmap/list_view_divider" />
+
+    <TextView
+        android:id="@+id/payment_code"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/list_item_selector"
+        android:drawableLeft="@mipmap/ic_setting_setting"
+        android:drawablePadding="10dp"
+        android:drawableRight="@mipmap/arrow_right"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="14dp"
+        android:text="支付密码"
+        android:textColor="@color/text_color_black"
+        android:textSize="@dimen/text_size_16" />
+
+</LinearLayout>

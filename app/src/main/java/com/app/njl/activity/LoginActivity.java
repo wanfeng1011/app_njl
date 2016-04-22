@@ -1,7 +1,7 @@
 package com.app.njl.activity;
 
 import android.os.Bundle;
-import android.view.View;
+
 import com.app.njl.R;
 import com.app.njl.ui.swipebacklayout.SwipeBackActivity;
 
@@ -14,14 +14,14 @@ public class LoginActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.njl_layout_login);
 
-        findViewById(R.id.btnClose).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.btnClose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        });
+        });*/
     }
 
 }

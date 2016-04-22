@@ -43,7 +43,8 @@ public class AppApplication extends Application {
         //日志初始化
         KLog.init(BuildConfig.LOG_DEBUG);
         LeakCanary.install(this);
-        registerUncaughtExceptionHandler();
+        //注册App异常崩溃处理器
+//        registerUncaughtExceptionHandler();
         initImageLoader(this);
     }
 
