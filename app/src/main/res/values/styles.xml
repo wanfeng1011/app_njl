@@ -127,13 +127,31 @@
 	</style>
 
 	<style name="button_textview_style">
-		<item name="android:clickable">true</item>
-		<item name="android:focusable">true</item>
+		<!-- <item name="android:clickable">true</item> -->
+		<!-- <item name="android:focusable">true</item> -->
 		<item name="android:paddingTop">2dip</item>
 		<item name="android:paddingBottom">2dip</item>
 		<item name="android:paddingLeft">2dip</item>
 		<item name="android:paddingRight">2dip</item>
 		<item name="android:gravity">center_vertical</item>
 		<item name="android:background">@drawable/background_view_rounded_radius5</item>
+	</style>
+
+	<!-- dialog -->
+	<style name="dialog_blue_button" parent="android:Widget.Button">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">25dp</item>
+		<item name="android:background">@drawable/blue_button_background</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:paddingLeft">21dp</item>
+		<item name="android:paddingRight">21dp</item>
+		<item name="android:textColor">@color/white</item>
+	</style>
+
+	<style name="Dialog" parent="android:style/Theme.Dialog">
+		<item name="android:background">#00000000</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowIsFloating">true</item>
 	</style>
 </resources>

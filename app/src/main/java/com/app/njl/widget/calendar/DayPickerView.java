@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ***********************************************************************************/
-package com.andexert.calendarlistview.library;
+package com.app.njl.widget.calendar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -29,11 +29,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.app.njl.R;
+
 public class DayPickerView extends RecyclerView
 {
     protected Context mContext;
-	protected SimpleMonthAdapter mAdapter;
-	private DatePickerController mController;
+	protected com.app.njl.widget.calendar.SimpleMonthAdapter mAdapter;
+	private com.app.njl.widget.calendar.DatePickerController mController;
     protected int mCurrentScrollState = 0;
 	protected long mPreviousScrollPosition;
 	protected int mPreviousScrollState = 0;
@@ -61,7 +63,7 @@ public class DayPickerView extends RecyclerView
         }
     }
 
-    public void setController(DatePickerController mController)
+    public void setController(com.app.njl.widget.calendar.DatePickerController mController)
     {
         this.mController = mController;
         setUpAdapter();
@@ -80,7 +82,7 @@ public class DayPickerView extends RecyclerView
             public void onScrolled(RecyclerView recyclerView, int dx, int dy)
             {
                 super.onScrolled(recyclerView, dx, dy);
-                final SimpleMonthView child = (SimpleMonthView) recyclerView.getChildAt(0);
+                final com.app.njl.widget.calendar.SimpleMonthView child = (com.app.njl.widget.calendar.SimpleMonthView) recyclerView.getChildAt(0);
                 if (child == null) {
                     return;
                 }
@@ -94,7 +96,7 @@ public class DayPickerView extends RecyclerView
 
 	protected void setUpAdapter() {
 		if (mAdapter == null) {
-			mAdapter = new SimpleMonthAdapter(getContext(), mController, typedArray);
+			mAdapter = new com.app.njl.widget.calendar.SimpleMonthAdapter(getContext(), mController, typedArray);
         }
 		mAdapter.notifyDataSetChanged();
 	}
@@ -105,12 +107,12 @@ public class DayPickerView extends RecyclerView
 		setFadingEdgeLength(0);
 	}
 
-    public SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> getSelectedDays()
+    public com.app.njl.widget.calendar.SimpleMonthAdapter.SelectedDays<com.app.njl.widget.calendar.SimpleMonthAdapter.CalendarDay> getSelectedDays()
     {
         return mAdapter.getSelectedDays();
     }
 
-    protected DatePickerController getController()
+    protected com.app.njl.widget.calendar.DatePickerController getController()
     {
         return mController;
     }

@@ -51,5 +51,6 @@
 	<string name="set_complete">设置成功</string>
 	<string name="forget_gesture">忘记手势密码</string>
 
+	<string name="sans_serif" translatable="false">sans-serif</string>
 
 </resources>

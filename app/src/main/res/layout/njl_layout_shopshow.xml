@@ -173,11 +173,13 @@
         android:layout_marginBottom="2dp"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/order_completed"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_weight="1"
-            android:text="加入购物车"
+            android:text="点餐完成"
             android:gravity="center"
+            android:visibility="gone"
             style="@style/button_textview_style"/>
         <TextView
             android:layout_width="match_parent"

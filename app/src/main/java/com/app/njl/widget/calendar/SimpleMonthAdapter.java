@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ***********************************************************************************/
-package com.andexert.calendarlistview.library;
+package com.app.njl.widget.calendar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -32,6 +32,8 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 
+import com.app.njl.R;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,13 +43,13 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     protected static final int MONTHS_IN_YEAR = 12;
     private final TypedArray typedArray;
 	private final Context mContext;
-	private final DatePickerController mController;
+	private final com.app.njl.widget.calendar.DatePickerController mController;
     private final Calendar calendar;
     private final SelectedDays<CalendarDay> selectedDays;
     private final Integer firstMonth;
     private final Integer lastMonth;
 
-	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
+	public SimpleMonthAdapter(Context context, com.app.njl.widget.calendar.DatePickerController datePickerController, TypedArray typedArray) {
         this.typedArray = typedArray;
         calendar = Calendar.getInstance();
         firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, calendar.get(Calendar.MONTH));

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  ***********************************************************************************/
-package com.andexert.calendarlistview.library;
+package com.app.njl.widget.calendar;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -37,8 +37,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
-import com.andexert.calendarlistview.library.util.LunarCalendar;
+import com.app.njl.R;
 
 import java.security.InvalidParameterException;
 import java.text.DateFormatSymbols;
@@ -110,7 +109,7 @@ class SimpleMonthView extends View
     protected int mWidth;
     protected int mYear;
     final Time today;
-    private LunarCalendar lunarCalendar;
+    private com.app.njl.widget.calendar.util.LunarCalendar lunarCalendar;
 
 	private final Calendar mCalendar;
 	private final Calendar mDayLabelCalendar;
@@ -155,7 +154,7 @@ class SimpleMonthView extends View
 
         isPrevDayEnabled = typedArray.getBoolean(R.styleable.DayPickerView_enablePreviousDay, true);
 
-        lunarCalendar = new LunarCalendar();
+        lunarCalendar = new com.app.njl.widget.calendar.util.LunarCalendar();
         initView();
 
     }
@@ -332,7 +331,7 @@ class SimpleMonthView extends View
 		int yDay = (int) (y - MONTH_HEADER_SIZE) / mRowHeight;
 		int day = 1 + ((int) ((x - padding) * mNumDays / (mWidth - padding - mPadding)) - findDayOffset()) + yDay * mNumDays;
 
-        if (mMonth > 11 || mMonth < 0 || CalendarUtils.getDaysInMonth(mMonth, mYear) < day || day < 1)
+        if (mMonth > 11 || mMonth < 0 || com.app.njl.widget.calendar.CalendarUtils.getDaysInMonth(mMonth, mYear) < day || day < 1)
             return null;
 
 		return new SimpleMonthAdapter.CalendarDay(mYear, mMonth, day);

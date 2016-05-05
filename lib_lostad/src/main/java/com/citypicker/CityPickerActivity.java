@@ -1,8 +1,8 @@
 package com.citypicker;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * author zaaach on 2016/1/26.
  */
-public class CityPickerActivity extends AppCompatActivity implements View.OnClickListener {
+public class CityPickerActivity extends Activity implements View.OnClickListener {
     public static final int REQUEST_CODE_PICK_CITY = 2333;
     public static final String KEY_PICKED_CITY = "picked_city";
 

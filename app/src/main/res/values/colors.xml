@@ -38,6 +38,9 @@
 	<!--竖分割线-->
 	<color name="vertical_line_color">#B5B5B5</color>
 
+	<!--横分割线-->
+	<color name="horizontal_line_color">#ffa8abad</color>
+
 	<!-- 透明半透明色值 -->
 	<color name="transparent">#00000000</color>
 	<color name="transparent_half">#66000000</color>
@@ -74,5 +77,16 @@
 	<color name="base_end_color_pressed">#ffd7d7d7</color>
 
 	<color name="holo_purple2">#FF6347</color>
+
+	<!-- 日历部分 -->
+	<color name="normal_day">#ff999999</color>
+	<color name="selected_day_background">#E75F49</color>
+	<color name="selected_day_text">#fff2f2f2</color>
+
+	<!-- dialog -->
+	<color name="gray_btn_bg_color">#D0D0D0</color>
+	<color name="gray_btn_bg_pressed_color">#B6B6B6</color>
+	<color name="blue_btn_bg_color">#AEDEF4</color>
+	<color name="blue_btn_bg_pressed_color">#96BFD2</color>
 
 </resources>

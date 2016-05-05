@@ -14,6 +14,7 @@ import com.app.njl.R;
 import com.app.njl.activity.CalendarActivity;
 import com.app.njl.activity.MainActivity;
 import com.app.njl.base.BaseFragment;
+import com.app.njl.dialog.CustomDialog2;
 import com.app.njl.subject.hotel.adapter.CommonPagerAdapter;
 import com.app.njl.ui.tabstrip.PagerSlidingTabStrip;
 import com.app.njl.utils.SharedPreferences;
@@ -161,6 +162,7 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
             recommend_first_tv.setBackgroundResource(R.drawable.background_view_rounded_radius5);
             good_reputation_first_tv.setBackgroundResource(R.drawable.background_view_rounded_radius5);
             low_price_first_tv.setBackgroundResource(R.drawable.background_view_rounded_radius5);
+            createDialog();
         }
     }
 
@@ -175,5 +177,10 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
                 getActivity().startActivityForResult(intent_live, 3);
                 break;
         }
+    }
+
+    private void createDialog() {
+        CustomDialog2.Builder builder = new CustomDialog2.Builder(getActivity());
+        builder.create().show();
     }
 }

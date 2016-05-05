@@ -61,6 +61,6 @@ dependencies {
     //compile 'com.zhaisoft.lib.updater:android-version-updater:0.0.3' //版本更新,要求sdk最低版本16
     compile project(':library')
     compile project(':lib_lostad')
-    compile project(':calendar')
+    //compile project(':calendar')
     compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
 }

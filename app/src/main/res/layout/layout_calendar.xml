@@ -65,7 +65,7 @@
             android:text="周六" />
     </LinearLayout>
 
-    <com.andexert.calendarlistview.library.DayPickerView
+    <com.app.njl.widget.calendar.DayPickerView
         android:id="@+id/pickerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,6 +1,8 @@
 package com.app.njl.subject.hotel.ui.fragment;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
@@ -11,9 +13,10 @@ import android.widget.TextView;
 import com.app.njl.R;
 import com.app.njl.activity.CalendarActivity;
 import com.app.njl.base.BaseFragment;
-import com.app.njl.subject.hotel.adapter.CommonPagerAdapter;
+import com.app.njl.subject.HomeFragment;
 import com.app.njl.ui.tabstrip.PagerSlidingTabStrip;
 import com.app.njl.utils.SharedPreferences;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,8 @@ public class ShopDetailPagerFragment extends BaseFragment implements View.OnClic
     TextView stay_time_tv; //住店
     @Bind(R.id.live_time_tv)
     TextView live_time_tv; //离店
+    @Bind(R.id.order_completed)
+    TextView order_completed;
 
     @Override
     public int getLayoutRes() {
@@ -48,7 +53,7 @@ public class ShopDetailPagerFragment extends BaseFragment implements View.OnClic
         fragments.add(new ShopDetailOrderFragment());
         fragments.add(new ShopDetailPlayFragment());
         fragments.add(new ShopDetailStayFragment());
-        FragmentPagerAdapter adapter = new CommonPagerAdapter(getChildFragmentManager(), fragments, titles);
+        FragmentPagerAdapter adapter = new ShopDetailPagerAdapter(getChildFragmentManager(), fragments, titles);
         pager.setAdapter(adapter);
 
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
@@ -107,6 +112,40 @@ public class ShopDetailPagerFragment extends BaseFragment implements View.OnClic
                 Intent intent_live = new Intent(getContext(), CalendarActivity.class);
                 getActivity().startActivityForResult(intent_live, 4);
                 break;
+        }
+    }
+
+    public class ShopDetailPagerAdapter extends FragmentPagerAdapter {
+        private String[] mTitles;
+        private List<BaseFragment> mFragments;
+        public ShopDetailPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+        public ShopDetailPagerAdapter(FragmentManager fm, List<BaseFragment> fragments, String[] titles) {
+            this(fm);
+            mFragments = fragments;
+            mTitles = titles;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            KLog.i("getItem----------" + position);
+            if (mFragments != null && mFragments.size() != 0) {
+                //if (position )
+                return mFragments.get(position);
+            } else {
+                return new HomeFragment();
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitles[position % mTitles.length];
+        }
+
+        @Override
+        public int getCount() {
+            return mTitles.length;
         }
     }
 }

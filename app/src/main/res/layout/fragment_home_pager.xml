@@ -139,8 +139,9 @@
 			android:layout_weight="1"
 			android:gravity="center"
 			android:layout_margin="5dp"
+			android:drawableRight="@mipmap/select"
 			android:background="@drawable/background_view_rounded_radius5"
-			android:text="距离优先"/>
+			android:text="位置筛选"/>
 	</LinearLayout>
 
 	<android.support.v4.view.ViewPager

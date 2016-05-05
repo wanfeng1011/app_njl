@@ -1,4 +1,4 @@
-package com.andexert.calendarlistview.library.util;
+package com.app.njl.widget.calendar.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

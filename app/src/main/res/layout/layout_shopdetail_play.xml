@@ -99,26 +99,15 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/delete"/>
-
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:padding="5dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:background="@drawable/login_rect_white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/add"/>
+                android:layout_height="35dp"
+                android:text="购买"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                style="@style/button_textview_style"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -200,26 +189,15 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/delete"/>
-
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:padding="5dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:background="@drawable/login_rect_white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/add"/>
+                android:layout_height="35dp"
+                android:text="购买"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                style="@style/button_textview_style"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -304,26 +282,15 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/delete"/>
-
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:padding="5dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:background="@drawable/login_rect_white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="center"
-                android:src="@mipmap/add"/>
+                android:layout_height="35dp"
+                android:text="购买"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                style="@style/button_textview_style"/>
         </LinearLayout>
     </LinearLayout>
     </LinearLayout>
