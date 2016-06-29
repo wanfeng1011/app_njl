@@ -111,6 +111,7 @@ public class HouseDetailActivity extends SwipeBackActivity {
                     intent.putStringArrayListExtra("images", (ArrayList<String>) imageList);
                     intent.putExtra("position", pos);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 }
             });
 

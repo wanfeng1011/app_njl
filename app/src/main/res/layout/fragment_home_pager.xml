@@ -11,7 +11,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="?attr/actionBarSize"
 		android:layout_gravity="center_vertical"
-		android:background="@color/common_bg"
+		android:background="@color/gray_white"
 		android:gravity="center_vertical">
 		<ImageView
 			android:id="@+id/iv_back"
@@ -30,7 +30,6 @@
 			android:layout_marginTop="10dp"
 			android:layout_marginBottom="10dp"
 			android:layout_marginRight="5dp"
-			android:background="@drawable/login_rect_white"
 			android:orientation="horizontal">
 			<LinearLayout
 				android:id="@+id/stay_time_select_ll"
@@ -48,7 +47,6 @@
 						android:layout_height="wrap_content"
 						android:gravity="center_vertical"
 						android:textSize="12sp"
-						android:textColor="@color/green_light"
 						android:text="住店:"/>
 					<TextView
 						android:id="@+id/live_time_tv"
@@ -56,7 +54,6 @@
 						android:layout_height="wrap_content"
 						android:gravity="center_vertical"
 						android:textSize="12sp"
-						android:textColor="@color/green_light"
 						android:text="离店:"/>
 				</LinearLayout>
 
@@ -72,10 +69,12 @@
 			<EditText
 				android:id="@+id/et_phone"
 				android:drawablePadding="6dp"
-				android:layout_width="fill_parent"
+				android:layout_width="0dp"
 				android:layout_height="32dip"
-				android:background="@null"
+				android:layout_weight="1"
+				android:background="@drawable/login_rect_white"
 				android:hint="输入店名"
+				android:gravity="center"
 				android:paddingLeft="5dp"
 				android:singleLine="true"
 				android:textColor="@color/gray_deep"
@@ -83,6 +82,16 @@
 				android:layout_marginRight="10dp"
 				android:textSize="@dimen/sp_content"
 				tools:ignore="RtlHardcoded" />
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:text="搜索"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:paddingLeft="10dp"
+				android:paddingRight="10dp"
+				android:textColor="@color/white"
+				android:background="@drawable/background_view_rounded_radius2"/>
 		</LinearLayout>
 	</LinearLayout>
 
@@ -99,12 +108,19 @@
 			app:pstsTabPaddingLeftRight="12dp"
 			app:pstsIndicatorHeight="2dp"
 			app:pstsShouldExpand="@bool/default_circle_indicator_centered"
-			app:pstsDividerColor="@android:color/transparent"/>
+			app:pstsDividerColor="@android:color/transparent"
+		android:fillViewport="false" />
+
+	<android.support.v4.view.ViewPager
+		android:id="@+id/pager"
+		android:layout_width="fill_parent"
+		android:layout_height="match_parent"/>
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal">
+		android:orientation="horizontal"
+		android:visibility="gone">
 		<TextView
 			android:id="@+id/recommend_first_tv"
 			android:layout_width="match_parent"
@@ -143,11 +159,5 @@
 			android:background="@drawable/background_view_rounded_radius5"
 			android:text="位置筛选"/>
 	</LinearLayout>
-
-	<android.support.v4.view.ViewPager
-			android:id="@+id/pager"
-			android:layout_width="fill_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1"/>
 
 </LinearLayout>

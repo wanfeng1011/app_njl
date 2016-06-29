@@ -1,12 +1,18 @@
 package com.app.njl.base;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -14,13 +20,15 @@ import com.app.njl.R;
 import com.app.njl.common.AppManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
 
 /**
  * 基类Activity，所有activity都需要继承这个基类。
  * Created by jiaxx on 2016/4/7 0007.
  */
-public abstract class BaseActivity extends FragmentActivity{
+public abstract class BaseActivity extends FragmentActivity implements View.OnClickListener{
     FragmentManager fragmentManager;
 
     /**
@@ -191,4 +199,38 @@ public abstract class BaseActivity extends FragmentActivity{
     }
 
     //--------------------------Fragment相关end--------------------------//
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 判断某个界面是否在前台
+     *
+     * @param context
+     * @param className
+     *            某个界面名称
+     */
+    public boolean isForeground(Context context, String className) {
+        if (context == null || TextUtils.isEmpty(className)) {
+            return false;
+        }
+
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(1);
+        if (list != null && list.size() > 0) {
+            ComponentName cpn = list.get(0).topActivity;
+            if (className.equals(cpn.getClassName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

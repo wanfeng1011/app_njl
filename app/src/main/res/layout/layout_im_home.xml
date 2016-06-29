@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="联系伙伴"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@color/font_black_2"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_rect_white"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="一、店家联盟"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/scenery_ticket_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:scaleType="center"
+                android:src="@mipmap/default_image"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@drawable/login_rect_white">
+                <TextView
+                    android:id="@+id/star"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="店家A"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_16" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="你好！有什么能帮您的吗？"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_13" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="13:55"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_13" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 导游服务-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_rect_white"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="二、店家列表"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/tour_guide_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:scaleType="center"
+                android:src="@mipmap/default_image"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@drawable/login_rect_white">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="店家B"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_16" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="你最近有时间来玩吗？"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_13" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="15:35"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_13" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 农家自助游-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_rect_white"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="三、玩家列表"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/self_service_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/img_detail"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:scaleType="center"
+                android:src="@mipmap/default_image"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.5"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:background="@drawable/login_rect_white">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="玩家A"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_16" />
+
+                <TextView
+                    android:id="@+id/state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="给你推荐个农家乐，服务很好。"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_13" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="9:23"
+                    android:textColor="@color/font_black_2"
+                    android:textSize="@dimen/text_size_13" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+

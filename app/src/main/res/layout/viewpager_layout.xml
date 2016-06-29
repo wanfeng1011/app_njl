@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/layout_ent_gallery"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <com.app.njl.ui.loopviewpager.AutoLoopViewPager
+            android:id="@+id/pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <com.app.njl.ui.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp" />
+    </RelativeLayout>
+    <!-- 设置Gallery每一项的间距:android:spacing="10dip" -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <HorizontalScrollView
+            android:id="@+id/hor_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:id="@+id/mainLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:orientation="horizontal" >
+            </LinearLayout>
+        </HorizontalScrollView>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="55dp"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/gray_light"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:background="@color/green_light"/>
+    </RelativeLayout>
+
+</LinearLayout>

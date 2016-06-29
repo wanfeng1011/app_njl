@@ -73,4 +73,9 @@ public class MineCommentDetailActivity extends BaseActivity {
     protected void initControl() {
 
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }

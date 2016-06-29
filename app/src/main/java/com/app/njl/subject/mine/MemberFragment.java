@@ -132,22 +132,27 @@ public class MemberFragment extends Fragment implements View.OnClickListener {
             case R.id.mine_main_my_wallet:
                 Intent intent_wallet = new Intent(getContext(), MineWalletActivity.class);
                 getContext().startActivity(intent_wallet);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
             case R.id.mine_main_my_profile:
                 Intent intent_profile = new Intent(getContext(), MineProfileActivity.class);
                 getContext().startActivity(intent_profile);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
             case R.id.mine_main_feedback:
                 Intent intent_feedback = new Intent(getContext(), MineCommentDetailActivity.class);
                 getContext().startActivity(intent_feedback);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
             case R.id.tv_login:
                 Intent intent_login = new Intent(getContext(), LoginActivity2.class);
                 getContext().startActivity(intent_login);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
             case R.id.tv_register:
                 Intent intent_register = new Intent(getContext(), RegisterActivity.class);
                 getContext().startActivity(intent_register);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
         }
     }

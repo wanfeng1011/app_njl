@@ -1,6 +1,7 @@
 package com.app.njl.subject.hotel.ui;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.app.njl.R;
 import com.app.njl.base.BaseActivity;
@@ -22,6 +23,11 @@ public class ShopSpecialtyShowActivity extends BaseActivity {
 
     @Override
     protected void initControl() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }

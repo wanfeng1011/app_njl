@@ -1,10 +1,13 @@
 package com.app.njl.subject.hotel.ui.fragment;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,7 +43,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * Created by tiansj on 15/9/4.
  */
-public class ShopDetailOrderFragment extends BaseFragment implements CommonView<Fruit>, ShopDetailOrderView<PickerListEntity> {
+public class ShopDetailOrderFragment extends BaseFragment implements CommonView<Fruit>, ShopDetailOrderView<PickerListEntity>, View.OnClickListener {
 
     private MainActivity context;
 
@@ -48,16 +51,10 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
     PtrClassicFrameLayout mPtrFrame;
     @Bind(R.id.order_listView)
     LoadMoreListView listView;
-    @Bind(R.id.order_select_ll)
-    LinearLayout order_select_ll;
-    @Bind(R.id.pickerView_ll)
-    LinearLayout pickerViewLl;
     @Bind(R.id.order_pickersure_btn)
     Button pickerSureBtn;
     @Bind(R.id.order_pickercancel_btn)
     Button pickerCancelBtn;
-    @Bind(R.id.order_select_tv)
-    TextView order_select_tv;
     QuickAdapter<Fruit> adapter;
 
     @Bind(R.id.month_pv)
@@ -66,6 +63,20 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
     PickerView second_pv;
     @Bind(R.id.order_pv)
     PickerView order_pv;
+
+    @Bind(R.id.order_select_ll)
+    LinearLayout order_select_ll;
+    @Bind(R.id.pickerView_ll)
+    LinearLayout pickerViewLl;
+    @Bind(R.id.order_select_tv)
+    TextView order_select_tv;
+    @Bind(R.id.order_select_arrow)
+    ImageView order_select_arrow;
+
+    @Bind(R.id.view_mask_bg)
+    View view_mask_bg;
+    int panelHeight;
+    boolean isShow;
 
     boolean isShowPicker;
 
@@ -87,13 +98,13 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
 
     @Override
     public void initView() {
-        adapter = new QuickAdapter<Fruit>(context, R.layout.layout_shopdetail_item) {
+        adapter = new QuickAdapter<Fruit>(context, R.layout.layout_shopdetailorder_item) {
             @Override
             protected void convert(BaseAdapterHelper helper, Fruit shop) {
                 helper.setText(R.id.name, shop.getName())
                         .setText(R.id.content, shop.getContent())
-                        .setText(R.id.price, shop.getPrice())
-                        .setImageUrl(R.id.img_detail, shop.getUrl()); // 自动异步加载图片
+                        .setText(R.id.price, "菜" + shop.getPrice());
+                        //.setImageUrl(R.id.img_detail, shop.getUrl()); // 自动异步加载图片
             }
         };
         listView.setDrawingCacheEnabled(true);
@@ -150,14 +161,14 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
             @Override
             public void onClick(View v) {
                 order_select_tv.setText(currentMonth + "月" + currentDay + "日" + "    " + currentOrder);
-                pickerViewLl.setVisibility(View.GONE);
+                hide();
             }
         });
 
         pickerCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickerViewLl.setVisibility(View.GONE);
+                hide();
             }
         });
 
@@ -192,6 +203,7 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
 //                UIHelper.showShopDetailActivity(context);
                 Intent intent = new Intent(getContext(), ShopOrderShopDetailActivity.class);
                 getContext().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
             }
         });
 
@@ -210,6 +222,9 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
                                  int visibleItemCount, int totalItemCount) {
             }
         });
+
+        order_select_ll.setOnClickListener(this);
+        view_mask_bg.setOnClickListener(this);
     }
 
     @Override
@@ -299,5 +314,52 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
         second_pv.setData(dayList);
         second_pv.setSelected(0);
         order_pv.setSelected(0);
+    }
+
+    private void show() {
+        isShow = true;
+        setSelectState();
+        view_mask_bg.setVisibility(View.VISIBLE);
+        pickerViewLl.setVisibility(View.VISIBLE);
+        pickerViewLl.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                pickerViewLl.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                panelHeight = pickerViewLl.getHeight();
+                ObjectAnimator.ofFloat(pickerViewLl, "translationY", -panelHeight, 0).setDuration(200).start();
+            }
+        });
+    }
+
+    private void hide() {
+        isShow = false;
+        view_mask_bg.setVisibility(View.GONE);
+        ObjectAnimator.ofFloat(pickerViewLl, "translationY", 0, -panelHeight).setDuration(200).start();
+        setSelectState();
+    }
+
+    // 设置低价优先数据
+    private void setSelectState() {
+        if(isShow) {
+            order_select_tv.setTextColor(getContext().getResources().getColor(R.color.orange));
+            order_select_arrow.setImageResource(R.mipmap.home_up_arrow);
+        }else {
+            order_select_tv.setTextColor(getContext().getResources().getColor(R.color.gray_light));
+            order_select_arrow.setImageResource(R.mipmap.home_down_arrow);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.order_select_ll:
+                if(isShow) return;
+                show();
+                break;
+            case R.id.view_mask_bg:
+                if(!isShow) return;
+                hide();
+                break;
+        }
     }
 }

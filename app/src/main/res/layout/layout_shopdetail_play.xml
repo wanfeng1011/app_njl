@@ -62,7 +62,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="景点1（成人票）"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -73,7 +73,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="门票介绍"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="游120起"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
@@ -96,8 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:padding="2dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="导游名称"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -163,7 +163,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="导游介绍"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
@@ -177,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="游120起"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
@@ -186,8 +186,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:padding="2dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
@@ -243,7 +243,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="项目名称"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
@@ -255,7 +255,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="项目介绍"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
@@ -270,7 +270,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="游120起"
-                android:textColor="#101010"
+                android:textColor="@color/font_black_2"
                 android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
@@ -279,8 +279,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:padding="2dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"

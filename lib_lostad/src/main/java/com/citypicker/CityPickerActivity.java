@@ -138,6 +138,7 @@ public class CityPickerActivity extends Activity implements View.OnClickListener
             @Override
             public void afterTextChanged(Editable s) {
                 String keyword = s.toString();
+                Log.i("keyword", "keyword:" + keyword);
                 if (TextUtils.isEmpty(keyword)) {
                     clearBtn.setVisibility(View.GONE);
                     emptyView.setVisibility(View.GONE);

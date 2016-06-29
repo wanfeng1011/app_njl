@@ -42,7 +42,7 @@ public class ShopDetailStayFragment extends BaseFragment implements CommonView<F
     @Override
     public int getLayoutRes() {
         context = (MainActivity) getActivity();
-        return R.layout.fragment_demo_ptr;
+        return R.layout.shop_detail_stay_fragment;
     }
 
     @Override
@@ -51,8 +51,8 @@ public class ShopDetailStayFragment extends BaseFragment implements CommonView<F
             @Override
             protected void convert(BaseAdapterHelper helper, Fruit shop) {
                 helper.setText(R.id.name, shop.getName())
-                        .setText(R.id.content, shop.getContent())
-                        .setText(R.id.price, shop.getPrice())
+                        .setText(R.id.content, "配置规格")
+                        .setText(R.id.price, "" + shop.getPrice())
                         .setImageUrl(R.id.img_detail, shop.getUrl()); // 自动异步加载图片
             }
         };
@@ -114,6 +114,7 @@ public class ShopDetailStayFragment extends BaseFragment implements CommonView<F
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getContext(), ShopStayShowDetailActivity.class);
                 getContext().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
             }
         });
 

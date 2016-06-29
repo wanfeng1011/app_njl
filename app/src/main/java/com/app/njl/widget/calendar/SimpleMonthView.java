@@ -132,11 +132,11 @@ class SimpleMonthView extends View
         today.setToNow();
         mDayOfWeekTypeface = resources.getString(R.string.sans_serif);
         mMonthTitleTypeface = resources.getString(R.string.sans_serif);
-        mCurrentDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorCurrentDay, resources.getColor(R.color.normal_day));
+        mCurrentDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorCurrentDay, resources.getColor(R.color.current_day));
         mMonthTextColor = typedArray.getColor(R.styleable.DayPickerView_colorMonthName, resources.getColor(R.color.normal_day));
         mDayTextColor = typedArray.getColor(R.styleable.DayPickerView_colorDayName, resources.getColor(R.color.normal_day));
         mDayNumColor = typedArray.getColor(R.styleable.DayPickerView_colorNormalDay, resources.getColor(R.color.normal_day));
-        mPreviousDayColor = typedArray.getColor(R.styleable.DayPickerView_colorPreviousDay, resources.getColor(R.color.normal_day));
+        mPreviousDayColor = typedArray.getColor(R.styleable.DayPickerView_colorPreviousDay, resources.getColor(R.color.gray_light));
         mSelectedDaysColor = typedArray.getColor(R.styleable.DayPickerView_colorSelectedDayBackground, resources.getColor(R.color.selected_day_background));
         mMonthTitleBGColor = typedArray.getColor(R.styleable.DayPickerView_colorSelectedDayText, resources.getColor(R.color.selected_day_text));
 
@@ -213,6 +213,7 @@ class SimpleMonthView extends View
     }
 
 	protected void drawMonthNums(Canvas canvas) {
+        Log.i("drawMonthNums", "drawMonthNums-------------");
 //        int y = (mRowHeight + MINI_DAY_NUMBER_TEXT_SIZE) / 2 - DAY_SEPARATOR_WIDTH + MONTH_HEADER_SIZE; //orginal
         int y = (mRowHeight + MINI_DAY_NUMBER_TEXT_SIZE) / 2 - DAY_SEPARATOR_WIDTH + MONTH_HEADER_SIZE - MONTH_DAY_LABEL_TEXT_SIZE;
 		int paddingDay = (mWidth - 2 * mPadding) / (2 * mNumDays);
@@ -245,7 +246,7 @@ class SimpleMonthView extends View
                     Log.i("date", "date drawCircle:" + mYear + " mMonth:" + mMonth);
                 }
             }
-            if (mHasToday && (mToday == day)) {
+            if (mHasToday && (mToday == day)) { //当前日期
                 mMonthNumPaint.setColor(mCurrentDayTextColor);
                 mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             } else {
@@ -293,7 +294,8 @@ class SimpleMonthView extends View
                 mMonthNumPaint.setColor(mSelectedDaysColor);
             }
 
-            if (!isPrevDayEnabled && prevDay(day, today) && today.month == mMonth && today.year == mYear)
+            //今天以前的日期
+            if (isPrevDayEnabled && prevDay(day, today) && today.month == mMonth && today.year == mYear)
             {
                 mMonthNumPaint.setColor(mPreviousDayColor);
                 mMonthNumPaint.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
@@ -309,6 +311,9 @@ class SimpleMonthView extends View
                 mMonthNumPaint.setTextSize(20);
                 canvas.drawText(item_day, x, y, mMonthNumPaint);
                 mMonthNumPaint.setTextSize(textSize);
+            } else if(mHasToday && (mToday == day)) {
+                item_day = "今天";
+                canvas.drawText(item_day, x, y, mMonthNumPaint);
             } else {
                 canvas.drawText(item_day, x, y, mMonthNumPaint);
             }
@@ -331,7 +336,7 @@ class SimpleMonthView extends View
 		int yDay = (int) (y - MONTH_HEADER_SIZE) / mRowHeight;
 		int day = 1 + ((int) ((x - padding) * mNumDays / (mWidth - padding - mPadding)) - findDayOffset()) + yDay * mNumDays;
 
-        if (mMonth > 11 || mMonth < 0 || com.app.njl.widget.calendar.CalendarUtils.getDaysInMonth(mMonth, mYear) < day || day < 1)
+        if (mMonth > 11 || mMonth < 0 || CalendarUtils.getDaysInMonth(mMonth, mYear) < day || day < 1)
             return null;
 
 		return new SimpleMonthAdapter.CalendarDay(mYear, mMonth, day);

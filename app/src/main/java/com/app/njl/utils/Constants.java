@@ -34,9 +34,10 @@ public class Constants {
 //        if (AppConfig.DEBUG) {
 //            SERVER = "http://192.168.1.116/HttpServer/";
 //        } else {
-            SERVER = "http://172.16.36.101:8080/HttpServer/";
+//            SERVER = "http://172.16.36.101:8080/HttpServer/";
 //        }
 //        SERVER = "http://192.168.1.116:8080/HttpServer/";
+        SERVER = "http://120.76.138.165:8080/HttpServer/";
     }
 
     /**

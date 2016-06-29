@@ -33,6 +33,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 
 import com.app.njl.R;
+import com.app.njl.subject.hotel.ui.fragment.HotelMainFragment2;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -43,18 +44,24 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     protected static final int MONTHS_IN_YEAR = 12;
     private final TypedArray typedArray;
 	private final Context mContext;
-	private final com.app.njl.widget.calendar.DatePickerController mController;
+	private final DatePickerController mController;
     private final Calendar calendar;
     private final SelectedDays<CalendarDay> selectedDays;
     private final Integer firstMonth;
     private final Integer lastMonth;
 
-	public SimpleMonthAdapter(Context context, com.app.njl.widget.calendar.DatePickerController datePickerController, TypedArray typedArray) {
+	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
+        Log.i("selectDays", "selectedDays:----------");
         this.typedArray = typedArray;
         calendar = Calendar.getInstance();
         firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, calendar.get(Calendar.MONTH));
         lastMonth = typedArray.getInt(R.styleable.DayPickerView_lastMonth, (calendar.get(Calendar.MONTH) - 1) % MONTHS_IN_YEAR);
-        selectedDays = new SelectedDays<>();
+        if(HotelMainFragment2.selectedDays == null) {
+            this.selectedDays = new SelectedDays<>();
+        }else {
+            this.selectedDays = HotelMainFragment2.selectedDays;
+            Log.i("selectDays", "selectedDays:" + selectedDays.toString());
+        }
 		mContext = context;
 		mController = datePickerController;
 		init();
@@ -164,18 +171,36 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 	}
 
 	public void setSelectedDay(CalendarDay calendarDay) {
+        //判断选择的日期是不是在当前日期（今天）或者当前日期之后的，如果不是返回，如果是则继续。
+//        long time = System.currentTimeMillis();
+        Calendar mCalendar=Calendar.getInstance();
+//        mCalendar.setTimeInMillis(time);
+        if(mCalendar.compareTo(calendarDay.getCalendar()) > 0)
+            return;
         if (selectedDays.getFirst() != null && selectedDays.getLast() == null)
         {
-            Log.i("onDayClick", "onDayClik2-------------");
+            Log.i("onDayClick", "onDayClik2-------------" + selectedDays.getFirst().getCalendar().getTimeInMillis());
+            Log.i("onDayClick", "onDayClik3-------------" + calendarDay.getCalendar().getTimeInMillis());
+            //判断第一次选择的时间和第二次选择的时间哪一个大
+            //如果是第一次的大或者相等，则把第二次的时间替换到第一次的时间
+            if((selectedDays.getFirst().getCalendar()).compareTo(calendarDay.getCalendar()) > 0 || (selectedDays.getFirst().getYear() == calendarDay.getYear()
+                    && selectedDays.getFirst().getMonth() == calendarDay.getMonth() && selectedDays.getFirst().getDay() == calendarDay.getDay())) {
+                selectedDays.setFirst(calendarDay);
+                selectedDays.setLast(null);
+                notifyDataSetChanged();
+                Log.i("onDayClick", "onDayClik5-------------");
+                return;
+            }
             selectedDays.setLast(calendarDay);
 
-            if (selectedDays.getFirst().month < calendarDay.month)
+            /*if (selectedDays.getFirst().month < calendarDay.month)
             {
                 Log.i("onDayClick", "onDayClik3-------------");
                 for (int i = 0; i < selectedDays.getFirst().month - calendarDay.month - 1; ++i)
                     mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
-            }
-
+            }else {
+                mController.onDateRangeSelected(selectedDays);
+            }*/
             mController.onDateRangeSelected(selectedDays);
         }
         else if (selectedDays.getLast() != null)
@@ -273,6 +298,14 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
 
         public int getDay() {
             return day;
+        }
+
+        public Calendar getCalendar() {
+            if (calendar == null) {
+                calendar = Calendar.getInstance();
+            }
+            calendar.set(year, month, day);
+            return calendar;
         }
     }
 

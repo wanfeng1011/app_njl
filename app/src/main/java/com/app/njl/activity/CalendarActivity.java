@@ -1,12 +1,13 @@
 package com.app.njl.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.app.njl.R;
+import com.app.njl.base.BaseActivity;
 import com.app.njl.utils.SharedPreferences;
 import com.app.njl.widget.calendar.DatePickerController;
 import com.app.njl.widget.calendar.DayPickerView;
@@ -19,19 +20,34 @@ import java.util.Calendar;
 /**
  * Created by jiaxx on 2016/4/1 0001.
  */
-public class CalendarActivity extends Activity implements DatePickerController, View.OnClickListener {
+public class CalendarActivity extends BaseActivity implements DatePickerController {
     private DayPickerView dayPickerView;
     private ImageView iv_back;
     Intent intent;
+    private SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initContentView() {
         setContentView(R.layout.layout_calendar);
         iv_back = (ImageView) findViewById(R.id.calendar_iv_back);
         dayPickerView = (DayPickerView) findViewById(R.id.pickerView);
         iv_back.setOnClickListener(this);
         dayPickerView.setController(this);
         intent = getIntent();
+        selectedDays = (SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay>)intent.getSerializableExtra("selectedDays");
+        if(selectedDays != null)
+            Log.i("selectDays", "CarlandarActivity selectedDays:" + selectedDays.toString());
+        dayPickerView.setSelectedDays(selectedDays);
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initControl() {
+
     }
 
     @Override
@@ -46,6 +62,7 @@ public class CalendarActivity extends Activity implements DatePickerController, 
 
     @Override
     public void onDateRangeSelected(SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays) {
+
         KLog.e("Date range selected", selectedDays.getFirst().toString() + " --> " + selectedDays.getLast().toString());
         //设置住店、离店日期到SharePreference
         SharedPreferences.getInstance().putString("live_in", selectedDays.getFirst().getMonth()
@@ -56,8 +73,10 @@ public class CalendarActivity extends Activity implements DatePickerController, 
                 + "-" + selectedDays.getFirst().getDay() + " 00:00:00", selectedDays.getLast().getYear() + "-" + selectedDays.getLast().getMonth()
                 + "-" + selectedDays.getLast().getDay() + " 00:00:00");
         KLog.i("daysCount:" + daysCount);
-        SharedPreferences.getInstance().putInt("total_day", daysCount);
-        setResult(1, intent);
+        SharedPreferences.getInstance().putInt("total_day", daysCount-1);
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("selectedDays", selectedDays);
+        setResult(1, resultIntent);
         finish();
     }
 

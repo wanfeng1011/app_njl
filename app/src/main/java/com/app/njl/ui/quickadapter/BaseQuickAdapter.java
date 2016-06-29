@@ -130,6 +130,10 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends B
         notifyDataSetChanged();
     }
 
+    public void clearAll() {
+        data.clear();
+    }
+
     public void addAll(List<T> elem) {
         data.addAll(elem);
         notifyDataSetChanged();

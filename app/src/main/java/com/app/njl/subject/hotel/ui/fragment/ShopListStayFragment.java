@@ -1,26 +1,46 @@
 package com.app.njl.subject.hotel.ui.fragment;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.app.njl.R;
 import com.app.njl.activity.MainActivity;
 import com.app.njl.base.BaseFragment;
-import com.app.njl.subject.hotel.model.entity.Fruit;
+import com.app.njl.subject.hotel.model.entity.landmark.LandMark;
+import com.app.njl.subject.hotel.model.entity.landmark.SceneryLandMarkBean;
+import com.app.njl.subject.hotel.model.entity.shoplist.Shop;
+import com.app.njl.subject.hotel.model.entity.shoplist.ShopListBean;
 import com.app.njl.subject.hotel.presenter.impl.ShopListStayQueryPresenterImpl;
 import com.app.njl.subject.hotel.presenter.interfaces.IShopListStayQueryPresenter;
 import com.app.njl.subject.hotel.view.CommonView;
+import com.app.njl.subject.mine.nohttp.CallServer;
+import com.app.njl.subject.mine.nohttp.Constants;
+import com.app.njl.subject.mine.nohttp.HttpConstants;
+import com.app.njl.subject.mine.nohttp.HttpListener;
+import com.app.njl.subject.mine.nohttp.StringRequestImpl;
 import com.app.njl.ui.loadmore.LoadMoreListView;
 import com.app.njl.ui.quickadapter.BaseAdapterHelper;
 import com.app.njl.ui.quickadapter.QuickAdapter;
+import com.app.njl.utils.JsonEasy;
+import com.socks.library.KLog;
 import com.squareup.picasso.Picasso;
+import com.yolanda.nohttp.Request;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,20 +49,53 @@ import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
-/**
- * Created by tiansj on 15/9/4.
- */
-public class ShopListStayFragment extends BaseFragment implements CommonView<Fruit> {
+public class ShopListStayFragment extends BaseFragment implements CommonView<Shop>, HttpListener<String> {
     private MainActivity context;
 
     @Bind(R.id.rotate_header_list_view_frame)
     PtrClassicFrameLayout mPtrFrame;
     @Bind(R.id.listView)
     LoadMoreListView listView;
-    QuickAdapter<Fruit> adapter;
+    QuickAdapter<Shop> adapter;
+
+    @Bind(R.id.ll_content_list_view)
+    LinearLayout ll_content_list_view;
+
+    @Bind(R.id.ll_filter)
+    LinearLayout ll_filter;
+
+    @Bind(R.id.view_mask_bg)
+    View view_mask_bg;
+
+    int panelHeight;
+
+    //位置筛选TextView
+    @Bind(R.id.tv_filter)
+    TextView tvFilter;
+    //位置筛选下拉列表
+    @Bind(R.id.filter_list_view)
+    ListView filterListView;
+    @Bind(R.id.iv_filter_arrow)
+    ImageView mFilterArrow;
+    QuickAdapter<LandMark> filteAdapter;
+//    private String contents[] = new String[] {"离我最近（当玩家不在景区时显示）", "景区东大门", "景区南大门", "景区西大门"};
 
     //Presenter
     IShopListStayQueryPresenter mPresenter;
+    private List<Shop> lists = new ArrayList<>();
+
+    private int mSceneryId;
+    private int mPageNo = 1;
+    private int mPageSize = 10;
+    private int mTotalPage;
+
+    public ShopListStayFragment() {
+
+    }
+
+    public ShopListStayFragment(int sceneryId) {
+        this.mSceneryId = sceneryId;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,21 +105,21 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
 
     @Override
     public int getLayoutRes() {
-        return R.layout.fragment_demo_ptr;
+        return R.layout.shopliststay_fragment_layout;
     }
 
     @Override
     public void initView() {
         context = (MainActivity) getActivity();
-        adapter = new QuickAdapter<Fruit>(context, R.layout.recommend_shop_list_item) {
+        adapter = new QuickAdapter<Shop>(context, R.layout.shopliststay_fragment_item) {
             @Override
-            protected void convert(BaseAdapterHelper helper, Fruit shop) {
-                helper.setText(R.id.name, shop.getName())
-                        .setText(R.id.favorable, shop.getContent())
-                        .setText(R.id.star, shop.getStar() + "分")
+            protected void convert(BaseAdapterHelper helper, Shop shop) {
+                helper.setText(R.id.name, shop.getShopName())
+                        //.setText(R.id.favorable, shop.getContent())
+                        //.setText(R.id.star, shop.getStar() + "分")
                         .setText(R.id.state, "预定动态")
-                        .setText(R.id.price, "住" + shop.getPrice() + "起")
-                        .setImageUrl(R.id.logo, shop.getUrl()); // 自动异步加载图片
+                        .setText(R.id.price, "住" + shop.getLiveLowestPrice() + "起")
+                        .setImageUrl(R.id.logo, shop.getShopPic()); // 自动异步加载图片
             }
         };
         listView.setDrawingCacheEnabled(true);
@@ -90,8 +143,10 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
 
     @Override
     public void initRemoteData() {
-        mPresenter.attachView(this);
-        mPresenter.queryShopListStay();
+//        mPresenter.attachView(this);
+//        mPresenter.queryShopListStay();
+//        queryStoresByOptions();
+        initLandMarkFilter(mSceneryId);
     }
 
     @Override
@@ -114,6 +169,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
         listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                mPageNo++;
                 initRemoteData();
             }
         });
@@ -122,7 +178,9 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
         listView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                replaceFragment();
+                if (lists.size() > 1) {
+                    replaceFragment(lists.get(i).getShopName());
+                }
             }
         });
 
@@ -141,12 +199,58 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
                                  int visibleItemCount, int totalItemCount) {
             }
         });
+
+        /*ll_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //设置数据到listview
+                filteAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
+                    @Override
+                    protected void convert(BaseAdapterHelper helper, String item) {
+                        helper.setText(R.id.filter_item_content, item);
+                    }
+                };
+                filteAdapter.addAll(Arrays.asList(contents));
+                filterListView.setAdapter(filteAdapter);
+                KLog.i("ll_category click----------");
+                view_mask_bg.setVisibility(View.VISIBLE);
+                ll_content_list_view.setVisibility(View.VISIBLE);
+                ll_content_list_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        ll_content_list_view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        panelHeight = ll_content_list_view.getHeight();
+                        ObjectAnimator.ofFloat(ll_content_list_view, "translationY", -panelHeight, 0).setDuration(200).start();
+                    }
+                });
+            }
+        });
+
+        filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                KLog.i("filterListView click----------");
+                tvFilter.setText(contents[position]);
+                view_mask_bg.setVisibility(View.GONE);
+                ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
+            }
+        });*/
+
+        view_mask_bg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KLog.i("view_mask_bg click----------");
+                mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
+                view_mask_bg.setVisibility(View.GONE);
+                ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
+            }
+        });
     }
 
     /**
      * 跳转到fragment界面
      */
-    private void replaceFragment() {
+    private void replaceFragment(String name) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = new ShopDetailPagerFragment();
@@ -162,6 +266,9 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
             if (!MainActivity.fragmentTags.contains("ShopDetailPagerFragment")) {
                 MainActivity.fragmentTags.add("ShopDetailPagerFragment");
             }
+            Bundle bundle = new Bundle();
+            bundle.putString("title", name);
+            fragment.setArguments(bundle);
             fragmentTransaction.add(R.id.fragment_container, fragment, "ShopDetailPagerFragment");
         }
         fragmentTransaction.addToBackStack(null);
@@ -172,6 +279,8 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
     @Override
     public void onResume() {
         super.onResume();
+        Log.i("result", "result lists4:");
+        queryStoresByOptions();
         Picasso.with(context).resumeTag(context);
     }
 
@@ -189,7 +298,8 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
     }
 
     @Override
-    public void loadSuccess(List<Fruit> fruits) {
+    public void loadSuccess(List<Shop> fruits) {
+        lists.addAll(fruits);
         listView.updateLoadMoreViewText(fruits);
         listView.onLoadMoreComplete();
         adapter.addAll(fruits);
@@ -208,6 +318,105 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Fru
 
     @Override
     public void showToast(String showMessage) {
+
+    }
+
+    private void initLandMarkFilter(int sceneryId) {
+        Log.i("sceneryId", "initLandMarkFilter mSceneryId:" + mSceneryId);
+        Request<String> request = new StringRequestImpl(Constants.BASE_PATH + "resort/getResortLandmark", RequestMethod.POST);
+        request.add("resortId", mSceneryId);
+        request.add("page", 1);
+        request.add("pageSize", 10);
+        CallServer.getRequestInstance().add(getContext(), HttpConstants.QUERY_STORE_LANDMARKS, request, this, true, true);
+    }
+
+    private void queryStoresByOptions() {
+        Log.i("sceneryId", "mSceneryId:" + mSceneryId);
+        Request<String> request = new StringRequestImpl(Constants.BASE_PATH + "shopList/list", RequestMethod.POST);
+        request.add("resortId", mSceneryId);
+        request.add("productType", 1);
+        request.add("sort", 1);
+        request.add("sortOrder", 1);
+        request.add("page", mPageNo);
+        request.add("pageSize", mPageSize);
+        CallServer.getRequestInstance().add(getContext(), HttpConstants.QUERY_STORES_BYOPTIONS, request, this, true, true);
+    }
+
+    @Override
+    public void onSucceed(int what, Response<String> response) {
+        int code = 0;
+        String result = response.get();
+        switch (what) {
+            case HttpConstants.QUERY_STORES_BYOPTIONS:
+                Log.i("result", "result get store list:" + result);
+                ShopListBean bean = JsonEasy.toObject(result, ShopListBean.class);
+                if(bean == null) return;
+                Log.i("result", "result get store list bean2:" + bean.getMessage().getTotalNumber() + " " + bean.getMessage().getPageSize() + " " + bean.getMessage().getPageNum());
+                code = bean.getCode();
+                if(code == 1) {
+                    if(bean.getMessage() == null) return;
+                    mTotalPage = bean.getMessage().getTotalNumber();
+                    List<Shop> shops = bean.getMessage().getResult();
+                    Log.i("result", "result lists:" + lists.toString());
+                    Log.i("result", "result lists2:" + listView);
+                    Log.i("result", "result lists3:" + adapter);
+                    lists.addAll(shops);
+                    listView.updateLoadMoreViewText(shops);
+                    listView.onLoadMoreComplete();
+                    adapter.addAll(shops);
+                }
+                break;
+            case HttpConstants.QUERY_STORE_LANDMARKS:
+                Log.i("result", "result get store landmarks:" + result);
+                final SceneryLandMarkBean markBean = JsonEasy.toObject(result, SceneryLandMarkBean.class);
+                if(markBean == null) return;
+                code = markBean.getCode();
+                if(code == 1) {
+                    ll_filter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(view_mask_bg.isShown()) return;
+                            //设置数据到listview
+                            filteAdapter = new QuickAdapter<LandMark>(context, R.layout.filter_listview_item) {
+                                @Override
+                                protected void convert(BaseAdapterHelper helper, LandMark item) {
+                                    helper.setText(R.id.filter_item_content, item.getLandmarkName());
+                                }
+                            };
+                            filteAdapter.addAll(markBean.getMessage().getResult());
+                            filterListView.setAdapter(filteAdapter);
+                            KLog.i("ll_category click----------");
+                            mFilterArrow.setImageResource(R.mipmap.home_up_arrow);
+                            view_mask_bg.setVisibility(View.VISIBLE);
+                            ll_content_list_view.setVisibility(View.VISIBLE);
+                            ll_content_list_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                @Override
+                                public void onGlobalLayout() {
+                                    ll_content_list_view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                                    panelHeight = ll_content_list_view.getHeight();
+                                    ObjectAnimator.ofFloat(ll_content_list_view, "translationY", -panelHeight, 0).setDuration(200).start();
+                                }
+                            });
+                        }
+                    });
+
+                    filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            KLog.i("filterListView click----------");
+                            tvFilter.setText(markBean.getMessage().getResult().get(position).getLandmarkName());
+                            mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
+                            view_mask_bg.setVisibility(View.GONE);
+                            ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
+                        }
+                    });
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
 
     }
 }

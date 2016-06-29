@@ -3,6 +3,7 @@ package com.app.njl.subject.hotel.ui.fragment;
 import android.content.Intent;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,15 +17,25 @@ import com.app.njl.activity.MainActivity;
 import com.app.njl.base.BaseFragment;
 import com.app.njl.dialog.CustomDialog2;
 import com.app.njl.subject.hotel.adapter.CommonPagerAdapter;
+import com.app.njl.subject.hotel.model.entity.shoplist.ShopListBean;
+import com.app.njl.subject.mine.nohttp.CallServer;
+import com.app.njl.subject.mine.nohttp.Constants;
+import com.app.njl.subject.mine.nohttp.HttpConstants;
+import com.app.njl.subject.mine.nohttp.HttpListener;
+import com.app.njl.subject.mine.nohttp.StringRequestImpl;
 import com.app.njl.ui.tabstrip.PagerSlidingTabStrip;
+import com.app.njl.utils.JsonEasy;
 import com.app.njl.utils.SharedPreferences;
+import com.yolanda.nohttp.Request;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 
-public class ShopListPagerFragment extends BaseFragment implements View.OnTouchListener, View.OnClickListener {
+public class ShopListPagerFragment extends BaseFragment implements View.OnTouchListener, View.OnClickListener, HttpListener<String> {
 
 
 
@@ -42,6 +53,11 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
     TextView stay_time_tv; //住店日期
     @Bind(R.id.live_time_tv)
     TextView live_time_tv; //离店日期
+
+    private int mSceneryId; //景区id
+    private int mPageNo = 1;
+    private int mPageSize = 10;
+    private int mTotalPage;
 
     @Bind(R.id.recommend_first_tv)
     TextView recommend_first_tv; //推荐优先
@@ -62,6 +78,7 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
     @Override
     public void initView() {
         MainActivity.isShowResultPager = true;
+        mSceneryId = getArguments().getInt("sceneryId", 0);
         //adapter初始化
         initPagerAdapter();
     }
@@ -83,10 +100,10 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
 
     @Override
     public void setListener() {
-        recommend_first_tv.setOnTouchListener(this);
+        /*recommend_first_tv.setOnTouchListener(this);
         good_reputation_first_tv.setOnTouchListener(this);
         low_price_first_tv.setOnTouchListener(this);
-        destination_first_tv.setOnTouchListener(this);
+        destination_first_tv.setOnTouchListener(this);*/
 
         iv_back.setOnClickListener(this);
         stay_time_select_ll.setOnClickListener(this);
@@ -103,17 +120,20 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
      * 初始化adapter
      */
     private void initPagerAdapter() {
+        Log.i("sceneryId", "mSceneryId:" + mSceneryId);
         List<BaseFragment> fragments = new ArrayList<>();
-        fragments.add(new ShopListStayFragment());
-        fragments.add(new ShopListStayFragment());
-        fragments.add(new ShopListStayFragment());
-        fragments.add(new ShopListStayFragment());
+        fragments.add(new ShopListStayFragment(mSceneryId));
+        fragments.add(new ShopListOrderFragment());
+        fragments.add(new ShopListPlayFragment());
+        fragments.add(new ShopListSpecialtyFragment());
         String[] mTitles = getContext().getResources().getStringArray(R.array.shop_item_title);
         adapter = new CommonPagerAdapter(getChildFragmentManager(), fragments, mTitles);
         pager.setAdapter(adapter);
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
         pager.setPageMargin(pageMargin);
+        pager.setOffscreenPageLimit(fragments.size() - 1);
         tabs.setViewPager(pager);
+//        queryStoresByOptions();
     }
 
     @Override
@@ -142,7 +162,7 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
     }
 
     private void resetTextViewBackGround(int index) {
-        if (index == 0) {
+        /*if (index == 0) {
             recommend_first_tv.setBackgroundResource(R.drawable.rect_green_bg);
             good_reputation_first_tv.setBackgroundResource(R.drawable.background_view_rounded_radius5);
             low_price_first_tv.setBackgroundResource(R.drawable.background_view_rounded_radius5);
@@ -163,7 +183,7 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
             good_reputation_first_tv.setBackgroundResource(R.drawable.background_view_rounded_radius5);
             low_price_first_tv.setBackgroundResource(R.drawable.background_view_rounded_radius5);
             createDialog();
-        }
+        }*/
     }
 
     @Override
@@ -175,6 +195,7 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
             case R.id.stay_time_select_ll:
                 Intent intent_live = new Intent(getContext(), CalendarActivity.class);
                 getActivity().startActivityForResult(intent_live, 3);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
         }
     }
@@ -182,5 +203,34 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
     private void createDialog() {
         CustomDialog2.Builder builder = new CustomDialog2.Builder(getActivity());
         builder.create().show();
+    }
+
+    private void queryStoresByOptions() {
+        Request<String> request = new StringRequestImpl(Constants.BASE_PATH + "shopList/list", RequestMethod.POST);
+        request.add("resortId", mSceneryId);
+        request.add("productType", 1);
+        request.add("sort", 1);
+        request.add("sortOrder", 1);
+        request.add("page", mPageNo);
+        request.add("pageSize", mPageSize);
+        CallServer.getRequestInstance().add(getContext(), HttpConstants.QUERY_STORES_BYOPTIONS, request, this, true, true);
+    }
+
+    @Override
+    public void onSucceed(int what, Response<String> response) {
+        int code = 0;
+        String result = response.get();
+        switch (what) {
+            case HttpConstants.QUERY_STORES_BYOPTIONS:
+                Log.i("result", "result get store list:" + result);
+                ShopListBean bean = JsonEasy.toObject(result, ShopListBean.class);
+                Log.i("result", "result get store list bean2:" + bean.getMessage().getTotalNumber() + " " + bean.getMessage().getPageSize() + " " + bean.getMessage().getPageNum());
+                break;
+        }
+    }
+
+    @Override
+    public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+
     }
 }

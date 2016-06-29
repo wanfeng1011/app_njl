@@ -157,10 +157,12 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         a = context.obtainStyledAttributes(attrs, R.styleable.PagerSlidingTabStrip);
 
         tabTextSize = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_tabTextSize, tabTextSize);
-        tabTextColor = a.getColor(R.styleable.PagerSlidingTabStrip_selectedTabTextColor, indicatorColor);
-        selectedTabTextColor = a.getColor(R.styleable.PagerSlidingTabStrip_selectedTabTextColor, indicatorColor); //tab文字选中时的颜色,默认和滑动指示器的颜色一致
+//        tabTextColor = a.getColor(R.styleable.PagerSlidingTabStrip_selectedTabTextColor, indicatorColor);
+        //tabTextColor = R.color.font_black_2;
+//        selectedTabTextColor = a.getColor(R.styleable.PagerSlidingTabStrip_selectedTabTextColor, indicatorColor); //tab文字选中时的颜色,默认和滑动指示器的颜色一致
+        //selectedTabTextColor = R.color.text_color_gray;
 
-        indicatorColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsIndicatorColor, indicatorColor);
+        //indicatorColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsIndicatorColor, indicatorColor);
         underlineColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsUnderlineColor, underlineColor);
         dividerColor = a.getColor(R.styleable.PagerSlidingTabStrip_pstsDividerColor, dividerColor);
         indicatorHeight = a.getDimensionPixelSize(R.styleable.PagerSlidingTabStrip_pstsIndicatorHeight, indicatorHeight);

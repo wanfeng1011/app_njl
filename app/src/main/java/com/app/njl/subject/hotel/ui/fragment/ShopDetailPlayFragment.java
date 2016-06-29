@@ -61,14 +61,17 @@ public class ShopDetailPlayFragment extends BaseFragment implements View.OnClick
             case R.id.scenery_ticket_ll:
                 Intent intent_ticket = new Intent(getContext(), ShopPlayShowSceneryActivity.class);
                 getContext().startActivity(intent_ticket);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
             case R.id.tour_guide_ll:
                 Intent intent_tour_guide = new Intent(getContext(), ShopPlayShowTourGuideActivity.class);
                 getContext().startActivity(intent_tour_guide);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
             case R.id.self_service_ll:
                 Intent intent_self_service = new Intent(getContext(), ShopPlayShowSelfServiceActivity.class);
                 getContext().startActivity(intent_self_service);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
         }
     }

@@ -107,6 +107,11 @@ public class SplashActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
     public class GalleryPagerAdapter extends PagerAdapter {
 
         @Override

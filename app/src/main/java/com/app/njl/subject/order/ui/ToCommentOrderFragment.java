@@ -48,6 +48,7 @@ public class ToCommentOrderFragment extends BaseFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ListViewActivity.class);
                 getContext().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
             }
         });
     }

@@ -33,7 +33,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="房型1（床型）"
-            android:textColor="#101010"
+            android:textColor="@color/font_black_2"
             android:textSize="@dimen/text_size_16" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="配置规格"
-            android:textColor="#101010"
+            android:textColor="@color/font_black_2"
             android:textSize="@dimen/text_size_13" />
     </LinearLayout>
 
@@ -53,14 +53,15 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1.5"
-        android:gravity="center_vertical">
+        android:layout_gravity="center"
+        android:gravity="center">
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="住120起"
-            android:textColor="#101010"
+            android:textColor="@color/font_black_2"
             android:textSize="@dimen/text_size_13" />
     </LinearLayout>
 
@@ -69,17 +70,17 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:padding="2dp"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="26dp"
             android:text="购买"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             style="@style/button_textview_style"/>
     </LinearLayout>
 

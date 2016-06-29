@@ -36,7 +36,7 @@
         android:layout_height="fill_parent"
         android:background="#d8d8d8"
         android:layout_below="@id/title_rl"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="65dp"
         android:fadingEdge="none"
         android:scrollbars="none">
 
@@ -146,6 +146,54 @@
                         android:layout_height="1dp"
                         android:layout_centerVertical="true"
                         android:layout_toLeftOf="@+id/view2"
+                        android:background="@color/orange" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_paid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/view_paid"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
+                        android:text="确认消费" />
+
+                    <View
+                        android:id="@+id/view_paid"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/common_circle_orange" />
+
+                    <TextView
+                        android:id="@+id/tv_paid_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_paid"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:text="03-27 15:32"
+                        android:textColor="@color/gray_slate" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/view_paid"
+                        android:background="@color/orange" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/view_paid"
                         android:background="@color/orange" />
 
                 </RelativeLayout>
@@ -652,6 +700,7 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:orientation="horizontal"
@@ -664,7 +713,8 @@
             android:layout_weight="1"
             android:gravity="center"
             style="@style/button_textview_style"
-            android:text="已支付"/>
+            android:text="已支付"
+            android:visibility="gone"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -673,11 +723,36 @@
             style="@style/button_textview_style"
             android:text="合计：120元"/>
         <Button
+            android:id="@+id/order_makeSure_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             style="@style/button_textview_style"
-            android:text="申请退款"/>
+            android:text="确认消费"/>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_above="@id/bottom_layout">
+        <TextView
+            android:id="@+id/order_back_request"
+            android:layout_width="65dp"
+            android:layout_height="20dp"
+            android:text="申请退款"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            style="@style/button_textview_style"/>
+        <TextView
+            android:layout_width="65dp"
+            android:layout_height="20dp"
+            android:text="投诉店家"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            style="@style/button_textview_style"/>
+    </RelativeLayout>
 </RelativeLayout>

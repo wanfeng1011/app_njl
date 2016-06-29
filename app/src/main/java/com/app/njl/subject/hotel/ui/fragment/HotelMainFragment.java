@@ -262,10 +262,12 @@ public class HotelMainFragment extends BaseFragment implements View.OnClickListe
             case R.id.live_relativelayout:
                 Intent intent_live = new Intent(getContext(), CalendarActivity.class);
                 getActivity().startActivityForResult(intent_live, 1);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
             case R.id.tv_destination:
                 Intent intent_destination = new Intent(getContext(), CityPickerActivity.class);
                 getActivity().startActivityForResult(intent_destination, 2);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 break;
             case R.id.search_btn:
                 showFragment();
@@ -305,9 +307,9 @@ public class HotelMainFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         pager.stopAutoScroll();
         loadAllShopPresenter.detachView();
+        super.onDestroy();
     }
 
     //轮播图适配器
@@ -340,6 +342,7 @@ public class HotelMainFragment extends BaseFragment implements View.OnClickListe
                     intent.putStringArrayListExtra("images", (ArrayList<String>) imageList);
                     intent.putExtra("position", pos);
                     startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
                 }
             });
 

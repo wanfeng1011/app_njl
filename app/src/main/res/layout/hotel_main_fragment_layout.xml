@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="center_vertical"
+        android:background="@mipmap/hotel"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/layout_ent_gallery"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:background="@color/white">
+
+        <com.app.njl.ui.loopviewpager.AutoLoopViewPager
+            android:id="@+id/pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <com.app.njl.ui.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ccc1cc"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:weightSum="10"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="景    点："
+                android:layout_weight="3.8"
+                android:textSize="16sp"
+                android:gravity="right"
+                android:layout_marginLeft="10dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="2.8"
+                >
+                <TextView
+                    android:id="@+id/tv_destination"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:hint="西湖"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    android:textColorHint="@color/green_light"
+                    android:textColor="@color/green_light"
+                    android:textSize="16sp"
+                    android:maxLength="10"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="3dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dip"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#ccd1dd" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.8"
+                android:gravity="center"
+                android:drawableTop="@mipmap/icon_location"
+                android:drawablePadding="2dp"
+                android:text="我的位置"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:weightSum="10"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="日    期："
+                android:textSize="16sp"
+                android:layout_weight="3.8"
+                android:gravity="right|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/tv_time" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="2.8"
+                android:layout_toLeftOf="@+id/tv_total"
+                android:layout_toRightOf="@+id/tv_time"
+                >
+                <RelativeLayout
+                    android:id="@+id/live_relativelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+                    <TextView
+                        android:id="@+id/live_in_tv"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/green_light"
+                        android:paddingLeft="5dp"
+                        android:imeOptions="actionSearch"
+                        android:textSize="16sp"
+                        android:layout_marginRight="10dp" />
+
+                    <TextView
+                        android:id="@+id/live_out_tv"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/green_light"
+                        android:imeOptions="actionSearch"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"/>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dip"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#ccd1dd" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.8"
+                android:gravity="center"
+                android:text="共计X日"
+                android:paddingRight="10dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="开始搜索"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="@style/button_textview_style"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#ccd1dd" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="最近浏览"
+        android:textSize="16sp"
+        android:layout_margin="10dp"/>
+
+    <com.app.njl.widget.CustomListView
+        android:id="@+id/hotel_main_fragment_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFF"
+        android:scrollbars="none" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.2dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#ccd1dd" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="人气展示"
+        android:textSize="16sp"
+        android:layout_margin="10dp"/>
+</LinearLayout>

@@ -1,13 +1,10 @@
 package com.app.njl.subject.order.ui;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.app.njl.R;
-import com.app.njl.activity.MainActivity;
 import com.app.njl.base.BaseFragment;
 
 import butterknife.Bind;
@@ -50,33 +47,10 @@ public class PaidOrderFragment extends BaseFragment {
         time_rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment();
-                /*Intent intent = new Intent(getContext(), ListViewActivity.class);
-                getContext().startActivity(intent);*/
+                Intent intent = new Intent(getContext(), OrderDetailActivity.class);
+                getContext().startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
             }
         });
-    }
-
-    /**
-     * 跳转到fragment界面
-     */
-    private void replaceFragment() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = new OrderDetailFragment();
-        for (int j = 0; j < MainActivity.fragmentTags.size(); j++) {
-            Fragment f = fragmentManager.findFragmentByTag(MainActivity.fragmentTags.get(j));
-            if(f != null && f.isAdded()) {
-                fragmentTransaction.hide(PaidOrderFragment.this);
-            }
-        }
-        if (fragment.isAdded()) {
-            fragmentTransaction.show(fragment);
-        } else {
-            fragmentTransaction.add(R.id.fragment_container, fragment, "OrderDetailFragment");
-        }
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commitAllowingStateLoss();
-        fragmentManager.executePendingTransactions();
     }
 }
