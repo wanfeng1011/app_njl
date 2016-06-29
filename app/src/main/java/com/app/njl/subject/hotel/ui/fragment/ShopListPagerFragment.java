@@ -133,6 +133,7 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
         pager.setPageMargin(pageMargin);
         pager.setOffscreenPageLimit(fragments.size() - 1);
         tabs.setViewPager(pager);
+        tabs.setSelectedTextColorResource(R.color.green_light);
 //        queryStoresByOptions();
     }
 
