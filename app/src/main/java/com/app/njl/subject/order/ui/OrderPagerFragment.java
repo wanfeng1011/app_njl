@@ -3,6 +3,7 @@ package com.app.njl.subject.order.ui;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
+import android.view.View;
 
 import com.app.njl.R;
 import com.app.njl.base.BaseFragment;
@@ -79,6 +80,11 @@ public class OrderPagerFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
 

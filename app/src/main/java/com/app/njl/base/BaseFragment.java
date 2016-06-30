@@ -11,7 +11,7 @@ import butterknife.ButterKnife;
 /**
  * Created by jiaxx on 2016/4/7 0007.
  */
-public abstract class BaseFragment extends Fragment{
+public abstract class BaseFragment extends Fragment implements View.OnClickListener{
     private BaseActivity mActivity;
     private View mLayoutView;
 

@@ -1,5 +1,7 @@
 package com.app.njl.subject.order.ui;
 
+import android.view.View;
+
 import com.app.njl.R;
 import com.app.njl.base.BaseFragment;
 
@@ -35,6 +37,11 @@ public class ObligationOrderFragment extends BaseFragment {
 
     @Override
     public void setListener() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }

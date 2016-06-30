@@ -177,4 +177,9 @@ public class ShopDetailSpecialtyFragment extends BaseFragment implements CommonV
     public void showToast(String showMessage) {
 
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }

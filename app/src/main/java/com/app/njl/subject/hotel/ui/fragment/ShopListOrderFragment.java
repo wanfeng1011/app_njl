@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.Response;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -63,21 +65,53 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
     @Bind(R.id.ll_content_list_view)
     LinearLayout ll_content_list_view;
 
+    //推荐
+    @Bind(R.id.ll_recommend)
+    LinearLayout mRecommendLayout;
+    @Bind(R.id.tv_recommend)
+    TextView mRecommendTv;
+    @Bind(R.id.iv_recommend_arrow)
+    ImageView mRecommendImgArrow;
+    String mRecommendLists[] = new String[] {"高到低", "低到高"};
+    QuickAdapter<String> reCommendAdapter;
+
+    //好评率
+    @Bind(R.id.ll_good_first)
+    LinearLayout mGoodCommLayout;
+    @Bind(R.id.tv_good_first)
+    TextView mGoodCommTv;
+    @Bind(R.id.iv_good_first_arrow)
+    ImageView mGoodCommImgArrow;
+    String mGoodCommLists[] = new String[] {"高到低", "低到高"};
+    QuickAdapter<String> goodCommAdapter;
+
+    //价格
+    @Bind(R.id.ll_price)
+    LinearLayout mPriceLayout;
+    @Bind(R.id.tv_price)
+    TextView mPriceTv;
+    @Bind(R.id.iv_price_arrow)
+    ImageView mPriceImgArrow;
+    String mPriceLists[] = new String[] {"高到低", "低到高"};
+    QuickAdapter<String> priceAdapter;
+
+    //位置
     @Bind(R.id.ll_filter)
-    LinearLayout ll_filter;
+    LinearLayout mFilterLayout;
+    @Bind(R.id.tv_filter)
+    TextView mFilterTv;
+    @Bind(R.id.iv_filter_arrow)
+    ImageView mFilterArrow;
+    QuickAdapter<LandMark> filteAdapter;
+    List<LandMark> mFilterLists;
 
     @Bind(R.id.view_mask_bg)
     View view_mask_bg;
 
     int panelHeight;
-
-    //位置筛选TextView
-    @Bind(R.id.tv_filter)
-    TextView tvFilter;
     //位置筛选下拉列表
     @Bind(R.id.filter_list_view)
     ListView filterListView;
-    QuickAdapter<LandMark> filteAdapter;
     //private String contents[] = new String[] {"离我最近（当玩家不在景区时显示）", "景区东大门", "景区南大门", "景区西大门"};
 
     //Presenter
@@ -88,6 +122,7 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
     private int mPageNo = 1;
     private int mPageSize = 10;
     private int mTotalPage;
+    private int flag = 0; //条件类型
 
     public ShopListOrderFragment() {
 
@@ -139,7 +174,38 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
 
     @Override
     public void initLocalData() {
-        mPresenter = new ShopListStayQueryPresenterImpl();
+//        mPresenter = new ShopListStayQueryPresenterImpl();
+        //设置推荐数据到listview
+        reCommendAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, String item) {
+                helper.setText(R.id.filter_item_content, item);
+            }
+        };
+
+        //设置好评率数据到listview
+        goodCommAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, String item) {
+                helper.setText(R.id.filter_item_content, item);
+            }
+        };
+
+        //设置价格数据到listview
+        priceAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, String item) {
+                helper.setText(R.id.filter_item_content, item);
+            }
+        };
+
+        //设置位置数据到listview
+        filteAdapter = new QuickAdapter<LandMark>(context, R.layout.filter_listview_item) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, LandMark item) {
+                helper.setText(R.id.filter_item_content, item.getLandmarkName());
+            }
+        };
     }
 
     @Override
@@ -147,7 +213,7 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
 //        mPresenter.attachView(this);
 //        mPresenter.queryShopListStay();
         queryStoresByOptions();
-        initLandMarkFilter(mSceneryId);
+//        initLandMarkFilter(mSceneryId);
     }
 
     @Override
@@ -179,7 +245,6 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
         listView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //KLog.i("listView lists size:" + lists.size());
                 if (lists.size() > 1) {
                     replaceFragment(lists.get(i).getShopName());
                 }
@@ -202,50 +267,140 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
             }
         });
 
-        /*ll_filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //设置数据到listview
-                filteAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
-                    @Override
-                    protected void convert(BaseAdapterHelper helper, String item) {
-                        helper.setText(R.id.filter_item_content, item);
-                    }
-                };
-                filteAdapter.addAll(Arrays.asList(contents));
-                filterListView.setAdapter(filteAdapter);
-                KLog.i("ll_category click----------");
-                view_mask_bg.setVisibility(View.VISIBLE);
-                ll_content_list_view.setVisibility(View.VISIBLE);
-                ll_content_list_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        ll_content_list_view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        panelHeight = ll_content_list_view.getHeight();
-                        ObjectAnimator.ofFloat(ll_content_list_view, "translationY", -panelHeight, 0).setDuration(200).start();
-                    }
-                });
-            }
-        });
+        mRecommendLayout.setOnClickListener(this);
+        mGoodCommLayout.setOnClickListener(this);
+        mPriceLayout.setOnClickListener(this);
+        mFilterLayout.setOnClickListener(this);
 
         filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 KLog.i("filterListView click----------");
-                tvFilter.setText(contents[position]);
-                view_mask_bg.setVisibility(View.GONE);
-                ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
+                if(flag == 4) {
+                    mFilterTv.setText(mFilterLists.get(position).getLandmarkName());
+                    mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
+                }
+                hide();
             }
-        });*/
+        });
 
         view_mask_bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 KLog.i("view_mask_bg click----------");
+                mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
                 view_mask_bg.setVisibility(View.GONE);
                 ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
             }
         });
+    }
+
+    private void show() {
+        view_mask_bg.setVisibility(View.VISIBLE);
+        ll_content_list_view.setVisibility(View.VISIBLE);
+        ll_content_list_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                ll_content_list_view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                panelHeight = ll_content_list_view.getHeight();
+                ObjectAnimator.ofFloat(ll_content_list_view, "translationY", -panelHeight, 0).setDuration(200).start();
+            }
+        });
+    }
+
+    private void hide() {
+        resetFilterStatus();
+        flag = 0;
+        panelHeight = ll_content_list_view.getHeight();
+        view_mask_bg.setVisibility(View.GONE);
+        ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
+    }
+
+    // 设置推荐筛选数据
+    private void setRecommendSelect() {
+        mRecommendTv.setTextColor(getContext().getResources().getColor(R.color.orange));
+        mRecommendImgArrow.setImageResource(R.mipmap.home_up_arrow);
+    }
+
+    // 设置好评率筛选数据
+    private void setGoodCommSelect() {
+        mGoodCommTv.setTextColor(getContext().getResources().getColor(R.color.orange));
+        mGoodCommImgArrow.setImageResource(R.mipmap.home_up_arrow);
+    }
+
+    // 设置价格筛选数据
+    private void setPriceSelect() {
+        mPriceTv.setTextColor(getContext().getResources().getColor(R.color.orange));
+        mPriceImgArrow.setImageResource(R.mipmap.home_up_arrow);
+    }
+
+    // 设置位置筛选数据
+    private void setFilterSelect() {
+        mFilterTv.setTextColor(getContext().getResources().getColor(R.color.orange));
+        mFilterArrow.setImageResource(R.mipmap.home_up_arrow);
+    }
+
+    // 复位筛选的显示状态
+    public void resetFilterStatus() {
+        mRecommendTv.setTextColor(getContext().getResources().getColor(R.color.green_light));
+        mRecommendImgArrow.setImageResource(R.mipmap.home_down_arrow);
+        mGoodCommTv.setTextColor(getContext().getResources().getColor(R.color.green_light));
+        mGoodCommImgArrow.setImageResource(R.mipmap.home_down_arrow);
+        mPriceTv.setTextColor(getContext().getResources().getColor(R.color.green_light));
+        mPriceImgArrow.setImageResource(R.mipmap.home_down_arrow);
+        mFilterTv.setTextColor(getContext().getResources().getColor(R.color.green_light));
+        mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_recommend:
+                flag = 1;
+                reCommendAdapter.clearAll();
+                reCommendAdapter.addAll(Arrays.asList(mRecommendLists));
+                filterListView.setAdapter(reCommendAdapter);
+                resetFilterStatus();
+                setRecommendSelect();
+                if(view_mask_bg.isShown()) return;
+                show();
+                break;
+            case R.id.ll_good_first:
+                flag = 2;
+                goodCommAdapter.clearAll();
+                goodCommAdapter.addAll(Arrays.asList(mGoodCommLists));
+                filterListView.setAdapter(goodCommAdapter);
+                resetFilterStatus();
+                setGoodCommSelect();
+                if(view_mask_bg.isShown()) return;
+                show();
+                break;
+            case R.id.ll_price:
+                flag = 3;
+                priceAdapter.clearAll();
+                priceAdapter.addAll(Arrays.asList(mPriceLists));
+                filterListView.setAdapter(priceAdapter);
+                resetFilterStatus();
+                setPriceSelect();
+                if(view_mask_bg.isShown()) return;
+                show();
+                break;
+            case R.id.ll_filter:
+                flag = 4;
+                if(mFilterLists != null) {
+                    filteAdapter.clearAll();
+                    filteAdapter.addAll(mFilterLists);
+                    filterListView.setAdapter(filteAdapter);
+                    resetFilterStatus();
+                    setFilterSelect();
+                    if(view_mask_bg.isShown()) return;
+                    show();
+                }else {
+                    //到远程服务器加载位置筛选的数据
+                    initLandMarkFilter(mSceneryId);
+                }
+                break;
+        }
     }
 
     /**
@@ -280,6 +435,7 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
     @Override
     public void onResume() {
         super.onResume();
+        queryStoresByOptions();
         Picasso.with(context).resumeTag(context);
     }
 
@@ -293,7 +449,7 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
     public void onDestroy() {
         super.onDestroy();
         Picasso.with(context).cancelTag(context);
-        mPresenter.detachView();
+//        mPresenter.detachView();
     }
 
     @Override
@@ -367,41 +523,13 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
                 if(markBean == null) return;
                 code = markBean.getCode();
                 if(code == 1) {
-                    ll_filter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //设置数据到listview
-                            filteAdapter = new QuickAdapter<LandMark>(context, R.layout.filter_listview_item) {
-                                @Override
-                                protected void convert(BaseAdapterHelper helper, LandMark item) {
-                                    helper.setText(R.id.filter_item_content, item.getLandmarkName());
-                                }
-                            };
-                            filteAdapter.addAll(markBean.getMessage().getResult());
-                            filterListView.setAdapter(filteAdapter);
-                            KLog.i("ll_category click----------");
-                            view_mask_bg.setVisibility(View.VISIBLE);
-                            ll_content_list_view.setVisibility(View.VISIBLE);
-                            ll_content_list_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                                @Override
-                                public void onGlobalLayout() {
-                                    ll_content_list_view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                                    panelHeight = ll_content_list_view.getHeight();
-                                    ObjectAnimator.ofFloat(ll_content_list_view, "translationY", -panelHeight, 0).setDuration(200).start();
-                                }
-                            });
-                        }
-                    });
-
-                    filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            KLog.i("filterListView click----------");
-                            tvFilter.setText(markBean.getMessage().getResult().get(position).getLandmarkName());
-                            view_mask_bg.setVisibility(View.GONE);
-                            ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
-                        }
-                    });
+                    mFilterLists = markBean.getMessage().getResult();
+                    filteAdapter.addAll(mFilterLists);
+                    filterListView.setAdapter(filteAdapter);
+                    KLog.i("ll_category click----------");
+                    resetFilterStatus();
+                    setFilterSelect();
+                    show();
                 }
                 break;
         }
@@ -411,4 +539,5 @@ public class ShopListOrderFragment extends BaseFragment implements CommonView<Sh
     public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
 
     }
+
 }

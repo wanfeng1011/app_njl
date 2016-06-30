@@ -68,12 +68,12 @@
 			</LinearLayout>
 			<EditText
 				android:id="@+id/et_phone"
-				android:drawablePadding="6dp"
 				android:layout_width="0dp"
 				android:layout_height="32dip"
 				android:layout_weight="1"
 				android:background="@drawable/login_rect_white"
 				android:hint="输入店名"
+				android:layout_gravity="center"
 				android:gravity="center"
 				android:paddingLeft="5dp"
 				android:singleLine="true"

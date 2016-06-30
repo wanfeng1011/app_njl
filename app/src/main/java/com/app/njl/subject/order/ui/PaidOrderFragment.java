@@ -53,4 +53,9 @@ public class PaidOrderFragment extends BaseFragment {
             }
         });
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }

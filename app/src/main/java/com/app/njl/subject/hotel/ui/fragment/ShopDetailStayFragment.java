@@ -183,4 +183,9 @@ public class ShopDetailStayFragment extends BaseFragment implements CommonView<F
     public void showToast(String showMessage) {
 
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }

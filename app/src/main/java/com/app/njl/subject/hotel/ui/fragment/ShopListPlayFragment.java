@@ -65,18 +65,45 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
     @Bind(R.id.ll_content_list_view)
     LinearLayout ll_content_list_view;
 
+    //推荐
+    @Bind(R.id.ll_recommend)
+    LinearLayout mRecommendLayout;
+    @Bind(R.id.tv_recommend)
+    TextView mRecommendTv;
+    @Bind(R.id.iv_recommend_arrow)
+    ImageView mRecommendImgArrow;
+    String mRecommendLists[] = new String[] {"高到低", "低到高"};
+    QuickAdapter<String> reCommendAdapter;
+
+    //好评率
+    @Bind(R.id.ll_good_first)
+    LinearLayout mGoodCommLayout;
+    @Bind(R.id.tv_good_first)
+    TextView mGoodCommTv;
+    @Bind(R.id.iv_good_first_arrow)
+    ImageView mGoodCommImgArrow;
+    String mGoodCommLists[] = new String[] {"高到低", "低到高"};
+    QuickAdapter<String> goodCommAdapter;
+
+    //价格
     @Bind(R.id.ll_price)
-    LinearLayout ll_price;
+    LinearLayout mPriceLayout;
     @Bind(R.id.tv_price)
-    TextView tv_price;
+    TextView mPriceTv;
     @Bind(R.id.iv_price_arrow)
-    ImageView iv_price_arrow;
+    ImageView mPriceImgArrow;
+    String mPriceLists[] = new String[] {"门票低价优先", "导游低价优先", "自助游低价优先"};
+    QuickAdapter<String> priceAdapter;
+
+    //位置
     @Bind(R.id.ll_filter)
-    LinearLayout ll_filter;
+    LinearLayout mFilterLayout;
     @Bind(R.id.tv_filter)
-    TextView tv_filter;
+    TextView mFilterTv;
     @Bind(R.id.iv_filter_arrow)
-    ImageView iv_filter_arrow;
+    ImageView mFilterArrow;
+    QuickAdapter<LandMark> filteAdapter;
+    List<LandMark> mFilterLists;
 
     @Bind(R.id.view_mask_bg)
     View view_mask_bg;
@@ -86,16 +113,13 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
 
     int flag = 0; //0 没有选择 1推荐 2好评 3低价 4位置
 
-    QuickAdapter<String> priceAdapter;
     //位置筛选下拉列表
     @Bind(R.id.filter_list_view)
     ListView filterListView;
-    QuickAdapter<LandMark> filteAdapter;
-    List<LandMark> filterLists;
 //    private String contents[] = new String[] {"离我最近（当玩家不在景区时显示）", "景区东大门", "景区南大门", "景区西大门"};
 
     //价格筛选
-    private String playItems[] = new String[] {"门票低价优先", "导游低价优先", "自助游低价优先", "自助游低价优先"};
+//    private String playItems[] = new String[] {"门票低价优先", "导游低价优先", "自助游低价优先"};
 
     //Presenter
     IShopListStayQueryPresenter mPresenter;
@@ -154,7 +178,38 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
 
     @Override
     public void initLocalData() {
-        mPresenter = new ShopListStayQueryPresenterImpl();
+//        mPresenter = new ShopListStayQueryPresenterImpl();
+        //设置推荐数据到listview
+        reCommendAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, String item) {
+                helper.setText(R.id.filter_item_content, item);
+            }
+        };
+
+        //设置好评率数据到listview
+        goodCommAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, String item) {
+                helper.setText(R.id.filter_item_content, item);
+            }
+        };
+
+        //设置价格数据到listview
+        priceAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, String item) {
+                helper.setText(R.id.filter_item_content, item);
+            }
+        };
+
+        //设置位置数据到listview
+        filteAdapter = new QuickAdapter<LandMark>(context, R.layout.filter_listview_item) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, LandMark item) {
+                helper.setText(R.id.filter_item_content, item.getLandmarkName());
+            }
+        };
     }
 
     @Override
@@ -193,7 +248,7 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
         listView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(lists.size()>1) {
+                if (lists.size() > 1) {
                     replaceFragment(lists.get(i).getShopName());
                 }
             }
@@ -215,23 +270,32 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
             }
         });
 
-        ll_filter.setOnClickListener(this);
+        mRecommendLayout.setOnClickListener(this);
+        mGoodCommLayout.setOnClickListener(this);
+        mPriceLayout.setOnClickListener(this);
+        mFilterLayout.setOnClickListener(this);
 
         filterListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 KLog.i("filterListView click----------");
-                if (flag == 3)
-                    tv_price.setText(playItems[position]);
-                else if (flag == 4)
-                    tv_filter.setText(filterLists.get(position).getLandmarkName());
+                if(flag == 4) {
+                    mFilterTv.setText(mFilterLists.get(position).getLandmarkName());
+                    mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
+                }
                 hide();
             }
         });
 
-        view_mask_bg.setOnClickListener(this);
-
-        ll_price.setOnClickListener(this);
+        view_mask_bg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KLog.i("view_mask_bg click----------");
+                mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
+                view_mask_bg.setVisibility(View.GONE);
+                ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
+            }
+        });
     }
 
     private void show() {
@@ -255,25 +319,91 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
         ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
     }
 
-    // 设置低价优先数据
-    private void setPriceFilter() {
-        tv_price.setTextColor(getContext().getResources().getColor(R.color.orange));
-        iv_price_arrow.setImageResource(R.mipmap.home_up_arrow);
+    // 设置推荐筛选数据
+    private void setRecommendSelect() {
+        mRecommendTv.setTextColor(getContext().getResources().getColor(R.color.orange));
+        mRecommendImgArrow.setImageResource(R.mipmap.home_up_arrow);
+    }
+
+    // 设置好评率筛选数据
+    private void setGoodCommSelect() {
+        mGoodCommTv.setTextColor(getContext().getResources().getColor(R.color.orange));
+        mGoodCommImgArrow.setImageResource(R.mipmap.home_up_arrow);
+    }
+
+    // 设置价格筛选数据
+    private void setPriceSelect() {
+        mPriceTv.setTextColor(getContext().getResources().getColor(R.color.orange));
+        mPriceImgArrow.setImageResource(R.mipmap.home_up_arrow);
     }
 
     // 设置位置筛选数据
-    private void setFilterFilter() {
-        tv_filter.setTextColor(getContext().getResources().getColor(R.color.orange));
-        iv_filter_arrow.setImageResource(R.mipmap.home_up_arrow);
+    private void setFilterSelect() {
+        mFilterTv.setTextColor(getContext().getResources().getColor(R.color.orange));
+        mFilterArrow.setImageResource(R.mipmap.home_up_arrow);
     }
 
     // 复位筛选的显示状态
     public void resetFilterStatus() {
-        tv_price.setTextColor(getContext().getResources().getColor(R.color.green_light));
-        iv_price_arrow.setImageResource(R.mipmap.home_down_arrow);
+        mRecommendTv.setTextColor(getContext().getResources().getColor(R.color.green_light));
+        mRecommendImgArrow.setImageResource(R.mipmap.home_down_arrow);
+        mGoodCommTv.setTextColor(getContext().getResources().getColor(R.color.green_light));
+        mGoodCommImgArrow.setImageResource(R.mipmap.home_down_arrow);
+        mPriceTv.setTextColor(getContext().getResources().getColor(R.color.green_light));
+        mPriceImgArrow.setImageResource(R.mipmap.home_down_arrow);
+        mFilterTv.setTextColor(getContext().getResources().getColor(R.color.green_light));
+        mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
+    }
 
-        tv_filter.setTextColor(getContext().getResources().getColor(R.color.green_light));
-        iv_filter_arrow.setImageResource(R.mipmap.home_down_arrow);
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_recommend:
+                flag = 1;
+                reCommendAdapter.clearAll();
+                reCommendAdapter.addAll(Arrays.asList(mRecommendLists));
+                filterListView.setAdapter(reCommendAdapter);
+                resetFilterStatus();
+                setRecommendSelect();
+                if(view_mask_bg.isShown()) return;
+                show();
+                break;
+            case R.id.ll_good_first:
+                flag = 2;
+                goodCommAdapter.clearAll();
+                goodCommAdapter.addAll(Arrays.asList(mGoodCommLists));
+                filterListView.setAdapter(goodCommAdapter);
+                resetFilterStatus();
+                setGoodCommSelect();
+                if(view_mask_bg.isShown()) return;
+                show();
+                break;
+            case R.id.ll_price:
+                flag = 3;
+                priceAdapter.clearAll();
+                priceAdapter.addAll(Arrays.asList(mPriceLists));
+                filterListView.setAdapter(priceAdapter);
+                resetFilterStatus();
+                setPriceSelect();
+                if(view_mask_bg.isShown()) return;
+                show();
+                break;
+            case R.id.ll_filter:
+                flag = 4;
+                if(mFilterLists != null) {
+                    filteAdapter.clearAll();
+                    filteAdapter.addAll(mFilterLists);
+                    filterListView.setAdapter(filteAdapter);
+                    resetFilterStatus();
+                    setFilterSelect();
+                    if(view_mask_bg.isShown()) return;
+                    show();
+                }else {
+                    //到远程服务器加载位置筛选的数据
+                    initLandMarkFilter(mSceneryId);
+                }
+                break;
+        }
     }
 
     /**
@@ -308,6 +438,7 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
     @Override
     public void onResume() {
         super.onResume();
+        queryStoresByOptions();
         Picasso.with(context).resumeTag(context);
     }
 
@@ -321,7 +452,7 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
     public void onDestroy() {
         super.onDestroy();
         Picasso.with(context).cancelTag(context);
-        mPresenter.detachView();
+//        mPresenter.detachView();
     }
 
     @Override
@@ -346,47 +477,6 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
     @Override
     public void showToast(String showMessage) {
 
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ll_price:
-                flag = 3;
-                //设置数据到listview
-                priceAdapter = new QuickAdapter<String>(context, R.layout.filter_listview_item) {
-                    @Override
-                    protected void convert(BaseAdapterHelper helper, String item) {
-                        helper.setText(R.id.filter_item_content, item);
-                    }
-                };
-                priceAdapter.clearAll();
-                priceAdapter.addAll(Arrays.asList(playItems));
-                filterListView.setAdapter(priceAdapter);
-                resetFilterStatus();
-                setPriceFilter();
-                if(view_mask_bg.isShown()) return;
-                    show();
-                break;
-            case R.id.ll_filter:
-                flag = 4;
-                if(filteAdapter != null) {
-                    filteAdapter.clearAll();
-                    filteAdapter.addAll(filterLists);
-                    filterListView.setAdapter(filteAdapter);
-                    resetFilterStatus();
-                    setFilterFilter();
-                    if(view_mask_bg.isShown()) return;
-                    show();
-                }else {
-                    initLandMarkFilter(mSceneryId);
-                }
-                break;
-            case R.id.view_mask_bg:
-//                resetFilterStatus();
-                hide();
-                break;
-        }
     }
 
     private void initLandMarkFilter(int sceneryId) {
@@ -436,19 +526,12 @@ public class ShopListPlayFragment extends BaseFragment implements CommonView<Sho
                 if(markBean == null) return;
                 code = markBean.getCode();
                 if(code == 1) {
-                    //设置数据到listview
-                    filteAdapter = new QuickAdapter<LandMark>(context, R.layout.filter_listview_item) {
-                        @Override
-                        protected void convert(BaseAdapterHelper helper, LandMark item) {
-                            helper.setText(R.id.filter_item_content, item.getLandmarkName());
-                        }
-                    };
-                    filterLists = markBean.getMessage().getResult();
-                    filteAdapter.clearAll();
-                    filteAdapter.addAll(filterLists);
+                    mFilterLists = markBean.getMessage().getResult();
+                    filteAdapter.addAll(mFilterLists);
                     filterListView.setAdapter(filteAdapter);
+                    KLog.i("ll_category click----------");
                     resetFilterStatus();
-                    setFilterFilter();
+                    setFilterSelect();
                     show();
                 }
                 break;
