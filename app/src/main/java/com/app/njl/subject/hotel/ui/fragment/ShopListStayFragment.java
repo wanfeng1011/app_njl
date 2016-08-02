@@ -1,10 +1,13 @@
 package com.app.njl.subject.hotel.ui.fragment;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -17,12 +20,12 @@ import android.widget.TextView;
 
 import com.app.njl.R;
 import com.app.njl.activity.MainActivity;
-import com.app.njl.base.BaseFragment;
 import com.app.njl.subject.hotel.model.entity.landmark.LandMark;
 import com.app.njl.subject.hotel.model.entity.landmark.SceneryLandMarkBean;
-import com.app.njl.subject.hotel.model.entity.shoplist.Shop;
-import com.app.njl.subject.hotel.model.entity.shoplist.ShopListBean;
+import com.app.njl.subject.hotel.model.entity.shoplist.ShopCommonMessage;
+import com.app.njl.subject.hotel.model.entity.shoplist.StoreListStayBean;
 import com.app.njl.subject.hotel.presenter.interfaces.IShopListStayQueryPresenter;
+import com.app.njl.subject.hotel.ui.fragment.base.StoreListBaseFragment;
 import com.app.njl.subject.hotel.view.CommonView;
 import com.app.njl.subject.mine.nohttp.CallServer;
 import com.app.njl.subject.mine.nohttp.Constants;
@@ -33,6 +36,7 @@ import com.app.njl.ui.loadmore.LoadMoreListView;
 import com.app.njl.ui.quickadapter.BaseAdapterHelper;
 import com.app.njl.ui.quickadapter.QuickAdapter;
 import com.app.njl.utils.JsonEasy;
+import com.app.njl.utils.SharedPreferences;
 import com.socks.library.KLog;
 import com.squareup.picasso.Picasso;
 import com.yolanda.nohttp.Request;
@@ -49,14 +53,14 @@ import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
-public class ShopListStayFragment extends BaseFragment implements CommonView<Shop>, HttpListener<String> {
-    private MainActivity context;
+public class ShopListStayFragment extends StoreListBaseFragment implements CommonView<StoreListStayBean.MessageBean.ResultBean>, HttpListener<String> {
+    private Activity context;
 
     @Bind(R.id.rotate_header_list_view_frame)
     PtrClassicFrameLayout mPtrFrame;
     @Bind(R.id.listView)
     LoadMoreListView listView;
-    QuickAdapter<Shop> adapter;
+    QuickAdapter<StoreListStayBean.MessageBean.ResultBean> adapter;
 
     @Bind(R.id.ll_content_list_view)
     LinearLayout ll_content_list_view;
@@ -67,7 +71,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
     TextView mRecommendTv;
     @Bind(R.id.iv_recommend_arrow)
     ImageView mRecommendImgArrow;
-    String mRecommendLists[] = new String[] {"高到低", "低到高"};
+    String mRecommendLists[] = new String[] {"低到高", "高到低"};
     QuickAdapter<String> reCommendAdapter;
 
     //好评率
@@ -77,7 +81,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
     TextView mGoodCommTv;
     @Bind(R.id.iv_good_first_arrow)
     ImageView mGoodCommImgArrow;
-    String mGoodCommLists[] = new String[] {"高到低", "低到高"};
+    String mGoodCommLists[] = new String[] {"低到高", "高到低"};
     QuickAdapter<String> goodCommAdapter;
 
     //价格
@@ -87,7 +91,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
     TextView mPriceTv;
     @Bind(R.id.iv_price_arrow)
     ImageView mPriceImgArrow;
-    String mPriceLists[] = new String[] {"高到低", "低到高"};
+    String mPriceLists[] = new String[] {"低到高", "高到低"};
     QuickAdapter<String> priceAdapter;
 
     //位置
@@ -114,13 +118,17 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
 
     //Presenter
     IShopListStayQueryPresenter mPresenter;
-    private List<Shop> lists = new ArrayList<>();
+    private List<StoreListStayBean.MessageBean.ResultBean> lists = new ArrayList<>();
 
     private int mSceneryId;
     private int mPageNo = 1;
     private int mPageSize = 10;
     private int mTotalPage;
     private int flag = 0; //条件类型
+
+    private int mSort = 0; //0：表示按照默认排序1： 按照推荐排序2：按照好评数排序3：价格低价排序
+    private int mSortOrder = 0; //0 表示升序 1表示降序
+    private int mLandMarkId = -1; //地标id
 
     public ShopListStayFragment() {
 
@@ -133,7 +141,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        context = (MainActivity) getActivity();
+        context = getActivity();
     }
 
     @Override
@@ -144,15 +152,27 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
     @Override
     public void initView() {
         //设置界面主数据
-        context = (MainActivity) getActivity();
-        adapter = new QuickAdapter<Shop>(context, R.layout.shopliststay_fragment_item) {
+        context = getActivity();
+        adapter = new QuickAdapter<StoreListStayBean.MessageBean.ResultBean>(context, R.layout.shopliststay_fragment_item) {
             @Override
-            protected void convert(BaseAdapterHelper helper, Shop shop) {
+            protected void convert(BaseAdapterHelper helper, StoreListStayBean.MessageBean.ResultBean shop) {
+                String typeStr = "";
+                String positionStr = "";
+                if(mSort == 1) {
+                    typeStr = shop.getRecommendNum() + "推荐";
+                }else {
+                    typeStr = shop.getGoodCommentNum() + "好评/" + shop.getTotalCommentNum() + "评论";
+                }
+                if(!mFilterTv.getText().equals("位置筛选") && !mFilterTv.getText().equals("不限")) {
+                    positionStr = shop.getAddressDistinct() + "-" + mFilterTv.getText();
+                }else {
+                    positionStr = shop.getAddressDistinct();
+                }
                 helper.setText(R.id.name, shop.getShopName())
-                        //.setText(R.id.favorable, shop.getContent())
-                        //.setText(R.id.star, shop.getStar() + "分")
+                        .setText(R.id.comment, typeStr)
+                        .setText(R.id.position, positionStr)
                         .setText(R.id.state, "预定动态")
-                        .setText(R.id.price, "住" + shop.getLiveLowestPrice() + "起")
+                        .setText(R.id.price, "￥" + shop.getCheapestPrice() + "起")
                         .setImageUrl(R.id.logo, shop.getShopPic()); // 自动异步加载图片
             }
         };
@@ -233,8 +253,8 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
         listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                mPageNo++;
-                initRemoteData();
+//                mPageNo++;
+//                initRemoteData();
             }
         });
 
@@ -243,7 +263,23 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (lists.size() > 1) {
-                    replaceFragment(lists.get(i).getShopName());
+                    Intent intent = new Intent(getActivity(), ShopDetailPagerActivity.class);
+                    ShopCommonMessage commonMessage = new ShopCommonMessage();
+                    commonMessage.setShopId(lists.get(i).getShopId());
+                    commonMessage.setShopName(lists.get(i).getShopName());
+                    commonMessage.setLocation(new ShopCommonMessage.Location(lists.get(i).getLocation().getLon(), lists.get(i).getLocation().getLat()));
+                    commonMessage.setLandmarkId(lists.get(i).getLandmarkId());
+                    commonMessage.setTotalCommentNum(lists.get(i).getTotalCommentNum());
+                    commonMessage.setGoodCommentNum(lists.get(i).getGoodCommentNum());
+                    commonMessage.setRecommendNum(lists.get(i).getRecommendNum());
+                    commonMessage.setDefaultSort(lists.get(i).getShopId());
+                    commonMessage.setAddressDetail(lists.get(i).getAddressDetail());
+                    commonMessage.setAddressCity(lists.get(i).getAddressCity());
+                    commonMessage.setAddressProvince(lists.get(i).getAddressProvince());
+                    commonMessage.setAddressDistinct(lists.get(i).getAddressDistinct());
+                    intent.putExtra("shopCommonMessage", commonMessage);
+                    intent.putExtra("type", 0);
+                    getActivity().startActivity(intent);
                 }
             }
         });
@@ -273,10 +309,50 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 KLog.i("filterListView click----------");
-                if(flag == 4) {
+                mPageNo = 1;
+                if(flag == 1) {
+                    mSort = 1;
+                    if(position == 0) {
+                        mSortOrder = 0;
+                        mRecommendTv.setText("推荐升序");
+                    }else if(position == 1) {
+                        mSortOrder = 1;
+                        mRecommendTv.setText("推荐降序");
+                    }
+                    //还原除位置的其他设置
+                    mGoodCommTv.setText("好评排序");
+                    mPriceTv.setText("价格排序");
+                }else if(flag == 2) {
+                    mSort = 2;
+                    if(position == 0) {
+                        mSortOrder = 0;
+                        mGoodCommTv.setText("好评升序");
+                    }else if(position == 1) {
+                        mSortOrder = 1;
+                        mGoodCommTv.setText("好评降序");
+                    }
+                    //还原除位置的其他设置
+                    mRecommendTv.setText("推荐排序");
+                    mPriceTv.setText("价格排序");
+                }else if(flag == 3) {
+                    mSort = 3;
+                    if(position == 0) {
+                        mSortOrder = 0;
+                        mPriceTv.setText("价格升序");
+                    }else if(position == 1) {
+                        mSortOrder = 1;
+                        mPriceTv.setText("价格降序");
+                    }
+                    //还原除位置的其他设置
+                    mRecommendTv.setText("推荐排序");
+                    mGoodCommTv.setText("好评排序");
+                }else if(flag == 4) {
+                    mLandMarkId = mFilterLists.get(position).getLandmarkId();
                     mFilterTv.setText(mFilterLists.get(position).getLandmarkName());
                     mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
                 }
+                //搜索店家
+                queryStoresByOptions(null);
                 hide();
             }
         });
@@ -285,6 +361,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
             @Override
             public void onClick(View v) {
                 KLog.i("view_mask_bg click----------");
+                resetFilterStatus();
                 mFilterArrow.setImageResource(R.mipmap.home_down_arrow);
                 view_mask_bg.setVisibility(View.GONE);
                 ObjectAnimator.ofFloat(ll_content_list_view, "translationY", 0, -panelHeight).setDuration(200).start();
@@ -403,7 +480,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
     /**
      * 跳转到fragment界面
      */
-    private void replaceFragment(String name) {
+    private void replaceFragment(String name, int ShopId) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = new ShopDetailPagerFragment();
@@ -421,6 +498,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
             }
             Bundle bundle = new Bundle();
             bundle.putString("title", name);
+            bundle.putInt("shopId", ShopId);
             fragment.setArguments(bundle);
             fragmentTransaction.add(R.id.fragment_container, fragment, "ShopDetailPagerFragment");
         }
@@ -433,7 +511,7 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
     public void onResume() {
         super.onResume();
         Log.i("result", "result lists4:");
-        queryStoresByOptions();
+        queryStoresByOptions(null);
         Picasso.with(context).resumeTag(context);
     }
 
@@ -451,11 +529,11 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
     }
 
     @Override
-    public void loadSuccess(List<Shop> fruits) {
-        lists.addAll(fruits);
-        listView.updateLoadMoreViewText(fruits);
+    public void loadSuccess(List<StoreListStayBean.MessageBean.ResultBean> stores) {
+        lists.addAll(stores);
+        listView.updateLoadMoreViewText(stores);
         listView.onLoadMoreComplete();
-        adapter.addAll(fruits);
+        adapter.addAll(stores);
     }
 
     @Override
@@ -483,15 +561,23 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
         CallServer.getRequestInstance().add(getContext(), HttpConstants.QUERY_STORE_LANDMARKS, request, this, true, true);
     }
 
-    private void queryStoresByOptions() {
-        Log.i("sceneryId", "mSceneryId:" + mSceneryId);
-        Request<String> request = new StringRequestImpl(Constants.BASE_PATH + "shopList/list", RequestMethod.POST);
+    @Override
+    public void queryStoresByOptions(String shopName) {
+        String startDate = SharedPreferences.getInstance().getInt("live_in_year", 0) + "-" + SharedPreferences.getInstance().getInt("live_in_month", 0) + "-" + SharedPreferences.getInstance().getInt("live_in_day", 0);
+        String endDate = SharedPreferences.getInstance().getInt("live_out_year", 0) + "-" + SharedPreferences.getInstance().getInt("live_out_month", 0) + "-" + SharedPreferences.getInstance().getInt("live_out_day", 0);
+        Request<String> request = new StringRequestImpl(Constants.BASE_PATH + "shopList/listHotel", RequestMethod.POST);
         request.add("resortId", mSceneryId);
-        request.add("productType", 1);
-        request.add("sort", 1);
-        request.add("sortOrder", 1);
-        request.add("page", mPageNo);
+        request.add("sort", mSort);
+        request.add("sortOrder", mSortOrder);
+        request.add("page", 1);
         request.add("pageSize", mPageSize);
+        request.add("startDate", startDate);
+        request.add("endDate", endDate);
+        if(mLandMarkId != -1)
+            request.add("landmarkId", mLandMarkId);
+        if(!TextUtils.isEmpty(shopName))
+            request.add("shopName", shopName);
+        Log.i("sceneryId", "mSceneryId:" + mSceneryId + " " + mSort + " " + mSortOrder + " " + mPageNo + " " + mPageSize + " " + startDate + " " + endDate + " " + mLandMarkId + " " + shopName);
         CallServer.getRequestInstance().add(getContext(), HttpConstants.QUERY_STORES_BYOPTIONS, request, this, true, true);
     }
 
@@ -502,21 +588,27 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
         switch (what) {
             case HttpConstants.QUERY_STORES_BYOPTIONS:
                 Log.i("result", "result get store list:" + result);
-                ShopListBean bean = JsonEasy.toObject(result, ShopListBean.class);
+                StoreListStayBean bean = JsonEasy.toObject(result, StoreListStayBean.class);
                 if(bean == null) return;
                 Log.i("result", "result get store list bean2:" + bean.getMessage().getTotalNumber() + " " + bean.getMessage().getPageSize() + " " + bean.getMessage().getPageNum());
                 code = bean.getCode();
                 if(code == 1) {
                     if(bean.getMessage() == null) return;
                     mTotalPage = bean.getMessage().getTotalNumber();
-                    List<Shop> shops = bean.getMessage().getResult();
+                    List<StoreListStayBean.MessageBean.ResultBean> shops = bean.getMessage().getResult();
                     Log.i("result", "result lists:" + lists.toString());
-                    Log.i("result", "result lists2:" + listView);
-                    Log.i("result", "result lists3:" + adapter);
-                    lists.addAll(shops);
-                    listView.updateLoadMoreViewText(shops);
-                    listView.onLoadMoreComplete();
-                    adapter.addAll(shops);
+                    if(mPageNo == 1) {
+                        lists.clear();
+                        adapter.clearAll();
+                    }
+                    if(listView != null) {
+                        if(lists == null)
+                            lists = new ArrayList<>();
+                        lists.addAll(shops);
+                        listView.updateLoadMoreViewText(shops);
+                        listView.onLoadMoreComplete();
+                        adapter.addAll(shops);
+                    }
                 }
                 break;
             case HttpConstants.QUERY_STORE_LANDMARKS:
@@ -526,6 +618,11 @@ public class ShopListStayFragment extends BaseFragment implements CommonView<Sho
                 code = markBean.getCode();
                 if(code == 1) {
                     mFilterLists = markBean.getMessage().getResult();
+                    //设置不限
+                    LandMark landMark = new LandMark();
+                    landMark.setLandmarkId(-1);
+                    landMark.setLandmarkName("不限");
+                    mFilterLists.add(landMark);
                     filteAdapter.addAll(mFilterLists);
                     filterListView.setAdapter(filteAdapter);
                     KLog.i("ll_category click----------");

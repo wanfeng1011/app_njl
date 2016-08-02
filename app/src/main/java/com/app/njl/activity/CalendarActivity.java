@@ -65,10 +65,12 @@ public class CalendarActivity extends BaseActivity implements DatePickerControll
 
         KLog.e("Date range selected", selectedDays.getFirst().toString() + " --> " + selectedDays.getLast().toString());
         //设置住店、离店日期到SharePreference
-        SharedPreferences.getInstance().putString("live_in", selectedDays.getFirst().getMonth()
-                + "月" + selectedDays.getFirst().getDay() + "日");
-        SharedPreferences.getInstance().putString("live_out", selectedDays.getLast().getMonth()
-                + "月" + selectedDays.getLast().getDay() + "日");
+        SharedPreferences.getInstance().putInt("live_in_year", selectedDays.getFirst().getYear());
+        SharedPreferences.getInstance().putInt("live_in_month", selectedDays.getFirst().getMonth());
+        SharedPreferences.getInstance().putInt("live_in_day", selectedDays.getFirst().getDay());
+        SharedPreferences.getInstance().putInt("live_out_year", selectedDays.getLast().getYear());
+        SharedPreferences.getInstance().putInt("live_out_month", selectedDays.getLast().getMonth());
+        SharedPreferences.getInstance().putInt("live_out_day", selectedDays.getLast().getDay());
         int daysCount = daysBetween(selectedDays.getFirst().getYear() + "-" + selectedDays.getFirst().getMonth()
                 + "-" + selectedDays.getFirst().getDay() + " 00:00:00", selectedDays.getLast().getYear() + "-" + selectedDays.getLast().getMonth()
                 + "-" + selectedDays.getLast().getDay() + " 00:00:00");

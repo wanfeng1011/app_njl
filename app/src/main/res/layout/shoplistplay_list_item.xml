@@ -7,8 +7,13 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="70dp"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="95dp"
+        android:layout_weight="3"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/default_image" />
 
@@ -16,7 +21,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3.5"
+        android:layout_weight="7"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -31,86 +36,78 @@
             android:textColor="@color/font_black_2"
             android:textSize="@dimen/text_size_16" />
 
-        <TextView
-            android:id="@+id/favorable"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="123好评/200条评论"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_13" />
-        <TextView
-            android:id="@+id/star"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="2dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="合肥"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_16" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/font_black_2"
+                android:textSize="@dimen/text_size_14" />
+            <TextView
+                android:id="@+id/specialPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/green_light"
+                android:textSize="@dimen/text_size_16" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/state"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="10dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_13" />
-    </LinearLayout>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/position"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="合肥"
+                android:textColor="@color/font_black_2"
+                android:textSize="@dimen/text_size_14" />
+            <TextView
+                android:id="@+id/guidePrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/green_light"
+                android:textSize="@dimen/text_size_16" />
+        </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/ticket"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="门  票25元起"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_13" />
-        <TextView
-            android:id="@+id/tour_guide"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="10dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="导   游30元起"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_13" />
-        <TextView
-            android:id="@+id/self_help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="10dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="自助游20元起"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_13" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/font_black_2"
+                android:textSize="@dimen/text_size_13" />
+            <TextView
+                android:id="@+id/ticketPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/green_light"
+                android:textSize="@dimen/text_size_16" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

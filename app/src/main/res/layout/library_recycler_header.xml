@@ -88,7 +88,7 @@
                                 android:layout_centerInParent="true"
                                 android:gravity="center"
                                 android:background="@null"
-                                android:hint="西湖"
+                                android:hint="九华山"
                                 android:imeOptions="actionSearch"
                                 android:textColorHint="@color/green_light"
                                 android:textColor="@color/green_light"

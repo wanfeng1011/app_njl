@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.app.njl.base.BaseFragment;
 import com.app.njl.dialog.CustomDialog2;
 import com.app.njl.subject.hotel.adapter.CommonPagerAdapter;
 import com.app.njl.subject.hotel.model.entity.shoplist.ShopListBean;
+import com.app.njl.subject.hotel.ui.fragment.base.StoreListBaseFragment;
 import com.app.njl.subject.mine.nohttp.CallServer;
 import com.app.njl.subject.mine.nohttp.Constants;
 import com.app.njl.subject.mine.nohttp.HttpConstants;
@@ -54,6 +56,11 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
     @Bind(R.id.live_time_tv)
     TextView live_time_tv; //离店日期
 
+    @Bind(R.id.et_store)
+    EditText mStoreEt;
+    @Bind(R.id.searchTv)
+    TextView mSearchTv;
+
     private int mSceneryId; //景区id
     private int mPageNo = 1;
     private int mPageSize = 10;
@@ -68,6 +75,7 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
     @Bind(R.id.destination_first_tv)
     TextView destination_first_tv;
 
+    List<BaseFragment> fragments;
     FragmentPagerAdapter adapter;
 
     @Override
@@ -90,7 +98,7 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
 
     @Override
     public void initLocalData() {
-        setStayTime();
+
     }
 
     @Override
@@ -107,11 +115,18 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
 
         iv_back.setOnClickListener(this);
         stay_time_select_ll.setOnClickListener(this);
+        mSearchTv.setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setStayTime();
     }
 
     public void setStayTime() {
-        String stay_in = SharedPreferences.getInstance().getString("live_in", "住店:");
-        String live_out = SharedPreferences.getInstance().getString("live_out", "离店:");
+        String stay_in = SharedPreferences.getInstance().getInt("live_in_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_in_day", 0) + "日";
+        String live_out = SharedPreferences.getInstance().getInt("live_out_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_out_day", 0) + "日";
         stay_time_tv.setText("住店:" + stay_in);
         live_time_tv.setText("离店:" + live_out);
     }
@@ -121,11 +136,11 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
      */
     private void initPagerAdapter() {
         Log.i("sceneryId", "mSceneryId:" + mSceneryId);
-        List<BaseFragment> fragments = new ArrayList<>();
+        fragments = new ArrayList<>();
         fragments.add(new ShopListStayFragment(mSceneryId));
-        fragments.add(new ShopListOrderFragment());
-        fragments.add(new ShopListPlayFragment());
-        fragments.add(new ShopListSpecialtyFragment());
+        fragments.add(new ShopListOrderFragment(mSceneryId));
+        fragments.add(new ShopListPlayFragment(mSceneryId));
+        fragments.add(new ShopListSpecialtyFragment(mSceneryId));
         String[] mTitles = getContext().getResources().getStringArray(R.array.shop_item_title);
         adapter = new CommonPagerAdapter(getChildFragmentManager(), fragments, mTitles);
         pager.setAdapter(adapter);
@@ -197,6 +212,14 @@ public class ShopListPagerFragment extends BaseFragment implements View.OnTouchL
                 Intent intent_live = new Intent(getContext(), CalendarActivity.class);
                 getActivity().startActivityForResult(intent_live, 3);
                 getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+                break;
+            case R.id.searchTv:
+                String searchWords = mStoreEt.getText().toString();
+                /*if(TextUtils.isEmpty(searchWords)) {
+                    return;
+                }*/
+                int current = pager.getCurrentItem();
+                ((StoreListBaseFragment)fragments.get(current)).queryStoresByOptions(searchWords);
                 break;
         }
     }

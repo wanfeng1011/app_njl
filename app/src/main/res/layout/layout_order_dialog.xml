@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/white">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -17,7 +19,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="0dp"
-                android:text="请选择时间和餐次：" />
+                android:text="请选择时间和餐次："
+                android:textColor="@color/green_light"/>
         </LinearLayout>
 
         <LinearLayout
@@ -32,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="0dp"
-                android:text="11月12日   晚餐" />
+                android:text="11月12日   晚餐"
+                android:textColor="@color/green_light"/>
             <ImageView
                 android:id="@+id/order_select_arrow"
                 android:layout_width="wrap_content"
@@ -44,6 +48,11 @@
         </LinearLayout>
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/green_light"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -51,26 +60,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <in.srain.cube.views.ptr.PtrClassicFrameLayout
-                xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/order_rotate_header_list_view_frame"
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                cube_ptr:ptr_duration_to_close="300"
-                cube_ptr:ptr_duration_to_close_header="2000"
-                cube_ptr:ptr_keep_header_when_refresh="true"
-                cube_ptr:ptr_pull_to_fresh="false"
-                cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-                cube_ptr:ptr_resistance="1.7">
+                android:background="@color/white"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-
-                <com.app.njl.ui.loadmore.LoadMoreListView
-                    android:id="@+id/order_listView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    style="@style/CommonListViewStyle" />
-
-            </in.srain.cube.views.ptr.PtrClassicFrameLayout>
         </LinearLayout>
 
         <FrameLayout
@@ -88,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@color/gray_deep"
+                android:background="@color/white"
                 android:visibility="gone">
                 <LinearLayout
                     android:layout_width="match_parent"

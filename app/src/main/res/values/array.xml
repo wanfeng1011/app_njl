@@ -9,6 +9,12 @@
 
 	</string-array>
 
+	<string-array name="shop_comment_title">
+		<item>评论</item>
+		<item>推荐</item>
+
+	</string-array>
+
 	<string-array name="order_item_title">
 		<item>已付款</item>
 		<item>待付款</item>

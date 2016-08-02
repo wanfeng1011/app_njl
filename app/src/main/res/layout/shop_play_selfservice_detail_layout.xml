@@ -1,164 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="200dp"
+        android:fitsSystemWindows="true">
 
-        <ImageView
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@mipmap/hotel"/>
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="@color/green_light">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="自助项目描述"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7">
+
+                <com.app.njl.ui.loopviewpager.AutoLoopViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/picNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/background_view_rounded_translate"
+                    android:gravity="center"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="?attr/homeAsUpIndicator">
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/detail_msg_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:paddingBottom="10dp"
-            android:background="@drawable/order_rect_green_button"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="游船项目预计用时2小时，提供泳衣。"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="游玩过程有全程解说。"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="特别适合情侣、亲子游玩。"/>
-        </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/bottom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/shopPlaySelfServiceDetail_backTv"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_weight="1"
-            android:text="返回"
-            android:gravity="center"
-            style="@style/button_textview_style"/>
-        <TextView
-            android:id="@+id/shopPlaySelfServiceDetail_addShoppingCartTv"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_weight="1"
-            android:text="加入购物车"
-            android:gravity="center"
-            style="@style/button_textview_style"/>
-        <TextView
-            android:id="@+id/shopPlaySelfServiceDetail_buyNowTv"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_weight="1"
-            android:text="立即购买"
-            android:gravity="center"
-            style="@style/button_textview_style"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/courseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="自助项目描述"
+                android:textColor="@color/font_black_2" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/gray_bg" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="预订须知"
+                android:textColor="@color/font_black_2" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/noticeRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_layout"
+        android:layout_gravity="bottom"
         android:orientation="vertical">
-        <RelativeLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/gray_bg" />
+        <LinearLayout
+            android:id="@+id/stay_live_time_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/order_rect_green_button"
-            android:layout_marginBottom="2dp"
+            android:layout_alignParentBottom="true"
+            android:padding="5dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
-            <LinearLayout
-                android:id="@+id/stay_time_select_ll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/selfService_playTimeTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center_vertical"
-                    android:text="游玩时间：XXXX"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
-                    android:layout_gravity="center_vertical"
-                    android:scaleType="center"
-                    android:src="@mipmap/select"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center_vertical|right"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/select"
-                    android:scaleType="center"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2"
-                    android:padding="2dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:background="@drawable/rect_bg"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/select_up"
-                    android:scaleType="center"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="份"/>
-            </LinearLayout>
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:drawableLeft="@mipmap/calendar_logo"
+                android:drawablePadding="5dp"
+                android:imeOptions="actionSearch"
+                android:text="入住"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/stay_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
                 android:gravity="center_vertical"
-                android:text="总额：Y120"/>
-        </RelativeLayout>
+                android:imeOptions="actionSearch"
+                android:layout_marginLeft="5dp"
+                android:text="请选择"
+                android:textColor="@color/green_light"
+                android:textSize="12sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:imeOptions="actionSearch"
+                android:layout_marginLeft="25dp"
+                android:text="离店"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/live_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:imeOptions="actionSearch"
+                android:layout_marginLeft="5dp"
+                android:text="-"
+                android:textColor="@color/green_light"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right">
+                <TextView
+                    android:id="@+id/tv_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:drawableRight="@mipmap/forward_right"
+                    android:drawablePadding="5dp"
+                    android:text="共1晚"
+                    android:textSize="12sp"
+                    android:textColor="@color/font_black_2"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/roomPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/text_color_red"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/addShoppingCartTv"
+                    style="@style/button_textview_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="7dp"
+                    android:layout_margin="5dp"
+                    android:text="加入购物车"
+                    android:textSize="@dimen/text_size_16"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/buyNowTv"
+                    style="@style/button_textview_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="7dp"
+                    android:layout_margin="5dp"
+                    android:text="申请预定"
+                    android:textSize="@dimen/text_size_16"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

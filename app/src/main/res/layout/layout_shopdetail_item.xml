@@ -1,87 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_view"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:background="@color/white"
-    android:padding="2dp">
-
-    <ImageView
-        android:id="@+id/img_detail"
-        android:layout_width="70dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:scaleType="center"
-        android:src="@mipmap/default_image"/>
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3.5"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:background="@drawable/login_rect_white">
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="2dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="房型1（床型）"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_16" />
+        android:orientation="horizontal"
+        android:padding="2dp">
 
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
+        <ImageView
+            android:id="@+id/img_detail"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="7dp"
             android:layout_marginLeft="5dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="配置规格"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_13" />
-    </LinearLayout>
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="7dp"
+            android:scaleType="center"
+            android:src="@mipmap/default_image" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1.5"
-        android:layout_gravity="center"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3.5"
+            android:background="@drawable/login_rect_white"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="房型1（床型）"
+                android:textColor="@color/font_black_2"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="配置规格"
+                android:textColor="@color/gray_light"
+                android:textSize="@dimen/text_size_13" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1.5"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/green_light"
+                android:textSize="@dimen/text_size_15" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="住120起"
-            android:textColor="@color/font_black_2"
-            android:textSize="@dimen/text_size_13" />
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <TextView
+                style="@style/button_textview_style"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:text="购买" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:padding="2dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="26dp"
-            android:text="购买"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            style="@style/button_textview_style"/>
-    </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray_bg" />
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +39,12 @@ public class ShopDetailPagerFragment extends BaseFragment implements View.OnClic
     @Bind(R.id.pager)
     ViewPager pager;
 
-    @Bind(R.id.back_ll)
-    LinearLayout backLl; //返回
-    @Bind(R.id.title)
-    TextView titleTv; //标题
+    //@Bind(R.id.back_ll)
+    //LinearLayout backLl; //返回
+    //@Bind(R.id.title)
+    //TextView titleTv; //标题
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     @Bind(R.id.stay_live_time_ll)
     LinearLayout stay_live_time_ll; //住店、离店
@@ -67,6 +70,12 @@ public class ShopDetailPagerFragment extends BaseFragment implements View.OnClic
             "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
             "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg"));
 
+    private int mShopId;
+
+    public int getmShopId() {
+        return mShopId;
+    }
+
     @Override
     public int getLayoutRes() {
         getActivity().findViewById(R.id.layoutFooter).setVisibility(View.GONE);
@@ -75,6 +84,12 @@ public class ShopDetailPagerFragment extends BaseFragment implements View.OnClic
 
     @Override
     public void initView() {
+//        setSupportActionBar(toolbar);
+//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity)getActivity()).setTitle("toolbar");
+
+        // 设置返回主页的按钮
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String[] titles = getResources().getStringArray(R.array.shop_item_title);
         List<BaseFragment> fragments = new ArrayList<>();
         fragments.add(new ShopDetailStayFragment());
@@ -98,7 +113,8 @@ public class ShopDetailPagerFragment extends BaseFragment implements View.OnClic
     @Override
     public void initLocalData() {
         String title = getArguments().getString("title");
-        titleTv.setText(title);
+        mShopId = getArguments().getInt("shopId", 0);
+        //titleTv.setText(title);
         imageViewIds = new int[] { R.mipmap.house_background, R.mipmap.house_background_1, R.mipmap.house_background_2};
 
         galleryAdapter = new DetailPagerGalleryPagerAdapter();
@@ -121,10 +137,10 @@ public class ShopDetailPagerFragment extends BaseFragment implements View.OnClic
     }
 
     public void setStayLiveTime() {
-        String stay_in = SharedPreferences.getInstance().getString("live_in", "住店:");
-        String live_out = SharedPreferences.getInstance().getString("live_out", "离店:");
-        stay_time_tv.setText("住店:" + stay_in);
-        live_time_tv.setText("离店:" + live_out);
+        String stay_in = SharedPreferences.getInstance().getInt("live_in_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_in_day", 0) + "日";
+        String live_out = SharedPreferences.getInstance().getInt("live_out_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_out_day", 0) + "日";
+        stay_time_tv.setText(stay_in);
+        live_time_tv.setText(live_out);
     }
 
     @Override

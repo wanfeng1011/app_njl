@@ -57,12 +57,12 @@ public class ShopDetailOrderQueryPresenterImpl extends IShopDetailOrderPresenter
     @Override
     public void getPickListEntity() {
         PickerListEntity entity = shopDetailOrderQueryModel.getPickerListEntity();
-        ((ShopDetailOrderFragment)getMvpView()).loadOtherData(entity);
+//        ((ShopDetailOrderFragment)getMvpView()).loadOtherData(entity);
     }
 
     @Override
     public void loadDaysList(int month) {
         List<String> lists = shopDetailOrderQueryModel.loadDaysList(month);
-        ((ShopDetailOrderFragment)getMvpView()).loadDaysList(lists);
+//        ((ShopDetailOrderFragment)getMvpView()).loadDaysList(lists);
     }
 }

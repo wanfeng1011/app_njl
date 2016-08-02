@@ -102,5 +102,6 @@
 
 	<color name="register_content">#020202</color>
 	<color name="register_content_hint">#CFCFD1</color>
+	<color name="gray_bg">#F4F2F3</color>
 
 </resources>

@@ -27,7 +27,6 @@ import com.app.njl.activity.MainActivity;
 import com.app.njl.base.BaseFragment;
 import com.app.njl.subject.hotel.adapter.BrowsingHistoryListAdapter3;
 import com.app.njl.subject.hotel.adapter.MainFragmentShopListAdapter;
-import com.app.njl.subject.hotel.listener.MyOnBothRefreshListener;
 import com.app.njl.subject.hotel.model.entity.Fruit;
 import com.app.njl.subject.hotel.model.entity.homescenicspot.ScenicSpot;
 import com.app.njl.subject.hotel.model.entity.homescenicspot.ScenicSpotBean;
@@ -46,9 +45,7 @@ import com.app.njl.utils.SharedPreferences;
 import com.app.njl.widget.calendar.SimpleMonthAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.citypicker.CityPickerActivity;
 import com.socks.library.KLog;
-import com.yolanda.nohttp.NoHttp;
 import com.yolanda.nohttp.Request;
 import com.yolanda.nohttp.RequestMethod;
 import com.yolanda.nohttp.Response;
@@ -107,7 +104,7 @@ public class HotelMainFragment2 extends BaseFragment implements View.OnClickList
     IShopListQueryPresenter loadAllShopPresenter;
     public static SimpleMonthAdapter.SelectedDays<SimpleMonthAdapter.CalendarDay> selectedDays;
 
-    private int mStoreId; //景点id
+    private int mStoreId = 1; //景点id
 
     @Override
     public int getLayoutRes() {
@@ -139,8 +136,6 @@ public class HotelMainFragment2 extends BaseFragment implements View.OnClickList
         indicator.setPadding(5, 5, 10, 5);
 
         setSharePrefData();
-        //显示默认住店日期
-        showLiveData();
         //初始化RecyclerView
 //        initRecyclerView();
     }
@@ -201,8 +196,12 @@ public class HotelMainFragment2 extends BaseFragment implements View.OnClickList
         live_outStr = (today.month+1) + "月" + (today.monthDay + 1) + "日";
         live_totalDay = 1;
         //设置默认住店离店日期到SharePreference
-        SharedPreferences.getInstance().putString("live_in", live_inStr);
-        SharedPreferences.getInstance().putString("live_out", live_outStr);
+        SharedPreferences.getInstance().putInt("live_in_year", today.year);
+        SharedPreferences.getInstance().putInt("live_in_month", today.month + 1);
+        SharedPreferences.getInstance().putInt("live_in_day", today.monthDay);
+        SharedPreferences.getInstance().putInt("live_out_year", today.year);
+        SharedPreferences.getInstance().putInt("live_out_month", today.month + 1);
+        SharedPreferences.getInstance().putInt("live_out_day", (today.monthDay + 1));
         SharedPreferences.getInstance().putInt("total_day", live_totalDay);
     }
 
@@ -269,8 +268,8 @@ public class HotelMainFragment2 extends BaseFragment implements View.OnClickList
      * 设置住店、离店日期
      */
     public void showLiveData() {
-        String live_in = SharedPreferences.getInstance().getString("live_in", live_inStr);
-        String live_out = SharedPreferences.getInstance().getString("live_out", live_outStr);
+        String live_in = SharedPreferences.getInstance().getInt("live_in_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_in_day", 0) + "日";
+        String live_out = SharedPreferences.getInstance().getInt("live_out_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_out_day", 0) + "日";
         int totalDay = SharedPreferences.getInstance().getInt("total_day", live_totalDay);
         live_in_tv.setText(live_in);
         live_out_tv.setText(live_out);
@@ -336,6 +335,8 @@ public class HotelMainFragment2 extends BaseFragment implements View.OnClickList
                 break;
             case R.id.search_btn:
                 showFragment();
+//                Intent intent = new Intent(getActivity(), ShopListPagerActivity.class);
+//                getActivity().startActivity(intent);
                 break;
         }
     }
@@ -350,7 +351,7 @@ public class HotelMainFragment2 extends BaseFragment implements View.OnClickList
             Log.i("selectDays", "onActivityResult selectedDays:" + selectedDays.toString());
         }else if(requestCode == 2 && resultCode == 2) {
             String city = data.getStringExtra("sceneryName");
-            mStoreId = data.getIntExtra("sceneryId", 0);
+            mStoreId = data.getIntExtra("sceneryId", 1);
             setDestinationData(city);
         }
     }
@@ -383,6 +384,8 @@ public class HotelMainFragment2 extends BaseFragment implements View.OnClickList
     public void onResume() {
         super.onResume();
         pager.startAutoScroll();
+        //显示默认住店日期
+        showLiveData();
     }
 
     @Override

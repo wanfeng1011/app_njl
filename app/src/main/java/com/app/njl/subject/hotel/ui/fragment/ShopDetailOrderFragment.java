@@ -2,60 +2,62 @@ package com.app.njl.subject.hotel.ui.fragment;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.njl.R;
-import com.app.njl.activity.MainActivity;
 import com.app.njl.base.BaseFragment;
-import com.app.njl.subject.hotel.model.entity.Fruit;
 import com.app.njl.subject.hotel.model.entity.PickerListEntity;
+import com.app.njl.subject.hotel.model.entity.shopdetails.ShopOrdersDetailData;
+import com.app.njl.subject.hotel.model.impl.ShopDetailOrderQueryModelImpl;
 import com.app.njl.subject.hotel.presenter.impl.ShopDetailOrderQueryPresenterImpl;
 import com.app.njl.subject.hotel.presenter.interfaces.IShopDetailOrderPresenter;
 import com.app.njl.subject.hotel.ui.ShopOrderShopDetailActivity;
 import com.app.njl.subject.hotel.view.CommonView;
 import com.app.njl.subject.hotel.view.ShopDetailOrderView;
-import com.app.njl.ui.loadmore.LoadMoreListView;
-import com.app.njl.ui.quickadapter.BaseAdapterHelper;
+import com.app.njl.subject.mine.nohttp.CallServer;
+import com.app.njl.subject.mine.nohttp.Constants;
+import com.app.njl.subject.mine.nohttp.HttpConstants;
+import com.app.njl.subject.mine.nohttp.HttpListener;
+import com.app.njl.subject.mine.nohttp.StringRequestImpl;
 import com.app.njl.ui.quickadapter.QuickAdapter;
+import com.app.njl.utils.JsonEasy;
+import com.app.njl.utils.SharedPreferences;
 import com.app.njl.utils.Utils;
 import com.app.njl.widget.wheel.view.PickerView;
 import com.socks.library.KLog;
-import com.squareup.picasso.Picasso;
+import com.yolanda.nohttp.Request;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.Response;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * Created by tiansj on 15/9/4.
  */
-public class ShopDetailOrderFragment extends BaseFragment implements CommonView<Fruit>, ShopDetailOrderView<PickerListEntity>, View.OnClickListener {
+public class ShopDetailOrderFragment extends BaseFragment implements CommonView<ShopOrdersDetailData.MessageBean>, ShopDetailOrderView<PickerListEntity>, View.OnClickListener, HttpListener<String> {
 
-    private MainActivity context;
-
-    @Bind(R.id.order_rotate_header_list_view_frame)
-    PtrClassicFrameLayout mPtrFrame;
-    @Bind(R.id.order_listView)
-    LoadMoreListView listView;
+    private ShopDetailPagerActivity context;
+    @Bind(R.id.recyclerView)
+    RecyclerView mRecyclerView;
     @Bind(R.id.order_pickersure_btn)
     Button pickerSureBtn;
     @Bind(R.id.order_pickercancel_btn)
     Button pickerCancelBtn;
-    QuickAdapter<Fruit> adapter;
+    QuickAdapter<ShopOrdersDetailData.MessageBean> adapter;
 
     @Bind(R.id.month_pv)
     PickerView minute_pv;
@@ -89,26 +91,32 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
     int currentMonth;
     int currentDay;
     String currentOrder = "中餐";
+    ShopDetailOrderQueryModelImpl shopDetailOrderQueryModel;
+
+    private ShopDetailStayRecyclerAdapter mAdapter;
+    private List<ShopOrdersDetailData.MessageBean> beans;
 
     @Override
     public int getLayoutRes() {
-        context = (MainActivity) getActivity();
+        context = (ShopDetailPagerActivity) getActivity();
         return R.layout.layout_order_dialog;
     }
 
     @Override
     public void initView() {
-        adapter = new QuickAdapter<Fruit>(context, R.layout.layout_shopdetailorder_item) {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        /*adapter = new QuickAdapter<ShopOrdersDetailData.MessageBean>(context, R.layout.layout_shopdetailorder_item) {
             @Override
-            protected void convert(BaseAdapterHelper helper, Fruit shop) {
-                helper.setText(R.id.name, shop.getName())
-                        .setText(R.id.content, shop.getContent())
-                        .setText(R.id.price, "菜" + shop.getPrice());
+            protected void convert(BaseAdapterHelper helper, ShopOrdersDetailData.MessageBean shop) {
+                String sellState = shop.getIsSellOut() == 1 ? "已售完" : "未售完";
+                helper.setText(R.id.name, shop.getCourseName())
+                        .setText(R.id.content, sellState)
+                        .setText(R.id.price, "￥" + shop.getCoursePrice());
                         //.setImageUrl(R.id.img_detail, shop.getUrl()); // 自动异步加载图片
             }
         };
         listView.setDrawingCacheEnabled(true);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter);*/
     }
 
     @Override
@@ -122,10 +130,11 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
 
             @Override
             public void onSelect(String text) {
-                shopDetailOrderPresenter.loadDaysList(Integer.parseInt(text));
                 currentMonth = Integer.parseInt(text);
                 Toast.makeText(getContext(), "选择了 " + text + " 月",
                         Toast.LENGTH_SHORT).show();
+                List<String> lists = shopDetailOrderQueryModel.loadDaysList(Integer.parseInt(text));
+                loadDaysList(lists);
             }
         });
         second_pv.setOnSelectListener(new PickerView.onSelectListener() {
@@ -133,7 +142,7 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
             @Override
             public void onSelect(String text) {
                 order_pv.setData(orderList);
-                order_pv.setSelected(0);
+//                order_pv.setSelected(0);
                 currentDay = Integer.parseInt(text);
                 Toast.makeText(getContext(), "选择了 " + text + " 日",
                         Toast.LENGTH_SHORT).show();
@@ -172,30 +181,7 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
             }
         });
 
-        // 下拉刷新
-        mPtrFrame.setLastUpdateTimeRelateObject(this);
-        mPtrFrame.setPtrHandler(new PtrHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-//                initData();
-                loadData();
-            }
-
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
-            }
-        });
-
-        // 加载更多
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                loadData();
-            }
-        });
-
-        // 点击事件
+        /*// 点击事件
         listView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -221,7 +207,7 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
             }
-        });
+        });*/
 
         order_select_ll.setOnClickListener(this);
         view_mask_bg.setOnClickListener(this);
@@ -240,23 +226,30 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
     @Override
     public void initRemoteData() {
         loadData();
+        int shopId = context.getmShopId();
+        queryShopDetailLivesByOptions(shopId);
     }
 
     /**
      * 加载网络数据
      */
     private void loadData() {
-        shopDetailOrderPresenter.attachView(this);
+//        shopDetailOrderPresenter.attachView(this);
+//        shopDetailOrderPresenter.getPickListEntity();
+        shopDetailOrderQueryModel = new ShopDetailOrderQueryModelImpl();
+        PickerListEntity pickerListEntity = shopDetailOrderQueryModel.getPickerListEntity();
+        loadOtherData(pickerListEntity);
+        /*shopDetailOrderPresenter.attachView(this);
         shopDetailOrderPresenter.getPickListEntity();
-        shopDetailOrderPresenter.queryShopDetailOrder();
+        shopDetailOrderPresenter.queryShopDetailOrder();*/
     }
 
 
 
     @Override
-    public void loadSuccess(List<Fruit> fruits) {
+    public void loadSuccess(List<ShopOrdersDetailData.MessageBean> fruits) {
         KLog.i("loadSuccess-------");
-        listView.updateLoadMoreViewText(fruits);
+//        listView.updateLoadMoreViewText(fruits);
         adapter.addAll(fruits);
 //        mPtrFrame.refreshComplete();
         KLog.i("loadSuccess2-------");
@@ -264,18 +257,28 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
 
     @Override
     public void loadFailed() {
-        mPtrFrame.refreshComplete();
-        listView.setLoadMoreViewTextError();
+//        mPtrFrame.refreshComplete();
+//        listView.setLoadMoreViewTextError();
     }
 
     @Override
     public void loadCompleted() {
-        mPtrFrame.refreshComplete();
+//        mPtrFrame.refreshComplete();
     }
 
     @Override
     public void showToast(String showMessage) {
 
+    }
+
+    public void queryShopDetailLivesByOptions(int shopId) {
+        String startDate = SharedPreferences.getInstance().getInt("live_in_year", 0) + "-" + SharedPreferences.getInstance().getInt("live_in_month", 0) + "-" + SharedPreferences.getInstance().getInt("live_in_day", 0);
+        String endDate = SharedPreferences.getInstance().getInt("live_out_year", 0) + "-" + SharedPreferences.getInstance().getInt("live_out_month", 0) + "-" + SharedPreferences.getInstance().getInt("live_out_day", 0);
+        Request<String> request = new StringRequestImpl(Constants.BASE_PATH + "shop/course", RequestMethod.POST);
+        request.add("shopId", shopId);
+        request.add("dateTime", startDate);
+        Log.i("sceneryId", "shopId:" + shopId + " startData:" + startDate + " endDate:" + endDate);
+        CallServer.getRequestInstance().add(getContext(), HttpConstants.QUERY_SHOPORDER_DETAIL_BYOPTIONS, request, this, true, true);
     }
 
     @Override
@@ -360,6 +363,83 @@ public class ShopDetailOrderFragment extends BaseFragment implements CommonView<
                 if(!isShow) return;
                 hide();
                 break;
+        }
+    }
+
+    @Override
+    public void onSucceed(int what, Response<String> response) {
+        int code = 0;
+        String result = response.get();
+        switch (what) {
+            case HttpConstants.QUERY_SHOPORDER_DETAIL_BYOPTIONS:
+                Log.i("result", "result get shop order details:" + result);
+                ShopOrdersDetailData detailData = JsonEasy.toObject(result, ShopOrdersDetailData.class);
+                if(detailData == null) return;
+                code = detailData.getCode();
+                if(code == 1) {
+                    beans = detailData.getMessage();
+//                    listView.updateLoadMoreViewText(beans);
+//                    listView.onLoadMoreComplete();
+                    beans.addAll(beans);
+//                    adapter.addAll(beans);
+
+                    if(mAdapter == null)
+                        mAdapter = new ShopDetailStayRecyclerAdapter();
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+
+    }
+
+    class ShopDetailStayRecyclerAdapter extends RecyclerView.Adapter<ShopDetailStayViewHold> {
+
+        @Override
+        public ShopDetailStayViewHold onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_shopdetailorder_item, parent, false);
+            return new ShopDetailStayViewHold(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ShopDetailStayViewHold holder, final int position) {
+            holder.name.setText(beans.get(position).getCourseName());
+            String sellState = beans.get(position).getIsSellOut() == 1 ? "已售完" : "未售完";
+            holder.content.setText(sellState);
+            holder.price.setText("￥" + beans.get(position).getCoursePrice());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), ShopOrderShopDetailActivity.class);
+                    intent.putExtra("messageBean", beans.get(position));
+                    getContext().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return beans == null ? 0 : beans.size();
+        }
+    }
+
+    class ShopDetailStayViewHold extends RecyclerView.ViewHolder {
+        public View view;
+        public TextView name;
+        public TextView content;
+        public TextView price;
+        //public ImageView roomPic;
+        public ShopDetailStayViewHold(View itemView) {
+            super(itemView);
+            //this.view = itemView.findViewById(R.id.item_view);
+            this.name = (TextView)itemView.findViewById(R.id.name);
+            this.content = (TextView)itemView.findViewById(R.id.content);
+            this.price = (TextView)itemView.findViewById(R.id.price);
+            //this.roomPic = (ImageView)itemView.findViewById(R.id.img_detail);
         }
     }
 }

@@ -28,7 +28,7 @@ public class CommonPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        KLog.i("getItem----------");
+        KLog.i("getItem----------" + position);
         if (mFragments != null && mFragments.size() != 0)
             return mFragments.get(position);
         else

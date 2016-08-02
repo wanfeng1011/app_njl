@@ -1,55 +1,64 @@
 package com.app.njl.subject.hotel.ui.fragment;
 
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.njl.R;
-import com.app.njl.activity.MainActivity;
 import com.app.njl.base.BaseFragment;
 import com.app.njl.subject.hotel.model.entity.Fruit;
-import com.app.njl.subject.hotel.presenter.impl.ShopDetailStayQueryPresenterImpl;
+import com.app.njl.subject.hotel.model.entity.shopdetails.ShopSpecialtyDetailData;
 import com.app.njl.subject.hotel.presenter.interfaces.IShopDetailStayQueryPresenter;
-import com.app.njl.subject.hotel.ui.ShopStayShowDetailActivity;
+import com.app.njl.subject.hotel.ui.ShopSpecialtyShowActivity;
 import com.app.njl.subject.hotel.view.CommonView;
-import com.app.njl.ui.loadmore.LoadMoreListView;
-import com.app.njl.ui.quickadapter.BaseAdapterHelper;
+import com.app.njl.subject.mine.nohttp.CallServer;
+import com.app.njl.subject.mine.nohttp.Constants;
+import com.app.njl.subject.mine.nohttp.HttpConstants;
+import com.app.njl.subject.mine.nohttp.HttpListener;
+import com.app.njl.subject.mine.nohttp.StringRequestImpl;
 import com.app.njl.ui.quickadapter.QuickAdapter;
-import com.app.njl.utils.DeviceUtil;
+import com.app.njl.utils.JsonEasy;
+import com.bumptech.glide.Glide;
+import com.socks.library.KLog;
 import com.squareup.picasso.Picasso;
+import com.yolanda.nohttp.Request;
+import com.yolanda.nohttp.RequestMethod;
+import com.yolanda.nohttp.Response;
 
 import java.util.List;
 
 import butterknife.Bind;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
-import in.srain.cube.views.ptr.header.StoreHouseHeader;
 
 /**
  * 商家详情特产Fragment
  * Created by jiaxx on 2016/4/16 0016.
  */
-public class ShopDetailSpecialtyFragment extends BaseFragment implements CommonView<Fruit> {
-    @Bind(R.id.rotate_header_list_view_frame)
-    PtrClassicFrameLayout mPtrFrame;
-    @Bind(R.id.listView)
-    LoadMoreListView listView;
+public class ShopDetailSpecialtyFragment extends BaseFragment implements CommonView<Fruit>, HttpListener<String> {
+    @Bind(R.id.specialty_recyclerView)
+    RecyclerView mRecyclerView;
     QuickAdapter<Fruit> adapter;
-    private MainActivity context;
+    private ShopDetailPagerActivity mActivity;
     private IShopDetailStayQueryPresenter shopDetailStayQueryPresenter;
+    private int mShopId = 1;
+    private ShopDetailSpecialtyRecyclerAdapter mSpecialtyRecyclerAdapter;
+    private List<ShopSpecialtyDetailData.MessageBean> mDatas;
+
     @Override
     public int getLayoutRes() {
-        context = (MainActivity) getActivity();
+        mActivity = (ShopDetailPagerActivity)getActivity();
         return R.layout.shopdetailspecialty_fragment_layout;
     }
 
     @Override
     public void initView() {
-        adapter = new QuickAdapter<Fruit>(context, R.layout.layout_shopdetail_item) {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        /*adapter = new QuickAdapter<Fruit>(context, R.layout.layout_shopdetail_item) {
             @Override
             protected void convert(BaseAdapterHelper helper, Fruit shop) {
                 helper.setText(R.id.name, shop.getName())
@@ -66,12 +75,12 @@ public class ShopDetailSpecialtyFragment extends BaseFragment implements CommonV
         header.initWithString("loading");
         header.setTextColor(getResources().getColor(R.color.gray));
         mPtrFrame.setHeaderView(header);
-        mPtrFrame.addPtrUIHandler(header);
+        mPtrFrame.addPtrUIHandler(header);*/
     }
 
     @Override
     public void initPresenter() {
-        shopDetailStayQueryPresenter = new ShopDetailStayQueryPresenterImpl();
+//        shopDetailStayQueryPresenter = new ShopDetailStayQueryPresenterImpl();
     }
 
     @Override
@@ -86,91 +95,47 @@ public class ShopDetailSpecialtyFragment extends BaseFragment implements CommonV
 
     @Override
     public void setListener() {
-        // 下拉刷新
-        mPtrFrame.setLastUpdateTimeRelateObject(this);
-        mPtrFrame.setPtrHandler(new PtrHandler() {
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                loadData();
-            }
 
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
-            }
-        });
-
-        // 加载更多
-        listView.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                loadData();
-            }
-        });
-
-        // 点击事件
-        listView.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getContext(), ShopStayShowDetailActivity.class);
-                getContext().startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
-            }
-        });
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                    Picasso.with(context).pauseTag(context);
-                } else {
-                    Picasso.with(context).resumeTag(context);
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-            }
-        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Picasso.with(context).pauseTag(context);
+        Picasso.with(mActivity).pauseTag(mActivity);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Picasso.with(context).cancelTag(context);
-        shopDetailStayQueryPresenter.detachView();
+        Picasso.with(mActivity).cancelTag(mActivity);
+//        shopDetailStayQueryPresenter.detachView();
     }
 
     /**
      * 加载网络数据
      */
     private void loadData() {
-        shopDetailStayQueryPresenter.attachView(this);
-        shopDetailStayQueryPresenter.queryShopDetailStay();
+//        shopDetailStayQueryPresenter.attachView(this);
+//        shopDetailStayQueryPresenter.queryShopDetailStay();
+        mShopId = mActivity.getmShopId();
+        queryShopDetailLivesByOptions(mShopId);
     }
 
     @Override
     public void loadSuccess(List<Fruit> fruits) {
-        listView.updateLoadMoreViewText(fruits);
-        adapter.addAll(fruits);
+//        listView.updateLoadMoreViewText(fruits);
+//        adapter.addAll(fruits);
     }
 
     @Override
     public void loadFailed() {
-        mPtrFrame.refreshComplete();
-        listView.setLoadMoreViewTextError();
+//        mPtrFrame.refreshComplete();
+//        listView.setLoadMoreViewTextError();
     }
 
     @Override
     public void loadCompleted() {
-        mPtrFrame.refreshComplete();
+//        mPtrFrame.refreshComplete();
     }
 
     @Override
@@ -181,5 +146,93 @@ public class ShopDetailSpecialtyFragment extends BaseFragment implements CommonV
     @Override
     public void onClick(View v) {
 
+    }
+
+    public void queryShopDetailLivesByOptions(int shopId) {
+        Request<String> request = new StringRequestImpl(Constants.BASE_PATH + "shop/specialty", RequestMethod.POST);
+        request.add("shopId", shopId);
+        CallServer.getRequestInstance().add(getContext(), HttpConstants.QUERY_SHOPSPECIALTY_DETAIL_BYOPTIONS, request, this, true, true);
+    }
+
+    @Override
+    public void onSucceed(int what, Response<String> response) {
+        String result = response.get();
+        int code = 0;
+        switch (what) {
+            case HttpConstants.QUERY_SHOPSPECIALTY_DETAIL_BYOPTIONS:
+                Log.i("result", "result get shop specialty:" + result);
+                KLog.i("result:" + result);
+                if(result == null) return;
+                ShopSpecialtyDetailData shopSpecialtyDetailData = JsonEasy.toObject(result, ShopSpecialtyDetailData.class);
+                if(shopSpecialtyDetailData == null) return;
+                code = shopSpecialtyDetailData.getCode();
+                if(code == 1) {
+                    mDatas = shopSpecialtyDetailData.getMessage();
+                    mSpecialtyRecyclerAdapter = new ShopDetailSpecialtyRecyclerAdapter();
+                    mRecyclerView.setAdapter(mSpecialtyRecyclerAdapter);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onFailed(int what, String url, Object tag, Exception exception, int responseCode, long networkMillis) {
+
+    }
+
+    class ShopDetailSpecialtyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_shopdetail_item, parent, false);
+            return new ShopDetailSpecialtyViewHold(view);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+            ShopDetailSpecialtyViewHold viewHold = (ShopDetailSpecialtyViewHold)holder;
+            viewHold.itemName.setText(mDatas.get(position).getSpecialtyComment());
+            viewHold.itemContent.setText("重量：" + mDatas.get(position).getSpecialWeight());
+            viewHold.itemPrice.setText("￥" + mDatas.get(position).getSpecialtyPrice());
+            Glide.with(mActivity).load(mDatas.get(position).getSpecialtyPictureUrl())
+                    .placeholder(R.mipmap.default_image)
+                    .error(R.mipmap.default_image)
+                    .into(viewHold.itemPic);
+            /*Picasso.with(mActivity).load(mDatas.get(position).getSpecialtyPictureUrl())
+                    .placeholder(R.mipmap.default_image)
+                    .error(R.mipmap.default_image)
+                    .tag(mActivity)
+                    .into(viewHold.itemPic);*/
+            viewHold.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), ShopSpecialtyShowActivity.class);
+                    intent.putExtra("messageBean", mDatas.get(position));
+                    getContext().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDatas == null ? 0 : mDatas.size();
+        }
+    }
+
+    class ShopDetailSpecialtyViewHold extends RecyclerView.ViewHolder {
+        public View view;
+        public TextView itemName;
+        public TextView itemContent;
+        public TextView itemPrice;
+        public ImageView itemPic;
+        public ShopDetailSpecialtyViewHold(View itemView) {
+            super(itemView);
+            this.view = itemView.findViewById(R.id.item_view);
+            this.itemName = (TextView)itemView.findViewById(R.id.name);
+            this.itemContent = (TextView)itemView.findViewById(R.id.content);
+            this.itemPrice = (TextView)itemView.findViewById(R.id.price);
+            this.itemPic = (ImageView)itemView.findViewById(R.id.img_detail);
+        }
     }
 }
