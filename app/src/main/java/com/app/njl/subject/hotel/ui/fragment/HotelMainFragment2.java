@@ -454,7 +454,7 @@ public class HotelMainFragment2 extends BaseFragment implements View.OnClickList
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), ImageGalleryActivity.class);
-                    intent.putStringArrayListExtra("images", (ArrayList<String>) imageList);
+                    intent.putStringArrayListExtra("images", new ArrayList<String>(Arrays.asList(urls)));
                     intent.putExtra("position", pos);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);

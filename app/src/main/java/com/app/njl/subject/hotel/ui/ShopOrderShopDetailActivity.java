@@ -9,9 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.njl.R;
@@ -25,6 +27,7 @@ import com.app.njl.subject.mine.nohttp.HttpListener;
 import com.app.njl.subject.mine.nohttp.StringRequestImpl;
 import com.app.njl.ui.loopviewpager.AutoLoopViewPager;
 import com.app.njl.utils.JsonEasy;
+import com.app.njl.utils.SharedPreferences;
 import com.bumptech.glide.Glide;
 import com.yolanda.nohttp.Request;
 import com.yolanda.nohttp.RequestMethod;
@@ -34,6 +37,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.app.njl.R.id.live_time_tv;
+import static com.app.njl.R.id.stay_time_tv;
 
 /**
  * Created by jiaxx on 2016/4/16 0016.
@@ -51,6 +57,14 @@ public class ShopOrderShopDetailActivity extends AppCompatActivity implements Vi
     Toolbar mToolBar;
     @Bind(R.id.picNum)
     TextView mPicNum;
+    @Bind(R.id.stay_live_time_ll)
+    LinearLayout mStayTimeLayout;
+    @Bind(stay_time_tv)
+    TextView stayTimeTv; //住店时间
+    @Bind(live_time_tv)
+    TextView liveTimeTv; //离店时间
+    @Bind(R.id.tv_total)
+    TextView mTotalDaysTv; //住店天数
     private ShopOrdersDetailData.MessageBean mMessageBean;
 
     @Override
@@ -62,6 +76,7 @@ public class ShopOrderShopDetailActivity extends AppCompatActivity implements Vi
     }
 
     private void initView() {
+        setStayLiveTime();
         setSupportActionBar(mToolBar);
         Intent intent = getIntent();
         mMessageBean = (ShopOrdersDetailData.MessageBean)intent.getSerializableExtra("messageBean");
@@ -79,6 +94,24 @@ public class ShopOrderShopDetailActivity extends AppCompatActivity implements Vi
             ((TextView)findViewById(R.id.courseKind)).setText(messageBean.getConsist());
         if(messageBean.getNote() != null)
             ((TextView)findViewById(R.id.courseNote)).setText(messageBean.getNote());
+    }
+
+    private void setStayLiveTime() {
+        //住店时间
+        String stay_in = SharedPreferences.getInstance().getInt("live_in_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_in_day", 0) + "日";
+        //离店时间
+        String live_out = SharedPreferences.getInstance().getInt("live_out_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_out_day", 0) + "日";
+        //住店天数
+        int total_days = SharedPreferences.getInstance().getInt("total_day", 1);
+        stayTimeTv.setText(stay_in);
+        liveTimeTv.setText(live_out);
+        mTotalDaysTv.setText("共" + total_days + "晚");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return true;
     }
 
     @Override

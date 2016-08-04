@@ -88,7 +88,7 @@ public class PhotoView extends ImageView {
 
     private void init() {
         super.setScaleType(ScaleType.MATRIX);
-        if (mScaleType == null) mScaleType = ScaleType.CENTER_INSIDE;
+        if (mScaleType == null) mScaleType = ScaleType.FIT_CENTER;
         mDetector = new GestureDetector(getContext(), mGestureListener);
         mScaleDetector = new ScaleGestureDetector(getContext(), mScaleListener);
         float density = getResources().getDisplayMetrics().density;

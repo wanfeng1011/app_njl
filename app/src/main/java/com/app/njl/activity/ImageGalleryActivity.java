@@ -30,7 +30,6 @@ public class ImageGalleryActivity extends SwipeBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_touch_gallery);
-
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
         imgUrls = intent.getStringArrayListExtra("images");

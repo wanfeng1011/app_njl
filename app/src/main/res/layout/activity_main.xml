@@ -6,7 +6,8 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_main_header" />
+    <include layout="@layout/layout_main_header"
+        android:visibility="gone"/>
 
     <FrameLayout
         android:id="@+id/fragment_container"

@@ -355,13 +355,18 @@ public class ShopListPlayFragment extends StoreListBaseFragment implements Commo
                     mRecommendTv.setText("推荐排序");
                     mPriceTv.setText("价格排序");
                 }else if(flag == 3) {
-                    mSort = 3;
                     if(position == 0) {
+                        mSort = 3;
                         mSortOrder = 0;
-                        mPriceTv.setText("价格升序");
+                        mPriceTv.setText("门票低价优先");
                     }else if(position == 1) {
-                        mSortOrder = 1;
-                        mPriceTv.setText("价格降序");
+                        mSort = 4;
+                        mSortOrder = 0;
+                        mPriceTv.setText("导游低价优先");
+                    }else if(position == 2) {
+                        mSort = 5;
+                        mSortOrder = 0;
+                        mPriceTv.setText("自助游低价优先");
                     }
                     //还原除位置的其他设置
                     mRecommendTv.setText("推荐排序");

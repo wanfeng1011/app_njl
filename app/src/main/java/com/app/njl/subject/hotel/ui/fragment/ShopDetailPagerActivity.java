@@ -39,7 +39,6 @@ import com.app.njl.ui.tabstrip.PagerSlidingTabStrip;
 import com.app.njl.ui.viewpagerindicator.CirclePageIndicator;
 import com.app.njl.utils.JsonEasy;
 import com.app.njl.utils.SharedPreferences;
-import com.app.njl.utils.Toast;
 import com.bumptech.glide.Glide;
 import com.socks.library.KLog;
 import com.yolanda.nohttp.Request;
@@ -105,7 +104,7 @@ public class ShopDetailPagerActivity extends AppCompatActivity implements View.O
     @Bind(R.id.indicator)
     CirclePageIndicator indicator;
     private DetailPagerGalleryPagerAdapter galleryAdapter;
-    private String[] imageViewIds;
+    private List<String> imageViewIds;
     private List<String> imageList = new ArrayList<String>(Arrays.asList(
             "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
             "http://pic.nipic.com/2008-07-11/20087119630716_2.jpg",
@@ -195,7 +194,10 @@ public class ShopDetailPagerActivity extends AppCompatActivity implements View.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_edit) {
-            Toast.show("select clock item");
+//            Toast.show("select clock item");
+            Intent intent_live = new Intent(this, CalendarActivity.class);
+            startActivityForResult(intent_live, 4);
+            overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
             return true;
         }
         //if(item.getItemId() == R.id.home) {
@@ -294,11 +296,11 @@ public class ShopDetailPagerActivity extends AppCompatActivity implements View.O
                 if(code == 1) {
                     List<ShopPicsBean.MessageBean> messageBeens = bean.getMessage();
                     if((messageBeens = bean.getMessage()) == null) return;
-                    imageViewIds = new String[messageBeens.size()];
+                    imageViewIds = new ArrayList<>();
                     for(int i=0; i< messageBeens.size(); i++) {
-                        imageViewIds[i] = messageBeens.get(i).getPicUrl();
+                        imageViewIds.add(messageBeens.get(i).getPicUrl());
                     }
-                    mPicNumTv.setText(imageViewIds.length + "");
+                    mPicNumTv.setText(imageViewIds.size() + "");
                     galleryAdapter = new DetailPagerGalleryPagerAdapter();
                     top_pager.setAdapter(galleryAdapter);
                     indicator.setViewPager(top_pager);
@@ -359,8 +361,8 @@ public class ShopDetailPagerActivity extends AppCompatActivity implements View.O
         @Override
         public int getCount() {
             if(imageViewIds == null) return 0;
-            if(imageViewIds.length >= 3) return 3;
-            return imageViewIds.length;
+            if(imageViewIds.size() >= 3) return 3;
+            return imageViewIds.size();
         }
 
         @Override
@@ -374,7 +376,7 @@ public class ShopDetailPagerActivity extends AppCompatActivity implements View.O
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(-1, -1);
             item.setLayoutParams(params);
             item.setScaleType(ImageView.ScaleType.FIT_XY);
-            Glide.with(getApplicationContext()).load(imageViewIds[position])
+            Glide.with(getApplicationContext()).load(imageViewIds.get(position))
                     .placeholder(R.mipmap.default_image)
                     .error(R.mipmap.default_image)
                     .into(item);
@@ -385,7 +387,7 @@ public class ShopDetailPagerActivity extends AppCompatActivity implements View.O
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), ImageGalleryActivity.class);
-                    intent.putStringArrayListExtra("images", (ArrayList<String>) imageList);
+                    intent.putStringArrayListExtra("images", new ArrayList<String>(imageViewIds));
                     intent.putExtra("position", pos);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);

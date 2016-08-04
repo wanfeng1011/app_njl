@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.app.njl.R;
@@ -37,8 +38,9 @@ public class PhotoViewWrapper extends RelativeLayout {
 	protected void init() {
 		photoView = new PhotoView(mContext);
 		photoView.enable();
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		photoView.setLayoutParams(params);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        photoView.setLayoutParams(params);
 		this.addView(photoView);
 		photoView.setVisibility(GONE);
 

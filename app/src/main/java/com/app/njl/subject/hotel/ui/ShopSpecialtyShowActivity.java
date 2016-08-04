@@ -12,13 +12,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.njl.R;
-import com.app.njl.subject.hotel.model.entity.shopdetails.ShopRoomInfos;
 import com.app.njl.subject.hotel.model.entity.shopdetails.ShopSpecialtyBean;
 import com.app.njl.subject.hotel.model.entity.shopdetails.ShopSpecialtyDetailData;
 import com.app.njl.subject.hotel.model.entity.shopdetails.ShopSpecialtyPicsBean;
@@ -29,6 +30,7 @@ import com.app.njl.subject.mine.nohttp.HttpListener;
 import com.app.njl.subject.mine.nohttp.StringRequestImpl;
 import com.app.njl.ui.loopviewpager.AutoLoopViewPager;
 import com.app.njl.utils.JsonEasy;
+import com.app.njl.utils.SharedPreferences;
 import com.bumptech.glide.Glide;
 import com.yolanda.nohttp.Request;
 import com.yolanda.nohttp.RequestMethod;
@@ -38,6 +40,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.app.njl.R.id.live_time_tv;
+import static com.app.njl.R.id.stay_time_tv;
 
 /**
  * 特产展示
@@ -56,6 +61,14 @@ public class ShopSpecialtyShowActivity extends AppCompatActivity implements View
     RecyclerView mRecyclerView;
     @Bind(R.id.specialtyName)
     TextView mSpecialtyName;
+    @Bind(R.id.stay_live_time_ll)
+    LinearLayout mStayTimeLayout;
+    @Bind(stay_time_tv)
+    TextView stayTimeTv; //住店时间
+    @Bind(live_time_tv)
+    TextView liveTimeTv; //离店时间
+    @Bind(R.id.tv_total)
+    TextView mTotalDaysTv; //住店天数
     private ShopSpecialtyDetailData.MessageBean mMessageBean;
 
     @Override
@@ -67,6 +80,7 @@ public class ShopSpecialtyShowActivity extends AppCompatActivity implements View
     }
 
     private void initView() {
+        setStayLiveTime();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         setSupportActionBar(mToolBar);
         Intent intent = getIntent();
@@ -76,6 +90,24 @@ public class ShopSpecialtyShowActivity extends AppCompatActivity implements View
         mRoomPrice.setText("￥" + mMessageBean.getPrice() + "起/晚");*/
         queryShopDetailLivesPicByOptions(mMessageBean.getShopId(), mMessageBean.getSpecialtyId());
         queryShopDetailLivesByOptions(mMessageBean.getShopId(), mMessageBean.getSpecialtyId());
+    }
+
+    private void setStayLiveTime() {
+        //住店时间
+        String stay_in = SharedPreferences.getInstance().getInt("live_in_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_in_day", 0) + "日";
+        //离店时间
+        String live_out = SharedPreferences.getInstance().getInt("live_out_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_out_day", 0) + "日";
+        //住店天数
+        int total_days = SharedPreferences.getInstance().getInt("total_day", 1);
+        stayTimeTv.setText(stay_in);
+        liveTimeTv.setText(live_out);
+        mTotalDaysTv.setText("共" + total_days + "晚");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return true;
     }
 
     @Override

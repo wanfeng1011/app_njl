@@ -1,12 +1,11 @@
 package com.app.njl.subject.hotel.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,11 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.njl.R;
-import com.app.njl.base.BaseActivity;
 import com.app.njl.subject.hotel.model.entity.shopdetails.ShopPlaySelfServiceBean;
-import com.app.njl.subject.hotel.model.entity.shopdetails.ShopRoomInfos;
-import com.app.njl.subject.hotel.model.entity.shopdetails.ShopRoomPicsBean;
-import com.app.njl.subject.hotel.model.entity.shopstaydetail.ShopStaysDetailData;
+import com.app.njl.subject.hotel.model.entity.shopdetails.ShopPlaySelfServicePicsBean;
 import com.app.njl.subject.mine.nohttp.CallServer;
 import com.app.njl.subject.mine.nohttp.Constants;
 import com.app.njl.subject.mine.nohttp.HttpConstants;
@@ -32,7 +28,7 @@ import com.app.njl.subject.mine.nohttp.HttpListener;
 import com.app.njl.subject.mine.nohttp.StringRequestImpl;
 import com.app.njl.ui.loopviewpager.AutoLoopViewPager;
 import com.app.njl.utils.JsonEasy;
-import com.app.njl.utils.Toast;
+import com.app.njl.utils.SharedPreferences;
 import com.bumptech.glide.Glide;
 import com.yolanda.nohttp.Request;
 import com.yolanda.nohttp.RequestMethod;
@@ -59,8 +55,6 @@ public class ShopPlayShowSelfServiceActivity extends AppCompatActivity implement
     Toolbar mToolBar;
     @Bind(R.id.picNum)
     TextView mPicNum;
-    @Bind(R.id.roomName)
-    TextView mRoomName;
     @Bind(R.id.stay_live_time_ll)
     LinearLayout mStayTimeLayout;
     @Bind(stay_time_tv)
@@ -73,7 +67,7 @@ public class ShopPlayShowSelfServiceActivity extends AppCompatActivity implement
     TextView addShoppingCartTv;
     @Bind(R.id.buyNowTv)
     TextView buyNowTv;
-    @Bind(R.id.roomRecyclerView)
+    @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
     @Bind(R.id.noticeRecyclerView)
     RecyclerView mNoticeRecyclerView;
@@ -89,10 +83,13 @@ public class ShopPlayShowSelfServiceActivity extends AppCompatActivity implement
     }
 
     protected void initView() {
+        setStayLiveTime();
+        String selfServiceName = getIntent().getStringExtra("selfServiceName");
         setSupportActionBar(mToolBar);
+        setTitle(selfServiceName);
         //mCollapsingToolBarLayout.setExpandedTitleColor(getResources().getColor(R.color.green_light));
         //mCollapsingToolBarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.transparent));
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mNoticeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         addShoppingCartTv.setOnClickListener(this);
         buyNowTv.setOnClickListener(this);
@@ -122,10 +119,16 @@ public class ShopPlayShowSelfServiceActivity extends AppCompatActivity implement
         return true;
     }
 
-    public void setStayLiveTime() {
-//        String stay_in = SharedPreferences.getInstance().getString("live_in", "住店:");
-        /*String live_out = SharedPreferences.getInstance().getString("live_out", "离店:");
-        playTimeTv.setText("游玩时间：" + live_out);*/
+    private void setStayLiveTime() {
+        //住店时间
+        String stay_in = SharedPreferences.getInstance().getInt("live_in_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_in_day", 0) + "日";
+        //离店时间
+        String live_out = SharedPreferences.getInstance().getInt("live_out_month", 0) + "月" + SharedPreferences.getInstance().getInt("live_out_day", 0) + "日";
+        //住店天数
+        int total_days = SharedPreferences.getInstance().getInt("total_day", 1);
+        stayTimeTv.setText(stay_in);
+        liveTimeTv.setText(live_out);
+        mTotalDaysTv.setText("共" + total_days + "晚");
     }
 
     public void queryDatasPicByOptions(int resortId, int familyActivityId) {
@@ -160,13 +163,34 @@ public class ShopPlayShowSelfServiceActivity extends AppCompatActivity implement
                 break;
             case HttpConstants.QUERY_SHOPPLAY_SELFSERVICE_PIC_BYOPTIONS:
                 Log.i("result", "result get shop selfService pic:" + result);
-                /*if(result == null) return;
-                ShopPlaysDetailData shopPlaysDetailData = JsonEasy.toObject(result, ShopPlaysDetailData.class);
-                if(shopPlaysDetailData == null) return;
-                code = shopPlaysDetailData.getCode();
+                if(result == null) return;
+                ShopPlaySelfServicePicsBean picsBean = JsonEasy.toObject(result, ShopPlaySelfServicePicsBean.class);
+                if(picsBean == null) return;
+                code = picsBean.getCode();
                 if(code == 1) {
+                    final List<ShopPlaySelfServicePicsBean.MessageBean> messageBeans = picsBean.getMessage();
+                    AutoPagerAdapter pagerAdapter = new AutoPagerAdapter(messageBeans);
+                    mViewPager.setAdapter(pagerAdapter);
+                    mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                        @Override
+                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                            Log.i("position", "viewPager onPageScrolled position:" + position + " " + positionOffset + " " + positionOffsetPixels);
+                            if(positionOffset == 0 && positionOffsetPixels == 0) {
+                                mPicNum.setText((position + 1) + "/" + messageBeans.size());
+                            }
+                        }
 
-                }*/
+                        @Override
+                        public void onPageSelected(int position) {
+//                            Log.i("position", "viewPager onPageSelected position:" + position);
+                        }
+
+                        @Override
+                        public void onPageScrollStateChanged(int state) {
+//                            Log.i("position", "viewPager onPageScrollStateChanged position:" + state);
+                        }
+                    });
+                }
                 break;
         }
     }
@@ -178,9 +202,9 @@ public class ShopPlayShowSelfServiceActivity extends AppCompatActivity implement
 
     //轮播图适配器
     public class AutoPagerAdapter extends PagerAdapter {
-        private List<ShopRoomPicsBean.MessageBean> mMessageBeens;
+        private List<ShopPlaySelfServicePicsBean.MessageBean> mMessageBeens;
 
-        public AutoPagerAdapter(List<ShopRoomPicsBean.MessageBean> messageBeens) {
+        public AutoPagerAdapter(List<ShopPlaySelfServicePicsBean.MessageBean> messageBeens) {
             mMessageBeens = messageBeens;
         }
 
@@ -243,8 +267,9 @@ public class ShopPlayShowSelfServiceActivity extends AppCompatActivity implement
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ShopStayShowDetailActivity.RoomViewHolder viewHolder = (ShopStayShowDetailActivity.RoomViewHolder)holder;
+            ShopPlayShowSelfServiceActivity.DefViewHolder viewHolder = (ShopPlayShowSelfServiceActivity.DefViewHolder)holder;
             viewHolder.itemName.setText(mMessageBean.getNote().get(position));
+            viewHolder.itemName.setPadding(13, 0, 0, 0);
         }
 
         @Override
@@ -258,6 +283,7 @@ public class ShopPlayShowSelfServiceActivity extends AppCompatActivity implement
         public DefViewHolder(View itemView) {
             super(itemView);
             itemName = (TextView) itemView.findViewById(R.id.name);
+            itemView.findViewById(R.id.img_logo).setVisibility(View.GONE);
         }
     }
 }

@@ -181,6 +181,7 @@ public class ShopDetailPlayFragment extends BaseFragment implements View.OnClick
                             }
                             playData = new PlayData();
                             playData.setId(guideVoList.get(i).getShopId());
+                            playData.setGuideId(guideVoList.get(i).getGuideId());
                             playData.setName(guideVoList.get(i).getDescribe());
                             playData.setContent(guideVoList.get(i).getComments());
                             playData.setPrice(guideVoList.get(i).getTourGuardPrice());
@@ -262,10 +263,12 @@ public class ShopDetailPlayFragment extends BaseFragment implements View.OnClick
                     }else if(mPlayDatas.get(position).getType().equals("自助游")) {
                         intent = new Intent(getContext(), ShopPlayShowSelfServiceActivity.class);
                         intent.putExtra("resortId", mPlayDatas.get(position).getId());
+                        intent.putExtra("selfServiceName", mPlayDatas.get(position).getName());
                         intent.putExtra("familyActivityId", mPlayDatas.get(position).getFamilyActivityId());
                     }else if(mPlayDatas.get(position).getType().equals("导游服务")) {
                         intent = new Intent(getContext(), ShopPlayShowTourGuideActivity.class);
                         intent.putExtra("resortId", mPlayDatas.get(position).getId());
+                        intent.putExtra("guideId", mPlayDatas.get(position).getGuideId());
                     }
                     getContext().startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
@@ -330,6 +333,7 @@ public class ShopDetailPlayFragment extends BaseFragment implements View.OnClick
 
     class PlayData {
         int id;
+        int guideId;
         int familyActivityId;
         String name;
         String content;
@@ -344,6 +348,14 @@ public class ShopDetailPlayFragment extends BaseFragment implements View.OnClick
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public int getGuideId() {
+            return guideId;
+        }
+
+        public void setGuideId(int guideId) {
+            this.guideId = guideId;
         }
 
         public int getFamilyActivityId() {

@@ -422,6 +422,5 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:src="@mipmap/shopcart"
-        android:background="@color/green_light"
-        android:onClick="true"/>
+        android:background="@color/green_light" />
 </android.support.design.widget.CoordinatorLayout>

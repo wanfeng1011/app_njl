@@ -28,6 +28,11 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -53,7 +58,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:+'
-    compile files('libs/fastjson.jar')
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+    //compile files('libs/fastjson.jar')
     compile 'com.yolanda.nohttp:nohttp:1.0.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.github.zhaokaiqiang.klog:library:+'
@@ -64,4 +70,6 @@ dependencies {
     compile project(':lib_lostad')
     //compile project(':calendar')
     compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
+    compile files('libs/locSDK_6.13.jar')
+    compile files('libs/baidumapapi_v3_5_0.jar')
 }

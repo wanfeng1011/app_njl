@@ -255,6 +255,8 @@ public class ShopListStayFragment extends StoreListBaseFragment implements Commo
             public void onLoadMore() {
 //                mPageNo++;
 //                initRemoteData();
+                mPageNo++;
+                queryStoresByOptions(null);
             }
         });
 

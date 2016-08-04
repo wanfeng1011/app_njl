@@ -3,8 +3,7 @@
     android:id="@+id/layout_header"
     android:layout_width="match_parent"
     android:layout_height="48dip"
-    android:visibility="gone"
-    android:background="@color/main_header_bg">
+    android:background="@color/green_light">
 
     <!-- 返回按钮 -->
 
